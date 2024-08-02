@@ -49,7 +49,7 @@ def get_anime_updates():
         if (title == "永生" or any(keyword in title for keyword in keywords)) and update_date == today:
             episode = item.select_one('a.names > span.ep_name').text.strip()
             link = 'https://yhdm.one' + item.select_one('a.names')['href']
-            anime_updates.append(f"<font size=\"6\" color=\"red\"><a href=\"{link}\"><font color=\"red\">{title}</font></a></font>\n{episode} 🔥\n更新日期：{update_date}\n---\n")  #  更新日期另起一行
+            anime_updates.append(f"<font size=\"6\" color=\"red\"><a href=\"{link}\"><font color=\"red\">{title}</font></a></font>\n{episode} 🔥\n更新日期：{update_date}\n---\n")  #  更 新日期另起一行
     return anime_updates
 
 if __name__ == "__main__":
