@@ -1,11 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
 import datetime
+import os
 
-# wxpusher 配置
-APP_TOKEN = "AT_UHus2F8p0yjnG6XvGEDzdCp5GkwvLdkc"
+# 从环境变量中获取 wxpusher 配置
+APP_TOKEN = os.environ.get('APP_TOKEN')
 BASE_URL = "https://wxpusher.zjiecode.com/api"
-MY_UID = "UID_Yu7g7krRD4BEA5TNgI9Clk9bctzP" 
+MY_UID = os.environ.get('MY_UID')
 
 def send_message(content, uids=None, topic_ids=None, summary=None, content_type=3, url=None, verify_pay_type=0):
     """发送微信消息"""
@@ -48,7 +49,7 @@ def get_anime_updates():
         if (title == "永生" or any(keyword in title for keyword in keywords)) and update_date == today:
             episode = item.select_one('a.names > span.ep_name').text.strip()
             link = 'https://yhdm.one' + item.select_one('a.names')['href']
-            updates.append(f"<font size=\"6\">**[{title}]({link})**</font> {episode}\n更新日期：{update_date}\n\n")  # 更新日期另起一行
+            updates.append(f"<font size=\"6\">**[{title}]({link})**</font> \n{episode}更新日期：{update_date}\n\n")  # 更新日期另起一行
     return updates
 
 if __name__ == "__main__":
