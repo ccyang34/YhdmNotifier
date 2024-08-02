@@ -10,22 +10,22 @@ MY_UID = os.environ.get('MY_UID')
 
 def send_message(content, uids=None, topic_ids=None, summary=None, content_type=3, url=None, verify_pay_type=0):
     """发送微信消息"""
-    params = {
+    data = {
         "appToken": APP_TOKEN,
         "content": content,
         "contentType": content_type,  # 使用 Markdown 格式
         "verifyPayType": verify_pay_type
     }
     if uids:
-        params["uids"] = uids
+        data["uids"] = uids
     if topic_ids:
-        params["topicIds"] = topic_ids
+        data["topicIds"] = topic_ids
     if summary:
-        params["summary"] = summary
+        data["summary"] = summary
     if url:
-        params["url"] = url
+        data["url"] = url
 
-    response = requests.post(f"{BASE_URL}/send/message", params=params)
+    response = requests.post(f"{BASE_URL}/send/message", json=data)
     return response.json()
 
 def get_anime_updates():
@@ -38,8 +38,8 @@ def get_anime_updates():
     keywords = ["完美世界", "仙逆", "吞噬星空", "斗破苍穹", "斗罗大陆", "遮天", "武神主宰", "凡人修仙传", "诛仙"]
     today = datetime.date.today().strftime("%Y-%m-%d")
 
-    anime_items = soup.select('ul.latest-ul > li:has(a.names)')
-    anime_updates = []
+    anime_items = soup.select('ul.latest-ul > li')
+    updates = []
 
     for item in anime_items:
         title = item.select_one('a.names > span.name').text.strip()
@@ -49,13 +49,14 @@ def get_anime_updates():
         if (title == "永生" or any(keyword in title for keyword in keywords)) and update_date == today:
             episode = item.select_one('a.names > span.ep_name').text.strip()
             link = 'https://yhdm.one' + item.select_one('a.names')['href']
-            anime_updates.append(f"<font size=\"6\" color=\"red\"><a href=\"{link}\"><font color=\"red\">{title}</font></a></font>\n{episode} 🔥\n更新日期：{update_date}\n---\n")  #  更 新日期另起一行
-    return anime_updates
+            updates.append(f"<span style=\"color: red\"><a href=\"{link}\">{title}</a></span>\n{episode} 🔥\n更新日期：{update_date}\n---\n")  #  更新日期另起一行
+    return updates
+
 
 if __name__ == "__main__":
-    anime_updates = get_anime_updates()
-    if anime_updates:
-        message = f"<center><font size=\"6\">🔥 今日动漫更新 🔥</font></center>\n\n" + "".join(anime_updates)
+    updates = get_anime_updates()
+    if updates:
+        message = f"<center><span style=\"color: red; font-size: 24px\">🔥 今日动漫更新 🔥</span></center>\n\n" + "".join(updates)
         response = send_message(message, uids=[MY_UID])
         print(response)
     else:
