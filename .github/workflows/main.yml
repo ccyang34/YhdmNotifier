@@ -1,0 +1,29 @@
+name: 动漫更新自动微信推送
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # 北京时间上午 10 点 (UTC 时间凌晨 2 点)
+    - cron: '30 11 * * *'  # 北京时间晚上 7 点半 (UTC 时间上午 11 点半) 
+
+jobs:
+  send-notification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'  # 选择你的 Python 版本
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4
+
+      - name: Run script
+        run: python 动漫更新自动微信推送.py 
+        env:
+          APP_TOKEN: ${{ secrets.APP_TOKEN }}
+          MY_UID: ${{ secrets.MY_UID }}
