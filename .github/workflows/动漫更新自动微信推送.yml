@@ -1,6 +1,9 @@
 name: 动漫更新自动微信推送
 
 on:
+  push:  # 当代码 push 到仓库时触发
+    branches:
+      - main  # 只监听 main 分支
   schedule:
     - cron: '0 2 * * *'  # 北京时间上午 10 点 (UTC 时间凌晨 2 点)
     - cron: '30 11 * * *'  # 北京时间晚上 7 点半 (UTC 时间上午 11 点半) 
