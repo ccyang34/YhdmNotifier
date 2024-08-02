@@ -36,8 +36,8 @@ def get_anime_updates():
     soup = BeautifulSoup(response.text, 'html.parser')
 
     keywords = ["完美世界", "仙逆", "吞噬星空", "斗破苍穹", "斗罗大陆", "遮天", "武神主宰", "凡人修仙传", "诛仙"]
-    today = datetime.date.today()
-    valid_dates = [ (today - datetime.timedelta(days=i)).strftime("%Y-%m-%d") for i in range(7) ] # 获取过去一周的日期
+    today = datetime.date.today().strftime("%Y-%m-%d")
+    valid_dates = [ (datetime.date.today() - datetime.timedelta(days=i)).strftime("%Y-%m-%d") for i in range(7) ] # 获取过去一周的日期
 
     anime_items = soup.select('ul.latest-ul > li')
     updates = []
@@ -50,7 +50,12 @@ def get_anime_updates():
         if (title == "永生" or any(keyword in title for keyword in keywords)) and update_date in valid_dates:
             episode = item.select_one('a.names > span.ep_name').text.strip()
             link = 'https://yhdm.one' + item.select_one('a.names')['href']
-            updates.append(f"<font size=\"6\" color=\"red\"><a href=\"{link}\" style=\"color: red; text-decoration-color: red;\"><font color=\"red\">{title}</font></a></font>\n {episode} 🔥 更新日期：{update_date}\n\n")
+
+            # 根据更新日期设置不同的格式
+            if update_date == today:
+                updates.append(f"**<font size=\"6\" color=\"red\"><a href=\"{link}\" style=\"color: red; text-decoration-color: red;\"><font color=\"red\">{title}</font></a></font>**\n **{episode}** 🔥 更新日期：**{update_date}**\n\n")
+            else:
+                updates.append(f"<font size=\"6\" color=\"red\"><a href=\"{link}\" style=\"color: red; text-decoration-color: red;\"><font color=\"red\">{title}</font></a></font>\n {episode} 🔥 更新日期：{update_date}\n\n")
     return updates
 
 
