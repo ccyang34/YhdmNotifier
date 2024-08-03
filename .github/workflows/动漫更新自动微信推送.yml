@@ -7,7 +7,7 @@ on:
   schedule:
     - cron: '0 2 * * *'  # 北京时间上午 10 点 (UTC 时间凌晨 2 点)
     - cron: '30 11 * * *'  # 北京时间晚上 7 点半 (UTC 时间上午 11 点半) 
-
+  workflow_dispatch:  # Allows manual triggering
 jobs:
   send-notification:
     runs-on: ubuntu-latest
