@@ -35,9 +35,10 @@ def get_anime_updates():
     response.encoding = 'utf-8'
     soup = BeautifulSoup(response.text, 'html.parser')
 
-    keywords = ["完美世界", "仙逆", "吞噬星空", "斗破苍穹", "斗罗大陆", "遮天", "武神主宰", "凡人修仙传", "诛仙"]
+    keywords = ["完美世界", "仙逆", "吞噬星空", "斗破苍穹", "斗罗大陆", "遮天", "武神主宰"]
+    exact_titles = ["永生", "凡人修仙传", "诛仙"]  # 需要完全匹配的标题
     today = datetime.date.today().strftime("%Y-%m-%d")
-    valid_dates = [ (datetime.date.today() - datetime.timedelta(days=i)).strftime("%Y-%m-%d") for i in range(7) ] # 获取过去一周的日期
+    valid_dates = [(datetime.date.today() - datetime.timedelta(days=i)).strftime("%Y-%m-%d") for i in range(7)]
 
     anime_items = soup.select('ul.latest-ul > li')
     updates = []
@@ -47,7 +48,7 @@ def get_anime_updates():
         update_date = item.select_one('em').text.strip()
 
         # 筛选标题和更新日期（过去一周）
-        if (title == "永生" or any(keyword in title for keyword in keywords)) and update_date in valid_dates:
+        if ((title in exact_titles) or any(keyword in title for keyword in keywords)) and update_date in valid_dates:
             episode = item.select_one('a.names > span.ep_name').text.strip()
             link = 'https://yhdm.one' + item.select_one('a.names')['href']
 
