@@ -63,7 +63,7 @@ def get_anime_updates():
 if __name__ == "__main__":
     updates = get_anime_updates()
     if updates:
-        message = f"<center><span style=\"color: red; font-size: 24px\">🔥 今日动漫更新 🔥</span></center>\n\n" + "".join(updates)
+        message = f"<center><span style=\"color: red; font-size: 24px\">🔥 本周动漫更新 🔥</span></center>\n\n" + "".join(updates)
         response = send_message(message, uids=[MY_UID])
         print(response)
     else:
