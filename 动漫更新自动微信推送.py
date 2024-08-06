@@ -6,7 +6,8 @@ import os
 # 从环境变量中获取 wxpusher 配置
 APP_TOKEN = os.environ.get('APP_TOKEN')
 BASE_URL = "https://wxpusher.zjiecode.com/api"
-MY_UID = os.environ.get('MY_UID')  # 目标用户的 UID
+# MY_UID = os.environ.get('MY_UID')  # 可以保留，但不会在群发中使用
+TARGET_TOPIC_ID = [80691]  # 目标主题的 topicId，是一个数组
 
 def send_message(content, uids=None, topic_ids=None, summary=None, content_type=3, url=None, verify_pay_type=0):
     """发送微信消息"""
@@ -64,8 +65,8 @@ if __name__ == "__main__":
     if updates:
         message = f"<center><span style=\"color: red; font-size: 24px\">🔥 本周动漫更新 🔥</span></center>\n\n" + "".join(updates)
 
-        # 使用 MY_UID 发送消息
-        response = send_message(message, uids=[MY_UID])
+        # 使用 topicIds 群发消息
+        response = send_message(message, topicId=TARGET_TOPIC_ID)
         print(response)
     else:
         print("今日无更新")
