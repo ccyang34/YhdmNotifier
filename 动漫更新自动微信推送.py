@@ -54,7 +54,7 @@ def get_anime_updates():
 
             # 获取周几
             update_date_obj = datetime.datetime.strptime(update_date, "%Y-%m-%d")
-            weekday_zh = "周" + "日一二三四五六"[update_date_obj.weekday()]
+            weekday_zh = "周" + "一二三四五六日"[update_date_obj.weekday()]
 
             # 根据更新日期设置不同的格式
             if update_date == today:
