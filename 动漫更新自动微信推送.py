@@ -52,9 +52,8 @@ def get_anime_updates():
             episode = item.select_one('a.names > span.ep_name').text.strip()
             link = 'https://yhdm.one' + item.select_one('a.names')['href']
 
-            # 获取星期几
+            # 获取周几
             update_date_obj = datetime.datetime.strptime(update_date, "%Y-%m-%d")
-            weekday = update_date_obj.strftime("%A")
             weekday_zh = "周" + "日一二三四五六"[update_date_obj.weekday()]
 
             # 根据更新日期设置不同的格式
