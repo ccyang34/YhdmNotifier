@@ -66,7 +66,7 @@ if __name__ == "__main__":
         message = f"<center><span style=\"color: red; font-size: 24px\">🔥 本周动漫更新 🔥</span></center>\n\n" + "".join(updates)
 
         # 使用 topicIds 群发消息
-        response = send_message(message, topicId=TARGET_TOPIC_ID)
+        response = send_message(message)
         print(response)
     else:
         print("今日无更新")
