@@ -52,11 +52,16 @@ def get_anime_updates():
             episode = item.select_one('a.names > span.ep_name').text.strip()
             link = 'https://yhdm.one' + item.select_one('a.names')['href']
 
+            # 获取星期几
+            update_date_obj = datetime.datetime.strptime(update_date, "%Y-%m-%d")
+            weekday = update_date_obj.strftime("%A")
+            weekday_zh = "周" + "日一二三四五六"[update_date_obj.weekday()]
+
             # 根据更新日期设置不同的格式
             if update_date == today:
-                updates.append(f"<font size=\"6\" color=\"red\"><a href=\"{link}\" style=\"color: red; text-decoration-color: red;\"><font color=\"red\">{title}</font></a></font>\n {episode} 🔥 更新日期：{update_date}\n\n")
+                updates.append(f"<font size=\"6\" color=\"red\"><a href=\"{link}\" style=\"color: red; text-decoration-color: red;\"><font color=\"red\">{title}</font></a></font>\n {episode} 🔥 更新日期：{update_date} {weekday_zh}\n\n")
             else:
-                updates.append(f"<font size=\"6\" color=\"orange\"><a href=\"{link}\" style=\"color: orange; text-decoration-color: orange;\"><font color=\"orange\">{title}</font></a></font>\n {episode} 🔥 更新日期：{update_date}\n\n")
+                updates.append(f"<font size=\"6\" color=\"orange\"><a href=\"{link}\" style=\"color: orange; text-decoration-color: orange;\"><font color=\"orange\">{title}</font></a></font>\n {episode} 🔥 更新日期：{update_date} {weekday_zh}\n\n")
     return updates
 
 if __name__ == "__main__":
