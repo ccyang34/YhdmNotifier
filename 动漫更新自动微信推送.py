@@ -66,7 +66,8 @@ def get_anime_updates():
 if __name__ == "__main__":
     updates = get_anime_updates()
     if updates:
-        message = f"<center><span style=\"color: red; font-size: 24px\">🔥 本周动漫更新 🔥</span></center>\n\n" + "".join(updates)
+        message = f"<center><span style=\"color: red; font-size: 24px\">🔥 本周动漫更新 🔥</span></center>\n\n" \
+                  f"**(优选线路GS,HN,WJ,WL,SN,JS,MD)**\n\n" + "".join(updates)  # 添加线路说明
 
         # 使用 topicId 群发消息
         response = send_message(message, topic_ids=TARGET_TOPIC_ID)
