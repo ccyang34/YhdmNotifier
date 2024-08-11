@@ -58,16 +58,16 @@ def get_anime_updates():
 
             # 根据更新日期设置不同的格式
             if update_date == today:
-                updates.append(f"<font size=\"6\" color=\"red\"><a href=\"{link}\" style=\"color: red; text-decoration-color: red;\"><font color=\"red\">{title}</font></a></font>\n {episode} 🔥 更新日期：{update_date} {weekday_zh}\n\n")
+                updates.append(f"<font size=\"6\" color=\"red\"><a href=\"{link}\" style=\"color: red; text-decoration-color: red;\"><font color=\"red\">{title}</font></a></font>\n {episode} 更新日期：{update_date} {weekday_zh}\n\n")
             else:
-                updates.append(f"<font size=\"6\" color=\"orange\"><a href=\"{link}\" style=\"color: orange; text-decoration-color: orange;\"><font color=\"orange\">{title}</font></a></font>\n {episode} 🔥 更新日期：{update_date} {weekday_zh}\n\n")
+                updates.append(f"<font size=\"6\" color=\"orange\"><a href=\"{link}\" style=\"color: orange; text-decoration-color: orange;\"><font color=\"orange\">{title}</font></a></font>\n {episode} 更新日期：{update_date} {weekday_zh}\n\n")
     return updates
 
 if __name__ == "__main__":
     updates = get_anime_updates()
     if updates:
-        message = f"<center><span style=\"color: red; font-size: 24px\">🔥 本周动漫更新 🔥</span></center>\n\n" \
-                  f"**(优选线路GS,HN,WJ,WL,SN,JS,MD)**\n\n" + "".join(updates)  # 添加线路说明
+        message = f"<center><span style=\"color: red; font-size: 24px\"> 本周动漫更新 </span></center>\n\n" \
+                  f"<center>**(优选线路GS,HN,WJ,WL,SN,JS,MD)**</center>\n\n" + "".join(updates)  # 添加线路说明
 
         # 使用 topicId 群发消息
         response = send_message(message, topic_ids=TARGET_TOPIC_ID)
