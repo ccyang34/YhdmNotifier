@@ -8,12 +8,12 @@ APP_TOKEN = os.environ.get('APP_TOKEN')
 BASE_URL = "https://wxpusher.zjiecode.com/api"
 TARGET_TOPIC_ID = [32277]  # 目标主题的 topicId，是一个数组
 
-def send_message(content, uids=None, topic_ids=None, summary=None, content_type=3, url=None, verify_pay_type=0):
+def send_message(content, uids=None, topic_ids=None, summary=None, content_type=1, url=None, verify_pay_type=0):
     """发送微信消息"""
     data = {
         "appToken": APP_TOKEN,
         "content": content,
-        "contentType": content_type,  # 使用 Markdown 格式
+        "contentType": content_type,  # 使用 HTML 格式
         "verifyPayType": verify_pay_type
     }
     if uids:
@@ -67,7 +67,7 @@ if __name__ == "__main__":
     updates = get_anime_updates()
     if updates:
         message = f"<center><span style=\"color: red; font-size: 24px\"> 本周动漫更新 </span></center>\n\n" \
-                  f"<center>**(优选线路GS,HN,WJ,WL,SN,JS,MD)**</center>\n\n" + "".join(updates)  # 添加线路说明
+                  f"<center><strong>(优选线路GS,HN,WJ,WL,SN,JS,MD)</strong></center>\n\n" + "".join(updates)  # 使用 <strong> 标签加粗
 
         # 使用 topicId 群发消息
         response = send_message(message, topic_ids=TARGET_TOPIC_ID)
