@@ -37,7 +37,7 @@ def get_anime_updates():
     response.encoding = 'utf-8'
     soup = BeautifulSoup(response.text, 'html.parser')
 
-    keywords = ["完美世界", "仙逆", "吞噬星空", "斗破苍穹", "斗罗大陆", "遮天", "武神主宰", "独步逍遥", "万界独尊", "灵剑尊", "剑来", "赘婿"]
+    keywords = ["完美世界", "仙逆", "吞噬星空", "斗破苍穹", "斗罗大陆", "遮天", "武神主宰", "独步逍遥", "万界独尊", "灵剑尊", "剑来", "赘婿", "星辰变", "武动乾坤"]
     exact_titles = ["永生", "凡人修仙传", "诛仙", "眷思量"]  # 需要完全匹配的标题
     today = datetime.date.today().strftime("%Y-%m-%d")
     valid_dates = [(datetime.date.today() - datetime.timedelta(days=i)).strftime("%Y-%m-%d") for i in range(7)]
