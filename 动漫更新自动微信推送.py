@@ -110,6 +110,7 @@ def get_anime_updates():
                                     update_text = f"<span style='font-size: 30px;'><strong><span style='color: {'red' if update_date == today else 'orange'};'> {title} </span></strong></span>\n{'🔥🔥' if update_date == today else ''} 更新日期：{update_date} {weekday_zh}\n"
                                 for link in m3u8_links:
                                     update_text += f"<a href='{link}' target='_blank'>魔都链接</a>            "
+                                    update_text += f"<a href='alook://{link}' target='_blank'>Alook打开</a>            "
                                     update_text += "        "  # 设置间隔
                                 update_text += f"<a href='{detail_link}' target='_blank'>详情页</a>\n\n"
                                 updates.append(update_text)
