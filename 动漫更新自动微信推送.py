@@ -1,12 +1,20 @@
 import requests
 from bs4 import BeautifulSoup
 import datetime
+import re
 import os
 
 # 从环境变量中获取 wxpusher 配置
 APP_TOKEN = os.environ.get('APP_TOKEN')
 BASE_URL = "https://wxpusher.zjiecode.com/api"
-TARGET_TOPIC_ID = [32277]  # 目标主题的 topicId，是一个数组
+TARGET_TOPIC_IDS_STR = os.environ.get("WXPUSHER_TOPIC_IDS")
+if TARGET_TOPIC_IDS_STR:
+    TARGET_TOPIC_IDS = [int(x) for x in TARGET_TOPIC_IDS_STR.split(',')]
+else:
+    TARGET_TOPIC_IDS = [32277]
+
+# 替换 uid=UID_Yu7g7krRD4BEA5TNgI9Clk9bctzP
+UID = os.environ.get("WXPUSHER_UID") or "UID_Yu7g7krRD4BEA5TNgI9Clk9bctzP"
 
 
 def send_message(content, uids=None, topic_ids=None, summary=None, content_type=3, url=None, verify_pay_type=0):
@@ -30,41 +38,88 @@ def send_message(content, uids=None, topic_ids=None, summary=None, content_type=
     return response.json()
 
 
-def get_anime_updates():
-    """获取并筛选动漫更新信息"""
-    url = 'https://yhdm.one/latest/'
-    response = requests.get(url)
-    response.encoding = 'utf-8'
-    soup = BeautifulSoup(response.text, 'html.parser')
+def get_m3u8_link(detail_url, title):
+    try:
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+        }
+        response = requests.get(detail_url, headers=headers, timeout=10)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.text, 'html.parser')
 
-    keywords = ["完美世界", "仙逆", "吞噬星空", "斗破苍穹", "斗罗大陆", "遮天", "武神主宰", "独步逍遥", "万界独尊", "灵剑尊", "剑来", "赘婿", "星辰变", "武动乾坤"]
-    exact_titles = ["永生", "凡人修仙传", "诛仙", "眷思量"]  # 需要完全匹配的标题
+        match = re.search(r"更新至(\d+)集", title)
+        if match:
+            episode_num = match.group(1)
+            links = []
+            for a_tag in soup.find_all('a', class_='copy_text', target='_blank'):
+                text = a_tag.get_text()
+                if re.search(rf"第{episode_num}集", text):  # 使用正则表达式匹配集数
+                    href = a_tag.get('href')
+                    if href.startswith(('http://', 'https://')):
+                        links.append(href)
+                    elif href:  # 处理相对链接
+                        links.append("https://www.moduzy.cc" + href)
+            return links if links else None
+        else:
+            print(f"无法从标题 '{title}' 中提取集数")
+            return None
+
+    except requests.exceptions.RequestException as e:
+        print(f"获取 {detail_url} 的链接失败: {e}")
+        return None
+
+
+
+def get_anime_updates():
+    keywords = ["完美世界", "仙逆", "吞噬星空", "斗破苍穹", "斗罗大陆2", "遮天", "武神主宰", "独步逍遥", "万界独尊", "灵剑尊", "剑来", "赘婿", "星辰变", "武动乾坤"]
+    exact_titles = ["永生", "凡人修仙传", "诛仙", "眷思量"]
     today = datetime.date.today().strftime("%Y-%m-%d")
     valid_dates = [(datetime.date.today() - datetime.timedelta(days=i)).strftime("%Y-%m-%d") for i in range(7)]
-
-    anime_items = soup.select('ul.latest-ul > li')
+    base_url = "https://www.moduzy.cc/list1/"
     updates = []
 
-    for item in anime_items:
-        title = item.select_one('a.names > span.name').text.strip()
-        update_date = item.select_one('em').text.strip()
+    for page in range(1, 6):
+        url = f"{base_url}?page={page}"
+        try:
+            response = requests.get(url, timeout=10)
+            response.raise_for_status()
+            soup = BeautifulSoup(response.content, 'html.parser')
 
-        # 筛选标题和更新日期（过去一周）
-        if ((title in exact_titles) or any(keyword in title for keyword in keywords)) and update_date in valid_dates:
-            episode = item.select_one('a.names > span.ep_name').text.strip()
-            link = 'https://yhdm.one' + item.select_one('a.names')['href']
+            table = soup.find('table')
+            if table:
+                rows = table.find_all('tr')
+                for row in rows:
+                    cells = row.find_all('td')
+                    if len(cells) > 0:
+                        title = cells[0].text.strip()
+                        update_date = cells[2].text.strip()
 
-            # 获取周几
-            update_date_obj = datetime.datetime.strptime(update_date, "%Y-%m-%d")
-            weekday_zh = "周" + "一二三四五六日"[update_date_obj.weekday()]
+                        if ((title in exact_titles) or any(keyword in title for keyword in keywords)) and update_date in valid_dates:
+                            original_link = row.find('a')['href']
+                            detail_link = f"https://www.moduzy.cc{original_link}" if not original_link.startswith(('http://', 'https://')) else original_link
+                            m3u8_links = get_m3u8_link(detail_link, title)
 
-            # 根据更新日期设置不同的格式
-            if update_date == today:
-                updates.append(
-                    f"<font size=\"6\" color=\"red\"><a href=\"{link}\" style=\"color: red; text-decoration-color: red;\"><font color=\"red\">{title}</font></a></font>\n {episode} 🔥 更新日期：{update_date} {weekday_zh}\n\n")
+                            if m3u8_links:
+                                update_date_obj = datetime.datetime.strptime(update_date, "%Y-%m-%d")
+                                weekday_zh = "周" + "一二三四五六日"[update_date_obj.weekday()]
+                                match = re.search(r"更新至(\d+)集", title)
+                                if match:
+                                    title = title.replace(match.group(0), "")
+                                    update_text = f"<span style='font-size: 30px;'><strong><span style='color: {'red' if update_date == today else 'orange'};'> {title} \n </span></strong></span><span style='font-size: 20px;'><strong><span style='color: {'red' if update_date == today else 'orange'};'> 第{match.group(1)}集 </span></strong></span>{'🔥' if update_date == today else ''} 🔥更新日期：{update_date} {weekday_zh}\n"
+                                else:
+                                    update_text = f"<span style='font-size: 30px;'><strong><span style='color: {'red' if update_date == today else 'orange'};'> {title} </span></strong></span>\n{'🔥🔥' if update_date == today else ''} 更新日期：{update_date} {weekday_zh}\n"
+                                for link in m3u8_links:
+                                    update_text += f"<a href='{link}' target='_blank'>魔都链接</a>            "
+                                    update_text += "        "  # 设置间隔
+                                update_text += f"<a href='{detail_link}' target='_blank'>详情页</a>\n\n"
+                                updates.append(update_text)
+
             else:
-                updates.append(
-                    f"<font size=\"6\" color=\"orange\"><a href=\"{link}\" style=\"color: orange; text-decoration-color: orange;\"><font color=\"orange\">{title}</font></a></font>\n {episode} 🔥 更新日期：{update_date} {weekday_zh}\n\n")
+                print(f"第{page}页未找到包含动漫信息的表格")
+
+        except requests.exceptions.RequestException as e:
+            print(f"获取第 {page} 页数据失败: {e}")
+
     return updates
 
 
@@ -72,11 +127,9 @@ if __name__ == "__main__":
     updates = get_anime_updates()
     if updates:
         message = f"<center><span style='font-size: 24px;'><strong><span style='color: red;'>🔥 本周动漫更新 🔥</span></strong></span></center>\n\n\n" \
-                  f"<center><span style=\"font-size: 14px\">(优选线路 MD,JY,GS,HN,WJ,WL,SN,JS)</span></center>\n\n" \
                   + "".join(updates)
 
-        # 使用 topicId 群发消息
-        response = send_message(message, topic_ids=TARGET_TOPIC_ID)
+        response = send_message(message, topic_ids=TARGET_TOPIC_IDS)
         print(response)
     else:
         print("今日无更新")
