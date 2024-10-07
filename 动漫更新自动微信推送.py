@@ -3,11 +3,12 @@ from bs4 import BeautifulSoup
 import datetime
 import re
 import os
+import subprocess
+
 try:
     from zoneinfo import ZoneInfo
 except ImportError:
     from backports.zoneinfo import ZoneInfo
-
 
 # 从环境变量中获取 wxpusher 配置
 APP_TOKEN = os.environ.get('APP_TOKEN') or "YOUR_APP_TOKEN"  # 替换你的APP_TOKEN
@@ -103,11 +104,13 @@ def get_anime_updates():
 
                         if ((title in exact_titles) or any(keyword in title for keyword in keywords)) and update_date in [date.strftime('%Y-%m-%d') for date in valid_dates]:
                             original_link = row.find('a')['href']
-                            detail_link = f"https://www.moduzy.cc{original_link}" if not original_link.startswith(('http://', 'https://')) else original_link
+                            detail_link = f"https://www.moduzy.cc{original_link}" if not original_link.startswith(
+                                ('http://', 'https://')) else original_link
                             m3u8_links = get_m3u8_link(detail_link, title)
 
                             if m3u8_links:
-                                update_date_obj = datetime.datetime.strptime(update_date, "%Y-%m-%d").replace(tzinfo=BEIJING_TZ)
+                                update_date_obj = datetime.datetime.strptime(update_date, "%Y-%m-%d").replace(
+                                    tzinfo=BEIJING_TZ)
                                 weekday_zh = "周" + "一二三四五六日"[update_date_obj.weekday()]
                                 match = re.search(r"更新至(\d+)集", title)
 
@@ -124,7 +127,6 @@ def get_anime_updates():
                                 update_text += f"<a href='{detail_link}' target='_blank'>详情页</a>\n\n"
                                 updates.append(update_text)
 
-
             else:
                 print(f"第{page}页未找到包含动漫信息的表格")
 
@@ -132,6 +134,22 @@ def get_anime_updates():
             print(f"获取第 {page} 页数据失败: {e}")
 
     return updates
+
+
+def update_readme(content):
+    """将内容更新到 README.md 文件"""
+    try:
+        with open("README.md", "w") as f:
+            f.write(content)
+
+        subprocess.run(["git", "add", "README.md"], check=True)
+        subprocess.run(["git", "commit", "-m", "Update README"], check=True)
+        subprocess.run(["git", "push"], check=True)
+
+        print("README.md 更新成功！")
+
+    except Exception as e:
+        print(f"README.md 更新失败：{e}")
 
 
 if __name__ == "__main__":
@@ -142,5 +160,9 @@ if __name__ == "__main__":
 
         response = send_message(message, topic_ids=TARGET_TOPIC_IDS)
         print(response)
+
+        update_readme(message)
+
     else:
         print("今日无更新")
+
