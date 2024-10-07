@@ -75,8 +75,8 @@ def get_m3u8_link(detail_url, title):
 
 def get_anime_updates():
     """获取动漫更新信息"""
-    keywords = ["完美世界", "仙逆", "吞噬星空", "斗破苍穹", "斗罗大陆2", "遮天", "武神主宰", "独步逍遥", "万界独尊", "灵剑尊", "剑来", "赘婿", "星辰变", "武动乾坤"]
-    exact_titles = ["永生之海噬仙灵", "凡人修仙传", "诛仙", "眷思量"]
+    keywords = ["完美世界", "仙逆", "吞噬星空", "斗破苍穹", "诛仙","斗罗大陆2", "遮天", "武神主宰", "独步逍遥", "万界独尊", "灵剑尊", "剑来", "赘婿", "星辰变", "武动乾坤"]
+    exact_titles = ["永生之海噬仙灵", "凡人修仙传", "眷思量"]
     today = datetime.datetime.now(beijing_tz).date().strftime("%Y-%m-%d")  # 使用北京时间
     valid_dates = [(datetime.datetime.now(beijing_tz).date() - datetime.timedelta(days=i)).strftime("%Y-%m-%d") for i in range(7)]  # 使用北京时间
     base_url = "https://www.moduzy.cc/list1/"
