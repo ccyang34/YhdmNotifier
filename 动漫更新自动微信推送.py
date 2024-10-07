@@ -12,13 +12,13 @@ TARGET_TOPIC_IDS_STR = os.environ.get("WXPUSHER_TOPIC_IDS")
 if TARGET_TOPIC_IDS_STR:
     TARGET_TOPIC_IDS = [int(x) for x in TARGET_TOPIC_IDS_STR.split(',')]
 else:
-    TARGET_TOPIC_IDS = [32277]  # 默认topic ID
+    TARGET_TOPIC_IDS = [32277]
 
+# 替换 uid=UID_Yu7g7krRD4BEA5TNgI9Clk9bctzP
 UID = os.environ.get("WXPUSHER_UID") or "UID_Yu7g7krRD4BEA5TNgI9Clk9bctzP"
 
-# 设置北京时区
-beijing_tz = pytz.timezone('Asia/Shanghai')
-
+# 设置北京时间
+BEIJING_TZ = pytz.timezone('Asia/Shanghai')
 
 def send_message(content, uids=None, topic_ids=None, summary=None, content_type=3, url=None, verify_pay_type=0):
     """发送微信消息"""
@@ -42,7 +42,6 @@ def send_message(content, uids=None, topic_ids=None, summary=None, content_type=
 
 
 def get_m3u8_link(detail_url, title):
-    """获取 m3u8 链接"""
     try:
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
@@ -74,11 +73,10 @@ def get_m3u8_link(detail_url, title):
 
 
 def get_anime_updates():
-    """获取动漫更新信息"""
-    keywords = ["完美世界", "仙逆", "吞噬星空", "斗破苍穹", "诛仙","斗罗大陆2", "遮天", "武神主宰", "独步逍遥", "万界独尊", "灵剑尊", "剑来", "赘婿", "星辰变", "武动乾坤"]
+    keywords = ["完美世界", "仙逆", "吞噬星空", "斗破苍穹", "斗罗大陆2", "遮天", "武神主宰", "诛仙","独步逍遥", "万界独尊", "灵剑尊", "剑来", "赘婿", "星辰变", "武动乾坤"]
     exact_titles = ["永生之海噬仙灵", "凡人修仙传", "眷思量"]
-    today = datetime.datetime.now(beijing_tz).date().strftime("%Y-%m-%d")  # 使用北京时间
-    valid_dates = [(datetime.datetime.now(beijing_tz).date() - datetime.timedelta(days=i)).strftime("%Y-%m-%d") for i in range(7)]  # 使用北京时间
+    today = datetime.date.today().replace(tzinfo=BEIJING_TZ)
+    valid_dates = [(today - datetime.timedelta(days=i)).replace(tzinfo=BEIJING_TZ) for i in range(7)]
     base_url = "https://www.moduzy.cc/list1/"
     updates = []
 
@@ -94,34 +92,31 @@ def get_anime_updates():
                 rows = table.find_all('tr')
                 for row in rows:
                     cells = row.find_all('td')
-                    if cells:  # 检查 cells 是否为空
-                        title_element = cells[0]  # 提高可读性
-                        title = title_element.text.strip()
+                    if len(cells) > 0:
+                        title = cells[0].text.strip()
                         update_date = cells[2].text.strip()
 
-                        if ((title in exact_titles) or any(keyword in title for keyword in keywords)) and update_date in valid_dates:
+                        if ((title in exact_titles) or any(keyword in title for keyword in keywords)) and update_date in [date.strftime('%Y-%m-%d') for date in valid_dates]:
                             original_link = row.find('a')['href']
-                            detail_link = f"https://www.moduzy.cc{original_link}" if not original_link.startswith(
-                                ('http://', 'https://')) else original_link
+                            detail_link = f"https://www.moduzy.cc{original_link}" if not original_link.startswith(('http://', 'https://')) else original_link
                             m3u8_links = get_m3u8_link(detail_link, title)
 
                             if m3u8_links:
-                                update_date_obj = datetime.datetime.strptime(update_date, "%Y-%m-%d").replace(tzinfo=beijing_tz)  # 添加时区信息
+                                update_date_obj = datetime.datetime.strptime(update_date, "%Y-%m-%d")
+                                update_date_obj = update_date_obj.replace(tzinfo=BEIJING_TZ)
                                 weekday_zh = "周" + "一二三四五六日"[update_date_obj.weekday()]
                                 match = re.search(r"更新至(\d+)集", title)
                                 if match:
                                     title = title.replace(match.group(0), "")
-                                    update_text = f"<span style='font-size: 30px;'><strong><span style='color: {'red' if update_date == today else 'orange'};'> {title} \n </span></strong></span><span style='font-size: 20px;'><strong><span style='color: {'red' if update_date == today else 'orange'};'> 第{match.group(1)}集 </span></strong></span>{'🔥' if update_date == today else ''} 🔥更新日期：{update_date} {weekday_zh}\n"
-
+                                    update_text = f"<span style='font-size: 30px;'><strong><span style='color: {'red' if update_date_obj.date() == today.date() else 'orange'};'> {title} \n </span></strong></span><span style='font-size: 20px;'><strong><span style='color: {'red' if update_date_obj.date() == today.date() else 'orange'};'> 第{match.group(1)}集 </span></strong></span>{'🔥' if update_date_obj.date() == today.date() else ''} 🔥更新日期：{update_date_obj.strftime('%Y-%m-%d')} {weekday_zh}\n"
                                 else:
-                                    update_text = f"<span style='font-size: 30px;'><strong><span style='color: {'red' if update_date == today else 'orange'};'> {title} </span></strong></span>\n{'🔥🔥' if update_date == today else ''} 更新日期：{update_date} {weekday_zh}\n"
+                                    update_text = f"<span style='font-size: 30px;'><strong><span style='color: {'red' if update_date_obj.date() == today.date() else 'orange'};'> {title} </span></strong></span>\n{'🔥🔥' if update_date_obj.date() == today.date() else ''} 更新日期：{update_date_obj.strftime('%Y-%m-%d')} {weekday_zh}\n"
                                 for link in m3u8_links:
                                     update_text += f"<a href='{link}' target='_blank'>魔都链接</a>            "
                                     update_text += f"<a href='alook://{link}' target='_blank'>Alook打开</a>            "
                                     update_text += "        "  # 设置间隔
                                 update_text += f"<a href='{detail_link}' target='_blank'>详情页</a>\n\n"
                                 updates.append(update_text)
-
 
             else:
                 print(f"第{page}页未找到包含动漫信息的表格")
@@ -142,4 +137,3 @@ if __name__ == "__main__":
         print(response)
     else:
         print("今日无更新")
-
