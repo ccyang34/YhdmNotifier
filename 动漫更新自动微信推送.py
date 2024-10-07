@@ -3,9 +3,14 @@ from bs4 import BeautifulSoup
 import datetime
 import re
 import os
-import pytz
+try:
+    from zoneinfo import ZoneInfo
+except ImportError:
+    from backports.zoneinfo import ZoneInfo
 
-APP_TOKEN = os.environ.get('APP_TOKEN')
+
+# 从环境变量中获取 wxpusher 配置
+APP_TOKEN = os.environ.get('APP_TOKEN') or "YOUR_APP_TOKEN"  # 替换你的APP_TOKEN
 BASE_URL = "https://wxpusher.zjiecode.com/api"
 TARGET_TOPIC_IDS_STR = os.environ.get("WXPUSHER_TOPIC_IDS")
 if TARGET_TOPIC_IDS_STR:
@@ -17,7 +22,7 @@ else:
 UID = os.environ.get("WXPUSHER_UID") or "YOUR_UID"  # 请替换为你的 UID
 
 # 设置北京时间
-BEIJING_TZ = pytz.timezone('Asia/Shanghai')
+BEIJING_TZ = ZoneInfo("Asia/Shanghai")
 
 
 def send_message(content, uids=None, topic_ids=None, summary=None, content_type=3, url=None, verify_pay_type=0):
@@ -105,17 +110,20 @@ def get_anime_updates():
                                 update_date_obj = datetime.datetime.strptime(update_date, "%Y-%m-%d").replace(tzinfo=BEIJING_TZ)
                                 weekday_zh = "周" + "一二三四五六日"[update_date_obj.weekday()]
                                 match = re.search(r"更新至(\d+)集", title)
+
                                 if match:
                                     title = title.replace(match.group(0), "")
                                     update_text = f"<span style='font-size: 30px;'><strong><span style='color: {'red' if update_date_obj.date() == today else 'orange'};'> {title} \n </span></strong></span><span style='font-size: 20px;'><strong><span style='color: {'red' if update_date_obj.date() == today else 'orange'};'> 第{match.group(1)}集 </span></strong></span>{'🔥' if update_date_obj.date() == today else ''} 🔥更新日期：{update_date_obj.strftime('%Y-%m-%d')} {weekday_zh}\n"
                                 else:
                                     update_text = f"<span style='font-size: 30px;'><strong><span style='color: {'red' if update_date_obj.date() == today else 'orange'};'> {title} </span></strong></span>\n{'🔥🔥' if update_date_obj.date() == today else ''} 更新日期：{update_date_obj.strftime('%Y-%m-%d')} {weekday_zh}\n"
+
                                 for link in m3u8_links:
                                     update_text += f"<a href='{link}' target='_blank'>魔都链接</a>            "
                                     update_text += f"<a href='alook://{link}' target='_blank'>Alook打开</a>            "
                                     update_text += "        "  # 设置间隔
                                 update_text += f"<a href='{detail_link}' target='_blank'>详情页</a>\n\n"
                                 updates.append(update_text)
+
 
             else:
                 print(f"第{page}页未找到包含动漫信息的表格")
