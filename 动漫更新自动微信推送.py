@@ -11,7 +11,7 @@ TARGET_TOPIC_IDS_STR = os.environ.get("WXPUSHER_TOPIC_IDS")
 if TARGET_TOPIC_IDS_STR:
     TARGET_TOPIC_IDS = [int(x) for x in TARGET_TOPIC_IDS_STR.split(',')]
 else:
-    TARGET_TOPIC_IDS = [32277]  # 请替换为你的 Topic ID
+    TARGET_TOPIC_IDS = [32393]  # 请替换为你的 Topic ID
 
 # 替换你的UID
 UID = os.environ.get("WXPUSHER_UID") or "YOUR_UID"  # 请替换为你的 UID
