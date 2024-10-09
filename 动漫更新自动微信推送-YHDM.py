@@ -73,12 +73,10 @@ def get_anime_updates():
             # 根据更新日期设置不同的格式
             if update_date == today:
                 updates.append(
-                    f"<font size=\"6\" color=\"red\"><a href=\"{link}\" style=\"color: red; text-decoration-color: red;\"><font color=\"red\">{title}</font></a></font>\n {episode} 🔥 更新日期：{update_date} {weekday_zh}\n\n"
-                    f"  <a href=\"alook://{link}\" style=\"font-size: 4;\">Alook打开</a>\n\n")
+                    f"<font size=\"6\" color=\"red\"><a href=\"{link}\" style=\"color: red; text-decoration-color: red;\"><font color=\"red\">{title}</font></a></font>  <a href=\"alook://{link}\" style=\"font-size: 4;\">Alook打开</a>\n {episode} 🔥 更新日期：{update_date} {weekday_zh}\n\n")
             else:
                 updates.append(
-                    f"<font size=\"6\" color=\"orange\"><a href=\"{link}\" style=\"color: orange; text-decoration-color: orange;\"><font color=\"orange\">{title}</font></a></font>\n {episode} 🔥 更新日期：{update_date} {weekday_zh}\n\n"
-                    f"  <a href=\"alook://{link}\" style=\"font-size: 4;\">Alook打开</a>\n\n")
+                    f"<font size=\"6\" color=\"orange\"><a href=\"{link}\" style=\"color: orange; text-decoration-color: orange;\"><font color=\"orange\">{title}</font></a></font>  <a href=\"alook://{link}\" style=\"font-size: 4;\">Alook打开</a>\n {episode} 🔥 更新日期：{update_date} {weekday_zh}\n\n")
     return updates
 
 
