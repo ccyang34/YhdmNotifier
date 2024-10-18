@@ -97,6 +97,4 @@ if __name__ == "__main__":
 
         # 使用 topicId 群发消息
         response = send_message(message, topic_ids=TARGET_TOPIC_ID)
-        print(response)
-    else:
-        print("今日无更新")
+        print(message)
