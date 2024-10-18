@@ -26,18 +26,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests beautifulsoup4
 
-      - name: Run script
-        run: python 动漫更新自动微信推送-YHDM.py
+      - name: Run script and capture output
+        run: |
+          output=$(python 动漫更新自动微信推送 - YHDM.py)
+          echo "::set - output name=python - output::${output}"
         env:
           APP_TOKEN: ${{ secrets.APP_TOKEN }}
           MY_UID: ${{ secrets.MY_UID }}
 
-      - name: Commit changes
+      - name: Update pushed_messages.json
         run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          echo ${{ steps.run - script - and - capture - output.outputs.python - output }} >> pushed_messages.json
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
           git add pushed_messages.json
-          git commit -m "Update pushed_messages.json"
+          git commit - m "Update pushed_messages.json with Python output"
           git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
