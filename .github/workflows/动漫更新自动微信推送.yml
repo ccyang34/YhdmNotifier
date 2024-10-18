@@ -9,7 +9,7 @@ on:
   workflow_dispatch:  
 
 jobs:
-  send - notification:
+  send-notification:
     runs - on: ubuntu - latest
     steps:
       - name: Checkout code
