@@ -81,11 +81,15 @@ def get_anime_updates():
 
 
 if __name__ == "__main__":
+    # 获取动漫更新信息
     updates = get_anime_updates()
-    if updates:
+    # 筛选今日更新
+    today_updates = [update for update in updates if "更新日期：" + datetime.datetime.now(BEIJING_TZ).date().strftime("%Y-%m-%d") in update]
+    if today_updates:
+        # 构建消息内容
         message = f"<center><span style='font-size: 24px;'><strong><span style='color: red;'>🔥 本周动漫更新 🔥</span></strong></span></center>\n\n" \
                   f"<center><span style=\"font-size: 14px\">(优选线路MD,JS,JY,WJ,WL,SN)</span></center>\n\n" \
-                  + "".join(updates)
+                  + "".join(today_updates)
 
         # 使用 topicId 群发消息
         response = send_message(message, topic_ids=TARGET_TOPIC_ID)
