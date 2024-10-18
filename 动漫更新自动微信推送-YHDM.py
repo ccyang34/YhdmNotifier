@@ -98,5 +98,10 @@ if __name__ == "__main__":
         # 使用 topicId 群发消息
         response = send_message(message, topic_ids=TARGET_TOPIC_ID)
         print(response)
+
+        # 将消息内容写入 pushed_messages.json 文件
+        with open("pushed_messages.json", "a", encoding="utf-8") as file:
+            json.dump({"date": today_date, "message": message}, file, ensure_ascii=False)
+            file.write("\n")
     else:
         print("今日无更新")
