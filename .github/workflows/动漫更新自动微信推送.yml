@@ -27,7 +27,7 @@ jobs:
           pip install requests beautifulsoup4
 
       - name: Run script
-        run: python 动漫更新自动微信推送-YHDM.py 
+        run: python 测试写入pushed_messages.py
         env:
           APP_TOKEN: ${{ secrets.APP_TOKEN }}
           MY_UID: ${{ secrets.MY_UID }}
