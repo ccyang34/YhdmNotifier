@@ -1,7 +1,7 @@
 
 import json
 
-def write_hello_to_json(filename="data.json"):
+def write_hello_to_json(filename="pushed_messages.json"):
     """将 "hello" 写入到 JSON 文件.
 
     如果文件不存在，则创建新文件并将 "hello" 作为第一个元素添加到列表中.
@@ -25,6 +25,6 @@ def write_hello_to_json(filename="data.json"):
 
 if __name__ == "__main__":
     write_hello_to_json()
-    print("已将 'hello' 写入 data.json")
+    print("已将 'hello' 写入 pushed_messages.json")
 
 
