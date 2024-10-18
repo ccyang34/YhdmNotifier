@@ -1,43 +1,33 @@
 name: 动漫更新自动微信推送
-on:
-  push:
-    branches:
-      - main
-  schedule:
-    - cron: '33 03 * * *' # 北京时间上午11点33分 (UTC时间凌晨3点33分)
-    - cron: '33 11 * * *' # 北京时间晚上7点33分 (UTC时间上午11点33分)
-  workflow_dispatch:  
 
+on:
+  push:  # 当代码 push 到仓库时触发
+    branches:
+      - main  # 只监听 main 分支
+  schedule:
+    - cron: '33 03 * * *'  # 北京时间上午 11 点 33 分 (UTC 时间凌晨 3 点 33 分)
+    - cron: '33 11 * * *'  # 北京时间晚上 7 点 33 分 (UTC 时间上午 11 点 33 分)
+  workflow_dispatch:  # Allows manual triggering
+  
 jobs:
   send-notification:
-    runs-on: ubuntu - latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: actions/setup - python@v4
+        uses: actions/setup-python@v4
         with:
-          python - version: '3.9'
+          python-version: '3.9'  # 选择你的 Python 版本
 
       - name: Install dependencies
         run: |
-          python - m pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install requests beautifulsoup4
 
-      - name: Run script and capture output
-        run: |
-          output=$(python 动漫更新自动微信推送 - YHDM.py)
-          echo "::set - output name=python - output::${output}"
+      - name: Run script
+        run: python 动漫更新自动微信推送-YHDM.py
         env:
           APP_TOKEN: ${{ secrets.APP_TOKEN }}
           MY_UID: ${{ secrets.MY_UID }}
-
-      - name: Update pushed_messages.json
-        run: |
-          echo ${{ steps.run_script_and_capture_output.outputs.python_output }} >> pushed_messages.json
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git add pushed_messages.json
-          git commit - m "Update pushed_messages.json with Python output"
-          git push
