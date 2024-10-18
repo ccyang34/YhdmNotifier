@@ -1,14 +1,14 @@
 name: 动漫更新自动微信推送
 
 on:
-  push:  # 当代码 push 到仓库时触发
+  push:
     branches:
-      - main  # 只监听 main 分支
+      - main
   schedule:
-    - cron: '33 03 * * *'  # 北京时间上午 11 点 33 分 (UTC 时间凌晨 3 点 33 分)
-    - cron: '33 11 * * *'  # 北京时间晚上 7 点 33 分 (UTC 时间上午 11 点 33 分) 
-  workflow_dispatch:  # Allows manual triggering
-  
+    - cron: '33 03 * * *' # 北京时间上午 11 点 33 分 (UTC 时间凌晨 3 点 33 分)
+    - cron: '33 11 * * *' # 北京时间晚上 7 点 33 分 (UTC 时间上午 11 点 33 分) 
+  workflow_dispatch:  
+
 jobs:
   send-notification:
     runs-on: ubuntu-latest
@@ -19,7 +19,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'  # 选择你的 Python 版本
+          python-version: '3.9'
 
       - name: Install dependencies
         run: |
@@ -31,3 +31,13 @@ jobs:
         env:
           APP_TOKEN: ${{ secrets.APP_TOKEN }}
           MY_UID: ${{ secrets.MY_UID }}
+
+      - name: Commit changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add pushed_messages.json
+          git commit -m "Update pushed_messages.json"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
