@@ -1,30 +1,18 @@
+import os
 
-import json
 
-def write_hello_to_json(filename="pushed_messages.json"):
-    """将 "hello" 写入到 JSON 文件.
-
-    如果文件不存在，则创建新文件并将 "hello" 作为第一个元素添加到列表中.
-    如果文件存在，则读取现有数据，并将 "hello" 添加到列表末尾.
-
-    Args:
-        filename: JSON 文件名.
-    """
-    try:
-        with open(filename, 'r') as f:
-            data = json.load(f)
-    except FileNotFoundError:
-        data = []
-
-    data.append("hello")
-
-    with open(filename, 'w') as f:
-        json.dump(data, f, indent=4)
-
+def write_data_to_txt():
+    data = [1, 2, 3, 4, 5]  # 这里定义一组数据，你可以随意修改
+    file_path = "test.txt"
+    if not os.path.exists(file_path):
+        with open(file_path, 'w') as f:
+            for item in data:
+                f.write(str(item) + '\n')
+    else:
+        with open(file_path, 'a') as f:
+            for item in data:
+                f.write(str(item) + '\n')
 
 
 if __name__ == "__main__":
-    write_hello_to_json()
-    print("已将 'hello' 写入 pushed_messages.json")
-
-
+    write_data_to_txt()
