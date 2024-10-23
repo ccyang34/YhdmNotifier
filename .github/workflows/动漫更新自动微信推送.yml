@@ -5,10 +5,10 @@ on:
     branches:
       - main  # 只监听 main 分支
   schedule:
-    - cron: '33 03 * * *'  # 北京时间上午 11 点 33 分 (UTC 时间凌晨 3 点 33 分)
+    - cron: '33 03 * * *'  # 北京时间上午 11 点 33 分 (UTC 时间凌晨 3 点 33 分)、
+    - cron: '30 07 * * *'  # 北京时间下午 3 点 30 分 (UTC 时间上午 7 点 30 分)
     - cron: '33 11 * * *'  # 北京时间晚上 7 点 33 分 (UTC 时间上午 11 点 33 分)
     - cron: '50 12 * * *'  # 北京时间晚上 8 点 50 分 (UTC 时间下午 4 点 50 分)
-    - cron: '30 07 * * *'  # 北京时间下午 3 点 30 分 (UTC 时间上午 7 点 30 分)
   workflow_dispatch:  # Allows manual triggering
   
 jobs:
