@@ -10,12 +10,34 @@ import requests
 from bs4 import BeautifulSoup
 import datetime
 import os
+import json
 
+# 历史记录文件路径 - 修改为使用 GitHub Actions 的工作目录
+HISTORY_FILE = "/github/workspace/update_history.json"
 
 # 从环境变量中获取 wxpusher 配置
 APP_TOKEN = "AT_UHus2F8p0yjnG6XvGEDzdCp5GkwvLdkc"
 BASE_URL = "https://wxpusher.zjiecode.com/api"
 TARGET_TOPIC_ID = [32277]  # 目标主题的 topicId，是一个数组
+
+
+def load_history():
+    """加载历史记录"""
+    now = datetime.datetime.now(BEIJING_TZ)
+    # 每天凌晨0点5分自动清空历史记录
+    if now.hour == 0 and now.minute == 5:
+        return {"last_update": ""}
+    
+    if os.path.exists(HISTORY_FILE):
+        with open(HISTORY_FILE, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    return {"last_update": ""}
+
+
+def save_history(content):
+    """保存当前更新记录"""
+    with open(HISTORY_FILE, 'w', encoding='utf-8') as f:
+        json.dump({"last_update": content}, f, ensure_ascii=False)
 
 
 def send_message(content, uids=None, topic_ids=None, summary=None, content_type=3, url=None, verify_pay_type=0):
@@ -95,6 +117,15 @@ if __name__ == "__main__":
                   f"<center><span style=\"font-size: 14px\">(优选线路MD,JS,JY,WJ,WL,SN)</span></center>\n\n" \
                   + "".join(updates)
 
-        # 使用 topicId 群发消息
-        response = send_message(message, topic_ids=TARGET_TOPIC_ID)
-        print(message)
+        # 加载历史记录
+        history = load_history()
+        
+        # 如果内容与上次不同才发送
+        if history["last_update"] != message:
+            # 使用 topicId 群发消息
+            response = send_message(message, topic_ids=TARGET_TOPIC_ID)
+            # 保存当前更新记录
+            save_history(message)
+            print("检测到新更新，已发送消息")
+        else:
+            print("没有新更新，跳过发送")
