@@ -1,58 +1,35 @@
-name: 动漫更新自动推送
+name: 动漫更新自动微信推送
 
 on:
+  push:  # 当代码 push 到仓库时触发
+    branches:
+      - main  # 只监听 main 分支
   schedule:
-    - cron: '33 03 * * *'  # UTC 3:33 = 北京时间 11:33
-    - cron: '30 07 * * *'  # UTC 7:30 = 北京时间 15:30
-    - cron: '33 11 * * *'  # UTC 11:33 = 北京时间 19:33
-    - cron: '50 12 * * *'  # UTC 12:50 = 北京时间 20:50
-  workflow_dispatch:
-
+    - cron: '33 03 * * *'  # 北京时间上午 11 点 33 分 (UTC 时间凌晨 3 点 33 分)、
+    - cron: '30 07 * * *'  # 北京时间下午 3 点 30 分 (UTC 时间上午 7 点 30 分)
+    - cron: '33 11 * * *'  # 北京时间晚上 7 点 33 分 (UTC 时间上午 11 点 33 分)
+    - cron: '50 12 * * *'  # 北京时间晚上 8 点 50 分 (UTC 时间下午 4 点 50 分)
+  workflow_dispatch:  # Allows manual triggering
+  
 jobs:
-  check-and-notify:
+  send-notification:
     runs-on: ubuntu-latest
-    # 设置容器时区
-    container:
-      image: python:3.10
-      options: --env TZ=Asia/Shanghai
-    
     steps:
-    - name: 检出代码
-      uses: actions/checkout@v4
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        persist-credentials: true
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: 下载历史记录
-      uses: actions/download-artifact@v3
-      with:
-        name: update-history
-        path: ./
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'  # 选择你的 Python 版本
 
-    - name: 设置Python环境
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4
 
-    - name: 安装依赖
-      run: |
-        pip install --upgrade pip
-        pip install requests beautifulsoup4 backports.zoneinfo
-
-    - name: 执行检查脚本
-      run: python 动漫更新自动微信推送-YHDM.py
-
-    - name: 提交更新记录
-      if: success()
-      run: |
-        git config --global user.name "GitHub Actions"
-        git config --global user.email "actions@github.com"
-        git add update_history.json
-        git diff --quiet && git diff --staged --quiet || (git commit -m "Auto: 更新推送记录" && git push)
-
-    - name: 上传历史记录
-      uses: actions/upload-artifact@v3
-      with:
-        name: update-history
-        path: update_history.json
-        retention-days: 3
+      - name: Run script
+        run: python 动漫更新自动微信推送-YHDM.py
+        env:
+          APP_TOKEN: ${{ secrets.APP_TOKEN }}
+          MY_UID: ${{ secrets.MY_UID }}
