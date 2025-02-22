@@ -85,16 +85,18 @@ def get_anime_updates():
 
 def format_message(updates):
     """生成推送消息"""
-    today_str = datetime.datetime.now(BEIJING_TZ).strftime("%Y年%m月%d日")
+    today = get_beijing_date()
     message = [
-        f"<center><span style='font-size: 24px; color: red;'>🔥 今日动漫更新 {today_str} 🔥</span></center>",
+        f"<center><span style='font-size: 24px; color: red;'>🔥 本周动漫更新 🔥</span></center>",
         "<center><span style='font-size: 14px'>(优选线路 MD/JS/JY/WJ/WL/SN)</span></center>\n"
     ]
     
     for update in updates:
+        update_date = datetime.datetime.strptime(update["date"], "%Y-%m-%d").date()
+        color = "red" if update_date == today else "orange"
         message.append(
-            f'<font size="6" color="red">'
-            f'<a href="{update["link"]}">{update["title"]}</a>'
+            f'<font size="6" color="{color}">'
+            f'<a href="{update["link"]}" style="color: {color}; text-decoration-color: {color};">{update["title"]}</a>'
             f'</font>  '
             f'<a href="alook://{update["link"]}" style="font-size: 4;">Alook打开</a>\n'
             f'{update["episode"]} 🔥 更新日期：{update["date"]}\n\n'
@@ -142,3 +144,4 @@ if __name__ == "__main__":
         print("⏭️ 今日无新内容需要推送")
     
     print("=== 执行结束 ===")
+
