@@ -61,7 +61,7 @@ def get_anime_updates():
     soup = BeautifulSoup(response.text, 'html.parser')
     keywords = ["完美世界", "仙逆", "吞噬星空", "斗破苍穹", "武动乾坤", 
                "斗罗大陆", "遮天", "武神主宰", "独步逍遥", "万界独尊",
-               "剑来", "灵剑尊", "画江湖之天罡传", "斩神", "长生界"]
+               "剑来", "灵剑尊", "炼气十万年", "斩神", "长生界"]
     exact_titles = ["永生", "凡人修仙传", "诛仙", "眷思量"]
     
     updates = []
