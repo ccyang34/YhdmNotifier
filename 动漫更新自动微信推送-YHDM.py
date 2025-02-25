@@ -17,37 +17,33 @@ BASE_URL = "https://wxpusher.zjiecode.com/api"
 TARGET_TOPIC_ID = [32277]
 YHDM_URL = "https://yhdm.one/latest/"
 
-def get_beijing_date():
-    """获取当前北京日期"""
-    return datetime.datetime.now(BEIJING_TZ).date()
+def get_beijing_time():
+    """获取当前北京时间"""
+    return datetime.datetime.now(BEIJING_TZ)
 
 def load_history():
-    """加载并验证历史记录"""
-    current_date = str(get_beijing_date())
+    """加载并验证周级历史记录"""
+    current_week = get_beijing_time().isocalendar()[1]
     try:
         if os.path.exists(HISTORY_FILE):
             with open(HISTORY_FILE, 'r', encoding='utf-8') as f:
                 history = json.load(f)
-                if history.get('date') != current_date:
-                    print(f"检测到新日期 {current_date}，重置历史记录")
-                    return {"date": current_date, "data": []}
+                if history.get('week_number') != current_week:
+                    print(f"检测到新周数 {current_week}，重置历史记录")
+                    return {"week_number": current_week, "pushes": []}
                 return history
-        return {"date": current_date, "data": []}
+        return {"week_number": current_week, "pushes": []}
     except Exception as e:
         print(f"历史记录加载失败: {str(e)}")
-        return {"date": current_date, "data": []}
+        return {"week_number": current_week, "pushes": []}
 
 def save_history(history):
-    """保存历史记录"""
+    """保存周级历史记录"""
     try:
         with open(HISTORY_FILE, 'w', encoding='utf-8') as f:
             json.dump(history, f, ensure_ascii=False, indent=2)
     except Exception as e:
         print(f"保存历史记录失败: {str(e)}")
-
-def check_duplicate(history, content_id):
-    """精准内容查重"""
-    return content_id in history["data"]
 
 def get_anime_updates():
     """获取樱花动漫更新信息"""
@@ -85,15 +81,16 @@ def get_anime_updates():
 
 def format_message(updates):
     """生成推送消息"""
-    today = get_beijing_date()
+    current_time = get_beijing_time()
     message = [
-        f"<center><span style='font-size: 24px; color: red;'>🔥 本周动漫更新 🔥</span></center>",
+        f"<center><span style='font-size: 24px; color: red;'>🔥 动漫更新提醒 🔥</span></center>",
+        f"<center><span style='font-size: 14px; color: #666;'>检测时间：{current_time.strftime('%Y-%m-%d %H:%M:%S')}</span></center>",
         "<center><span style='font-size: 14px'>(优选线路 MD/JS/JY/WJ/WL/SN)</span></center>\n"
     ]
     
     for update in updates:
         update_date = datetime.datetime.strptime(update["date"], "%Y-%m-%d").date()
-        color = "red" if update_date == today else "orange"
+        color = "red" if update_date == current_time.date() else "orange"
         message.append(
             f'<font size="6" color="{color}">'
             f'<a href="{update["link"]}" style="color: {color}; text-decoration-color: {color};">{update["title"]}</a>'
@@ -128,20 +125,30 @@ if __name__ == "__main__":
     history = load_history()
     new_updates = get_anime_updates()
     
-    # 过滤当日已推送内容
-    unique_updates = []
-    for update in new_updates:
-        content_id = f"{update['title']}_{update['episode']}"
-        if not check_duplicate(history, content_id):
-            unique_updates.append(update)
-            history["data"].append(content_id)
+    # 生成内容指纹（顺序无关）
+    content_fingerprint = {f"{u['title']}||{u['episode']}" for u in new_updates}
     
-    if unique_updates:
-        message = format_message(unique_updates)
-        if send_wechat(message):
-            save_history(history)
+    if content_fingerprint:
+        # 获取最近一次推送指纹
+        last_push = history['pushes'][-1]['fingerprint'] if history['pushes'] else set()
+        
+        # 转换为集合进行比对
+        last_fingerprint = set(last_push)
+        
+        if content_fingerprint == last_fingerprint:
+            print("⏭️ 内容与最近推送一致，跳过发送")
+        else:
+            message = format_message(new_updates)
+            if send_wechat(message):
+                # 记录推送信息
+                history['pushes'].append({
+                    "timestamp": get_beijing_time().isoformat(),
+                    "fingerprint": list(content_fingerprint)
+                })
+                # 保留最近20条记录防止过大
+                history['pushes'] = history['pushes'][-20:]
+                save_history(history)
     else:
-        print("⏭️ 今日无新内容需要推送")
+        print("⏭️ 本次未检测到更新内容")
     
     print("=== 执行结束 ===")
-
