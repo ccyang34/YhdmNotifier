@@ -96,7 +96,7 @@ def format_message(updates):
     message = [
         f"<center><span style='font-size: 24px; color: red;'>🔥 樱花动漫更新 🔥</span></center>",
         f"<center><span style='font-size: 14px; color: #666;'>检测时间：{current_time.strftime('%Y-%m-%d %H:%M:%S')}</span></center>",
-        "<center><span style='font-size: 14px'>(优选线路 MD/JS/JY/WJ/WL/SN)</span></center>\n"
+        "<center><span style='font-size: 14px'>(优选线路 JS/JY/WJ/WL/MD/SN)</span></center>\n"
     ]
     
     for update in updates:
