@@ -1,4 +1,4 @@
-name: Scheduled YouTube Video Update Check
+name: Youtube动漫更新推送
 
 on:
   schedule:
