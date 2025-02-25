@@ -5,6 +5,7 @@ on:
     - cron: '5 11 * * *'  # 每天上午 11 点 5 分
     - cron: '33 15 * * *' # 每天下午 15 点 33 分
     - cron: '35 19 * * *' # 每天晚上 7 点 35 分
+  workflow_dispatch:
 
 jobs:
   check-videos:
@@ -21,7 +22,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
           pip install requests beautifulsoup4
 
       - name: Run Python script
