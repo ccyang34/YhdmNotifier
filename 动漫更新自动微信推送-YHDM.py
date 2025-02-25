@@ -22,12 +22,13 @@ def get_beijing_time():
     return datetime.datetime.now(BEIJING_TZ)
 
 def load_history():
-    """加载并验证周级历史记录"""
+    """原子化加载历史记录"""
     current_week = get_beijing_time().isocalendar()[1]
     try:
         if os.path.exists(HISTORY_FILE):
             with open(HISTORY_FILE, 'r', encoding='utf-8') as f:
                 history = json.load(f)
+                # 自动周数重置逻辑
                 if history.get('week_number') != current_week:
                     print(f"检测到新周数 {current_week}，重置历史记录")
                     return {"week_number": current_week, "pushes": []}
@@ -37,13 +38,23 @@ def load_history():
         print(f"历史记录加载失败: {str(e)}")
         return {"week_number": current_week, "pushes": []}
 
-def save_history(history):
-    """保存周级历史记录"""
+def save_history(new_push):
+    """原子化保存历史记录"""
     try:
+        # 重新加载最新记录
+        current_history = load_history()
+        
+        # 合并新记录
+        current_history['pushes'].append(new_push)
+        current_history['pushes'] = current_history['pushes'][-20:]  # 保持20条限制
+        
+        # 原子化写入
         with open(HISTORY_FILE, 'w', encoding='utf-8') as f:
-            json.dump(history, f, ensure_ascii=False, indent=2)
+            json.dump(current_history, f, ensure_ascii=False, indent=2)
+            
     except Exception as e:
         print(f"保存历史记录失败: {str(e)}")
+        raise  # 抛出异常终止工作流
 
 def get_anime_updates():
     """获取樱花动漫更新信息"""
@@ -129,7 +140,7 @@ if __name__ == "__main__":
     content_fingerprint = {f"{u['title']}||{u['episode']}" for u in new_updates}
     
     if content_fingerprint:
-        # 获取最近一次推送指纹
+        # 获取最近一次推送指纹（无条件获取最后一次）
         last_push = history['pushes'][-1]['fingerprint'] if history['pushes'] else set()
         
         # 转换为集合进行比对
@@ -141,13 +152,10 @@ if __name__ == "__main__":
             message = format_message(new_updates)
             if send_wechat(message):
                 # 记录推送信息
-                history['pushes'].append({
+                save_history({
                     "timestamp": get_beijing_time().isoformat(),
                     "fingerprint": list(content_fingerprint)
                 })
-                # 保留最近20条记录防止过大
-                history['pushes'] = history['pushes'][-20:]
-                save_history(history)
     else:
         print("⏭️ 本次未检测到更新内容")
     
