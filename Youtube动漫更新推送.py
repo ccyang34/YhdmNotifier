@@ -87,7 +87,7 @@ try:
             formatted_messages.append(formatted_message)
 
     # 拼接成一条信息推送
-    full_message = "\n".join(formatted_messages)
+    full_message = "".join(formatted_messages)
 
     # 推送消息到APP
     APP_TOKEN = "AT_UHus2F8p0yjnG6XvGEDzdCp5GkwvLdkc"
