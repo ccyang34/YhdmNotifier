@@ -86,25 +86,29 @@ try:
         if re.search(r'<font size="4" color="white">.*?(分鐘前|小時前).*?</font>', formatted_message):
             formatted_messages.append(formatted_message)
 
-    # 拼接成一条信息推送
-    full_message = "".join(formatted_messages)
+    # 检查是否有符合条件的消息
+    if len(formatted_messages) > 1:  # 除了标题外还有其他消息
+        # 拼接成一条信息推送
+        full_message = "".join(formatted_messages)
 
-    # 推送消息到APP
-    APP_TOKEN = "AT_UHus2F8p0yjnG6XvGEDzdCp5GkwvLdkc"
-    BASE_URL = "https://wxpusher.zjiecode.com/api"
-    TARGET_TOPIC_ID = [32277]
+        # 推送消息到APP
+        APP_TOKEN = "AT_UHus2F8p0yjnG6XvGEDzdCp5GkwvLdkc"
+        BASE_URL = "https://wxpusher.zjiecode.com/api"
+        TARGET_TOPIC_ID = [32277]
 
-    payload = {
-        "appToken": APP_TOKEN,
-        "topicIds": TARGET_TOPIC_ID,
-        "content": full_message,
-        "contentType": 1  # 1表示文本消息
-    }
-    push_response = requests.post(f"{BASE_URL}/send/message", json=payload)
-    if push_response.status_code == 200:
-        print(f"消息已成功推送到APP: {full_message}")
+        payload = {
+            "appToken": APP_TOKEN,
+            "topicIds": TARGET_TOPIC_ID,
+            "content": full_message,
+            "contentType": 1  # 1表示文本消息
+        }
+        push_response = requests.post(f"{BASE_URL}/send/message", json=payload)
+        if push_response.status_code == 200:
+            print(f"消息已成功推送到APP: {full_message}")
+        else:
+            print(f"消息推送失败: {push_response.text}")
     else:
-        print(f"消息推送失败: {push_response.text}")
+        print("没有符合更新时间条件的结果，不进行推送。")
 
 except requests.RequestException as e:
     print(f"请求失败: {e}")
