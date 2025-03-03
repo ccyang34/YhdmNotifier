@@ -1,4 +1,3 @@
-# 动漫更新自动微信推送-YHDM.py
 import os
 import json
 import requests
@@ -23,35 +22,44 @@ def get_beijing_time():
 
 def load_history():
     """原子化加载历史记录"""
-    current_week = get_beijing_time().isocalendar()[1]
+    current_time = get_beijing_time()
+    current_weekday = current_time.weekday()  # 0 表示周一，6 表示周日
+    three_days_ago = current_time - datetime.timedelta(days=3)
+
     try:
         if os.path.exists(HISTORY_FILE):
             with open(HISTORY_FILE, 'r', encoding='utf-8') as f:
                 history = json.load(f)
-                # 自动周数重置逻辑
-                if history.get('week_number') != current_week:
-                    print(f"检测到新周数 {current_week}，重置历史记录")
-                    return {"week_number": current_week, "pushes": []}
+
+                # 检查是否是周日，若是则重置历史记录
+                if current_weekday == 6:
+                    print(f"检测到周日，重置历史记录")
+                    return {"week_number": current_time.isocalendar()[1], "pushes": []}
+
+                # 清除3天前的记录
+                history['pushes'] = [push for push in history['pushes'] if
+                                     datetime.datetime.fromisoformat(push['timestamp']) > three_days_ago]
+
                 return history
-        return {"week_number": current_week, "pushes": []}
+        return {"week_number": current_time.isocalendar()[1], "pushes": []}
     except Exception as e:
         print(f"历史记录加载失败: {str(e)}")
-        return {"week_number": current_week, "pushes": []}
+        return {"week_number": current_time.isocalendar()[1], "pushes": []}
 
 def save_history(new_push):
     """原子化保存历史记录"""
     try:
         # 重新加载最新记录
         current_history = load_history()
-        
+
         # 合并新记录
         current_history['pushes'].append(new_push)
         current_history['pushes'] = current_history['pushes'][-20:]  # 保持20条限制
-        
+
         # 原子化写入
         with open(HISTORY_FILE, 'w', encoding='utf-8') as f:
             json.dump(current_history, f, ensure_ascii=False, indent=2)
-            
+
     except Exception as e:
         print(f"保存历史记录失败: {str(e)}")
         raise  # 抛出异常终止工作流
@@ -64,19 +72,19 @@ def get_anime_updates():
     except Exception as e:
         print(f"请求失败: {str(e)}")
         return []
-    
+
     soup = BeautifulSoup(response.text, 'html.parser')
-    keywords = ["完美世界", "仙逆", "吞噬星空", "斗破苍穹", "武动乾坤", 
-               "斗罗大陆", "遮天", "武神主宰", "独步逍遥", "万界独尊",
-               "剑来", "灵剑尊", "牧神记", "斩神", "长生界"]
+    keywords = ["完美世界", "仙逆", "吞噬星空", "斗破苍穹", "武动乾坤",
+                "斗罗大陆", "遮天", "武神主宰", "独步逍遥", "万界独尊",
+                "剑来", "灵剑尊", "牧神记", "斩神", "长生界"]
     exact_titles = ["永生", "凡人修仙传", "诛仙", "眷思量"]
-    
+
     updates = []
     for item in soup.select('ul.latest-ul > li'):
         try:
             title = item.select_one('a.names > span.name').text.strip()
             update_date = item.select_one('em').text.strip()
-            
+
             if (title in exact_titles) or any(kw in title for kw in keywords):
                 episode = item.select_one('a.names > span.ep_name').text.strip()
                 link = 'https://yhdm.one' + item.select_one('a.names')['href']
@@ -98,7 +106,7 @@ def format_message(updates):
         f"<center><span style='font-size: 14px; color: #666;'>检测时间：{current_time.strftime('%Y-%m-%d %H:%M:%S')}</span></center>",
         "<center><span style='font-size: 14px'>(优选线路 JS/JY/WJ/WL/MD/SN)</span></center>\n"
     ]
-    
+
     for update in updates:
         update_date = datetime.datetime.strptime(update["date"], "%Y-%m-%d").date()
         color = "red" if update_date == current_time.date() else "orange"
@@ -135,17 +143,17 @@ if __name__ == "__main__":
     print("=== 执行开始 ===")
     history = load_history()
     new_updates = get_anime_updates()
-    
+
     # 生成内容指纹（顺序无关）
     content_fingerprint = {f"{u['title']}||{u['episode']}" for u in new_updates}
-    
+
     if content_fingerprint:
         # 获取最近一次推送指纹（无条件获取最后一次）
         last_push = history['pushes'][-1]['fingerprint'] if history['pushes'] else set()
-        
+
         # 转换为集合进行比对
         last_fingerprint = set(last_push)
-        
+
         if content_fingerprint == last_fingerprint:
             print("⏭️ 内容与最近推送一致，跳过发送")
         else:
@@ -158,5 +166,5 @@ if __name__ == "__main__":
                 })
     else:
         print("⏭️ 本次未检测到更新内容")
-    
+
     print("=== 执行结束 ===")
