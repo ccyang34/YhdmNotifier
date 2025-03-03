@@ -19,7 +19,7 @@ try:
     # 这里假设包含视频信息的 JSON 数据在 script 标签中，你需要根据实际情况调整查找方式
     # 比如查找包含特定关键字的 script 标签
     script_tags = soup.find_all('script')
-    title_link_time_pairs = []
+    valid_title_link_time_pairs = []  # 用于存储符合更新时间条件的数据
     for script_tag in script_tags:
         script_text = script_tag.string
         if script_text:
@@ -67,27 +67,26 @@ try:
                                     published_time_text = video_renderer.get('publishedTimeText', {})
                                     update_time = published_time_text.get('simpleText', '')
 
-                                    title_link_time_pairs.append((name, episode_info, link, update_time))
+                                    # 检查更新时间是否符合规则
+                                    if re.search(r'\d+\s*(分鐘前|小時前)', update_time):
+                                        valid_title_link_time_pairs.append((name, episode_info, link, update_time))
             except (json.JSONDecodeError, IndexError, KeyError):
                 continue
 
     # 格式化输出
-    formatted_messages = []
-    formatted_messages.append('<h1 style="text-align: center; color: red;">🔥Youtube动漫更新🔥</h1>')
-    for name, episode_info, link, update_time in title_link_time_pairs:
-        formatted_message = (
-            f'<font size="6" color="red">'
-            f'<a href="{link}" style="color: red; text-decoration-color: red;"><b>{name}</b></a>'
-            f'</font>  '
-            f'<a href="alook://{link}" style="font-size: 4;">Alook打开</a>\n'
-            f'<font size="4" color="white">第{episode_info}集🔥更新时间: {update_time}</font>\n'
-        )
-        # 检查更新时间是否符合规则
-        if re.search(r'<font size="4" color="white">.*?\d+\s*(分鐘前|小時前).*?</font>', formatted_message):
+    if valid_title_link_time_pairs:
+        formatted_messages = []
+        formatted_messages.append('<h1 style="text-align: center; color: red;">🔥Youtube动漫更新🔥</h1>')
+        for name, episode_info, link, update_time in valid_title_link_time_pairs:
+            formatted_message = (
+                f'<font size="6" color="red">'
+                f'<a href="{link}" style="color: red; text-decoration-color: red;"><b>{name}</b></a>'
+                f'</font>  '
+                f'<a href="alook://{link}" style="font-size: 4;">Alook打开</a>\n'
+                f'<font size="4" color="white">第{episode_info}集🔥更新时间: {update_time}</font>\n'
+            )
             formatted_messages.append(formatted_message)
 
-    # 检查是否有符合条件的消息
-    if len(formatted_messages) > 1:  # 除了标题外还有其他消息
         # 拼接成一条信息推送
         full_message = "".join(formatted_messages)
 
