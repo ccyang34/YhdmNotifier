@@ -83,7 +83,7 @@ try:
             f'<font size="4" color="white">第{episode_info}集🔥更新时间: {update_time}</font>\n'
         )
         # 检查更新时间是否符合规则
-        if re.search(r'<font size="4" color="white">.*?(分鐘前|小時前).*?</font>', formatted_message):
+        if re.search(r'<font size="4" color="white">.*?\d+\s*(分鐘前|小時前).*?</font>', formatted_message):
             formatted_messages.append(formatted_message)
 
     # 检查是否有符合条件的消息
