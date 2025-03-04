@@ -19,7 +19,7 @@ try:
     # 这里假设包含视频信息的 JSON 数据在 script 标签中，你需要根据实际情况调整查找方式
     # 比如查找包含特定关键字的 script 标签
     script_tags = soup.find_all('script')
-    valid_title_link_time_pairs = []  # 用于存储符合更新时间条件的数据
+    valid_title_link_time_pairs = []  # 用于存储视频信息的数据
     for script_tag in script_tags:
         script_text = script_tag.string
         if script_text:
@@ -67,8 +67,13 @@ try:
                                     published_time_text = video_renderer.get('publishedTimeText', {})
                                     update_time = published_time_text.get('simpleText', '')
 
-                                    # 取消检查
+                                    # 存储视频信息
                                     valid_title_link_time_pairs.append((name, episode_info, link, update_time))
+            except (json.JSONDecodeError, IndexError, KeyError):
+                continue
+
+    # 只保留最新的10条视频信息
+    valid_title_link_time_pairs = valid_title_link_time_pairs[:10]
 
     # 格式化输出
     if valid_title_link_time_pairs:
@@ -104,7 +109,7 @@ try:
         else:
             print(f"消息推送失败: {push_response.text}")
     else:
-        print("没有符合更新时间条件的结果，不进行推送。")
+        print("没有找到视频信息，不进行推送。")
 
 except requests.RequestException as e:
     print(f"请求失败: {e}")
