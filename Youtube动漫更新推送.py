@@ -67,11 +67,8 @@ try:
                                     published_time_text = video_renderer.get('publishedTimeText', {})
                                     update_time = published_time_text.get('simpleText', '')
 
-                                    # 检查更新时间是否符合规则
-                                    if re.search(r'\d+\s*(分鐘前|小時前)', update_time):
-                                        valid_title_link_time_pairs.append((name, episode_info, link, update_time))
-            except (json.JSONDecodeError, IndexError, KeyError):
-                continue
+                                    # 取消检查
+                                    valid_title_link_time_pairs.append((name, episode_info, link, update_time))
 
     # 格式化输出
     if valid_title_link_time_pairs:
