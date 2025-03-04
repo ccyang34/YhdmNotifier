@@ -9,31 +9,28 @@ headers = {
 }
 
 try:
-    response = requests.get(url, headers=headers)
+    response = requests.get(url, headers=headers, timeout=10)  # 设置超时时间为 10 秒
     response.raise_for_status()  # 如果请求失败，抛出异常
     html_content = response.text
 
     # 创建 BeautifulSoup 对象
     soup = BeautifulSoup(html_content, 'html.parser')
 
-    # 这里假设包含视频信息的 JSON 数据在 script 标签中，你需要根据实际情况调整查找方式
-    # 比如查找包含特定关键字的 script 标签
+    # 查找包含 JSON 数据的 script 标签
     script_tags = soup.find_all('script')
     valid_title_link_time_pairs = []  # 用于存储视频信息的数据
     for script_tag in script_tags:
         script_text = script_tag.string
         if script_text:
-            try:
-                # 尝试找到 JSON 数据部分
-                start_index = script_text.find('{')
-                end_index = script_text.rfind('}') + 1
-                if start_index != -1 and end_index != -1:
-                    json_str = script_text[start_index:end_index]
-                    # 解析 JSON 数据
+            # 使用正则表达式提取 JSON 数据
+            pattern = r'ytInitialData\s*=\s*({.*?});'
+            match = re.search(pattern, script_text)
+            if match:
+                json_str = match.group(1)
+                try:
                     data = json.loads(json_str)
 
                     # 遍历数据结构来查找视频标题、播放链接和更新时间
-                    # 这里需要根据实际的 JSON 结构调整路径
                     rich_item_renderers = data.get('contents', {}).get('twoColumnBrowseResultsRenderer', {}).get('tabs', [])
                     for tab in rich_item_renderers:
                         tab_content = tab.get('tabRenderer', {}).get('content', {})
@@ -52,7 +49,7 @@ try:
                                 name = original_title[start_pos:end_pos] if start_pos != 0 and end_pos != -1 else original_title
 
                                 # 提取集数信息
-                                pattern = r'(?:Episode|EP|第|Season\s+\d+\s+Episode|集数)\s*(\d+|[0-9]+\s*-\s*[0-9]+|[0-9]+\s*-\s*[0-9]+\s*Collection|Collection\s+of\s+Episodes\s+\d+-\d+)\s*(?:集|Collection|#\d+|Full)?'
+                                pattern = r'(?:Episode|EP|第|Season\s+\d+\s+Episode|集数)\s*(\d+|[0-9]+(?:\s*-\s*[0-9]+)?)(?:集|Collection|#\d+|Full)?'
                                 episode_match = re.search(pattern, original_title)
                                 episode_info = episode_match.group(1) if episode_match else ''
 
@@ -69,8 +66,8 @@ try:
 
                                     # 存储视频信息
                                     valid_title_link_time_pairs.append((name, episode_info, link, update_time))
-            except (json.JSONDecodeError, IndexError, KeyError):
-                continue
+                except (json.JSONDecodeError, IndexError, KeyError):
+                    continue
 
     # 只保留最新的10条视频信息
     valid_title_link_time_pairs = valid_title_link_time_pairs[:10]
@@ -105,9 +102,13 @@ try:
         }
         push_response = requests.post(f"{BASE_URL}/send/message", json=payload)
         if push_response.status_code == 200:
-            print(f"消息已成功推送到APP: {full_message}")
+            result = push_response.json()
+            if result.get("success"):
+                print(f"消息已成功推送到APP: {full_message}")
+            else:
+                print(f"消息推送失败: {result.get('msg')}")
         else:
-            print(f"消息推送失败: {push_response.text}")
+            print(f"消息推送请求失败，状态码: {push_response.status_code}, 响应文本: {push_response.text}")
     else:
         print("没有找到视频信息，不进行推送。")
 
