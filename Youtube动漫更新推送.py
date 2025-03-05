@@ -68,8 +68,9 @@ def save_history(new_push):
 def get_youtube_updates():
     url = YOUTUBE_URL
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-    }
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+    "Accept-Language": "zh-CN,zh;q=0.9"  # 设置语言偏好为中文
+}
 
     try:
         response = requests.get(url, headers=headers, timeout=10)  # 设置超时时间为 10 秒
