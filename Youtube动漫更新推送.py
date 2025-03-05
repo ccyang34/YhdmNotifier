@@ -75,14 +75,14 @@ try:
     # 格式化输出
     if valid_title_link_time_pairs:
         formatted_messages = []
-        formatted_messages.append('<h1 style="text-align: center; color: red;">🔥Youtube动漫更新🔥</h1>')
+        formatted_messages.append('<center><span style="font-size: 24px; color: red;">🔥 Youtube动漫更新 🔥</span></center>\n\n')
         for name, episode_info, link, update_time in valid_title_link_time_pairs:
             formatted_message = (
-                f'<font size="6" color="red">'
+                f'<font size="5" color="red">'
                 f'<a href="{link}" style="color: red; text-decoration-color: red;"><b>{name}</b></a>'
                 f'</font>  '
                 f'<a href="alook://{link}" style="font-size: 4;">Alook打开</a>\n'
-                f'<font size="4" color="white">第{episode_info}集🔥更新时间: {update_time}</font>\n'
+                f'第{episode_info}集🔥更新时间: {update_time}\n\n'
             )
             formatted_messages.append(formatted_message)
 
