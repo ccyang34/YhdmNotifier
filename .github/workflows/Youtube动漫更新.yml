@@ -2,29 +2,25 @@ name: Youtube动漫更新推送
 
 on:
   schedule:
-    - cron: '5 11 * * *'  # 每天上午 11 点 5 分
-    - cron: '33 15 * * *' # 每天下午 15 点 33 分
-    - cron: '35 19 * * *' # 每天晚上 7 点 35 分
-    - cron: '3 21 * * *'  # 每天晚上 9 点 3 分
+    - cron: '5 3 * * *'  # 北京时间每天上午 11 点 5 分，转换为 UTC 时间是 3:05
+    - cron: '33 7 * * *' # 北京时间每天下午 15 点 33 分，转换为 UTC 时间是 7:33
+    - cron: '35 11 * * *' # 北京时间每天晚上 19 点 35 分，转换为 UTC 时间是 11:35
+    - cron: '3 13 * * *'  # 北京时间每天晚上 21 点 3 分，转换为 UTC 时间是 13:03
   workflow_dispatch:
 
 jobs:
   check-videos:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: 3.9
-
       - name: Install dependencies
         run: |
           pip install requests beautifulsoup4
-
       - name: Run Python script
         env:
           APP_TOKEN: ${{ secrets.APP_TOKEN }}
