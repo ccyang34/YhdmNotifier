@@ -2,27 +2,55 @@ name: Youtube动漫更新推送
 
 on:
   schedule:
-    - cron: '5 3 * * *'  # 北京时间每天上午 11 点 5 分，转换为 UTC 时间是 3:05
-    - cron: '33 7 * * *' # 北京时间每天下午 15 点 33 分，转换为 UTC 时间是 7:33
-    - cron: '35 11 * * *' # 北京时间每天晚上 19 点 35 分，转换为 UTC 时间是 11:35
-    - cron: '3 13 * * *'  # 北京时间每天晚上 21 点 3 分，转换为 UTC 时间是 13:03
+    - cron: '33 03 * * *'  # 北京时间11:33
+    - cron: '30 07 * * *'  # 北京时间15:30
+    - cron: '33 11 * * *'  # 北京时间19:33
+    - cron: '50 12 * * *'  # 北京时间20:50
   workflow_dispatch:
+
+concurrency:
+  group: anime-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   check-videos:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.REPO_TOKEN }}
+          persist-credentials: true
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: 3.9
+
       - name: Install dependencies
-        run: |
-          pip install requests beautifulsoup4
+        run: pip install requests beautifulsoup4
+
       - name: Run Python script
         env:
           APP_TOKEN: ${{ secrets.APP_TOKEN }}
+        run: python Youtube动漫更新推送.py
+
+      - name: 提交历史记录
+        env:
+          REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
         run: |
-          python Youtube动漫更新推送.py
+          git config --local user.name "AutoUpdater"
+          git config --local user.email "${{ secrets.GIT_EMAIL }}"
+          git remote set-url origin "https://$REPO_TOKEN@github.com/$GITHUB_REPOSITORY.git"
+          # 同步最新代码
+          git pull origin main --rebase --autostash
+          # 明确历史记录文件为update_history_youtube.json
+          git add update_history_youtube.json
+          if ! git diff --staged --quiet; then
+            git commit -m "自动更新: $(date +'%Y-%m-%d %H:%M')"
+            git push origin HEAD:main || exit 1
+          fi
