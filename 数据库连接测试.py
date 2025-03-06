@@ -4,8 +4,7 @@ import requests
 
 # 数据库连接信息
 servers = [
-    {'server': '47.121.207.201', 'port': 1433},
-    {'server': '53397pplz010.vicp.fun', 'port': 14472}
+    {'server': '47.121.207.201', 'port': 1433}
 ]
 database = 'DB_K3SYNDB'
 username = 'sa'
@@ -16,7 +15,7 @@ APP_TOKEN = "AT_UHus2F8p0yjnG6XvGEDzdCp5GkwvLdkc"
 BASE_URL = "https://wxpusher.zjiecode.com/api"
 TARGET_TOPIC_ID = [38231]
 
-# 测试第一个服务器连接
+# 测试服务器连接
 def test_server_connection(server_info):
     conn_str = f"DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server_info['server']},{server_info['port']};DATABASE={database};UID={username};PWD={password}"
     try:
@@ -29,22 +28,19 @@ def test_server_connection(server_info):
         print(error_message)
         return False, error_message
 
-# 分别测试两个服务器
-server1_result = test_server_connection(servers[0])
-server2_result = test_server_connection(servers[1])
+# 测试服务器连接
+server_result = test_server_connection(servers[0])
 
 # 处理连接结果
-if server1_result is True or server2_result is True:
-    print("至少有一个服务器连接成功")
+if server_result is True:
+    print("服务器连接成功")
 else:
     # 收集错误信息
     error_messages = []
-    if server1_result is not True:
-        error_messages.append(server1_result[1])
-    if server2_result is not True:
-        error_messages.append(server2_result[1])
+    if server_result is not True:
+        error_messages.append(server_result[1])
     
-    # 推送所有错误消息
+    # 推送错误消息
     combined_error = "\n".join(error_messages)
     payload = {
         "appToken": APP_TOKEN,
