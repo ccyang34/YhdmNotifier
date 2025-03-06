@@ -31,5 +31,9 @@ jobs:
         with:
           python-version: 3.9
 
+      - name: Install dependencies
+        run: |
+          pip install pyodbc requests
+
       - name: Run Python script
         run: python 数据库连接测试.py
