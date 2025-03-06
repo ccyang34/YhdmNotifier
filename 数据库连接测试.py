@@ -3,7 +3,7 @@ import base64
 import requests
 
 # 数据库连接信息
-server = '47.121.207.201'
+server = '47.121.207.20'
 port = 1433
 database = 'DB_K3SYNDB'
 username = 'sa'
