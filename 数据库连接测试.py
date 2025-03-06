@@ -16,26 +16,34 @@ APP_TOKEN = "AT_UHus2F8p0yjnG6XvGEDzdCp5GkwvLdkc"
 BASE_URL = "https://wxpusher.zjiecode.com/api"
 TARGET_TOPIC_ID = [38231]
 
-# 测试连接
-connection_success = False
-error_messages = []
-
-for server_info in servers:
+# 测试第一个服务器连接
+def test_server_connection(server_info):
     conn_str = f"DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server_info['server']},{server_info['port']};DATABASE={database};UID={username};PWD={password}"
-    
     try:
-        # 尝试连接
         conn = pyodbc.connect(conn_str, timeout=10)
         conn.close()
         print(f"成功连接到服务器: {server_info['server']}:{server_info['port']}")
-        connection_success = True
-        break
+        return True
     except Exception as e:
         error_message = f"连接失败 {server_info['server']}:{server_info['port']}: {str(e)}"
         print(error_message)
-        error_messages.append(error_message)
+        return False, error_message
 
-if not connection_success:
+# 分别测试两个服务器
+server1_result = test_server_connection(servers[0])
+server2_result = test_server_connection(servers[1])
+
+# 处理连接结果
+if server1_result is True or server2_result is True:
+    print("至少有一个服务器连接成功")
+else:
+    # 收集错误信息
+    error_messages = []
+    if server1_result is not True:
+        error_messages.append(server1_result[1])
+    if server2_result is not True:
+        error_messages.append(server2_result[1])
+    
     # 推送所有错误消息
     combined_error = "\n".join(error_messages)
     payload = {
