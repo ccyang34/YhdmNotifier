@@ -3,8 +3,10 @@ import base64
 import requests
 
 # 数据库连接信息
-server = '47.121.207.20'
-port = 1433
+servers = [
+    {'server': '47.121.207.201', 'port': 1433},
+    {'server': '53397pplz010.vicp.fun', 'port': 14472}
+]
 database = 'DB_K3SYNDB'
 username = 'sa'
 password = base64.b64decode('WG1zaHpoODg4IQ==').decode('utf-8')
@@ -14,23 +16,32 @@ APP_TOKEN = "AT_UHus2F8p0yjnG6XvGEDzdCp5GkwvLdkc"
 BASE_URL = "https://wxpusher.zjiecode.com/api"
 TARGET_TOPIC_ID = [38231]
 
-# 连接字符串
-conn_str = f"DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server},{port};DATABASE={database};UID={username};PWD={password}"
+# 测试连接
+connection_success = False
+error_messages = []
 
-try:
-    # 尝试连接
-    conn = pyodbc.connect(conn_str, timeout=10)
-    conn.close()
-    print("数据库连接成功")
-except Exception as e:
-    error_message = f"数据库连接失败: {str(e)}"
-    print(error_message)
+for server_info in servers:
+    conn_str = f"DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server_info['server']},{server_info['port']};DATABASE={database};UID={username};PWD={password}"
     
-    # 推送错误消息
+    try:
+        # 尝试连接
+        conn = pyodbc.connect(conn_str, timeout=10)
+        conn.close()
+        print(f"成功连接到服务器: {server_info['server']}:{server_info['port']}")
+        connection_success = True
+        break
+    except Exception as e:
+        error_message = f"连接失败 {server_info['server']}:{server_info['port']}: {str(e)}"
+        print(error_message)
+        error_messages.append(error_message)
+
+if not connection_success:
+    # 推送所有错误消息
+    combined_error = "\n".join(error_messages)
     payload = {
         "appToken": APP_TOKEN,
         "topicIds": TARGET_TOPIC_ID,
-        "content": error_message,
+        "content": combined_error,
         "contentType": 1
     }
     
