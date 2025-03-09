@@ -2,161 +2,18 @@
   "week_number": 10,
   "pushes": [
     {
-      "timestamp": "2025-03-05T19:39:41.976829+08:00",
+      "timestamp": "2025-03-09T11:40:10.818154+08:00",
       "fingerprint": [
-        "星辰变||08",
-        "遮天||99",
-        "我能无限顿悟||41",
-        "星辰变<font size='2' color='red'>（下集预告）</font>||09",
-        "剑道第一仙<font size='2' color='red'>（下集预告）</font>||105",
-        "君子无疾||05",
-        "天命大主宰<font size='2' color='red'>（下集预告）</font>||21",
-        "剑道第一仙||104",
-        "君子无疾<font size='2' color='red'>（下集预告）</font>||06"
-      ]
-    },
-    {
-      "timestamp": "2025-03-05T21:12:32.952222+08:00",
-      "fingerprint": [
-        "君子无疾<font size='2' color='red'>（下集预告）</font>||06",
-        "剑道第一仙<font size='2' color='red'>（下集预告）</font>||105",
-        "神印王座||148",
-        "剑道第一仙||104",
-        "君子无疾||05",
-        "神印王座<font size='2' color='red'>（下集预告）</font>||150",
-        "天命大主宰<font size='2' color='red'>（下集预告）</font>||21",
-        "星辰变||08",
-        "星辰变<font size='2' color='red'>（下集预告）</font>||09"
-      ]
-    },
-    {
-      "timestamp": "2025-03-06T11:47:05.380387+08:00",
-      "fingerprint": [
-        "剑道第一仙||104",
-        "无尽神域||61",
-        "君子无疾<font size='2' color='red'>（下集预告）</font>||06",
-        "星辰变||08",
-        "剑道第一仙<font size='2' color='red'>（下集预告）</font>||105",
-        "星辰变<font size='2' color='red'>（下集预告）</font>||09",
-        "三国演义 3D||06",
-        "君子无疾||05",
-        "天命大主宰<font size='2' color='red'>（下集预告）</font>||21",
-        "我能无限顿悟||41"
-      ]
-    },
-    {
-      "timestamp": "2025-03-06T15:36:31.437683+08:00",
-      "fingerprint": [
-        "遮天||99",
-        "无尽神域||61",
-        "君子无疾<font size='2' color='red'>（下集预告）</font>||06",
-        "三国演义 3D||06",
-        "天命大主宰<font size='2' color='red'>（下集预告）</font>||21",
-        "剑道第一仙||104",
-        "剑道第一仙<font size='2' color='red'>（下集预告）</font>||105",
-        "我能无限顿悟||41",
-        "遮天<font size='2' color='red'>（下集预告）</font>||100"
-      ]
-    },
-    {
-      "timestamp": "2025-03-06T19:39:53.590395+08:00",
-      "fingerprint": [
-        "剑道第一仙||104",
-        "斗战天下||16",
-        "三国演义 3D||06",
-        "天命大主宰<font size='2' color='red'>（下集预告）</font>||21",
-        "遮天||99",
-        "我能无限顿悟||41",
-        "遮天<font size='2' color='red'>（下集预告）</font>||100",
-        "君子无疾<font size='2' color='red'>（下集预告）</font>||06",
-        "剑道第一仙<font size='2' color='red'>（下集预告）</font>||105"
-      ]
-    },
-    {
-      "timestamp": "2025-03-06T21:12:25.968735+08:00",
-      "fingerprint": [
-        "武逆<font size='2' color='red'>（下集预告）</font>||25",
-        "君子无疾<font size='2' color='red'>（下集预告）</font>||06",
-        "武炼巅峰<font size='2' color='red'>（下集预告）</font>||36",
-        "剑道第一仙<font size='2' color='red'>（下集预告）</font>||105",
-        "天命大主宰<font size='2' color='red'>（下集预告）</font>||21",
-        "剑道第一仙||104",
-        "武炼巅峰||31",
-        "武炼巅峰||35",
-        "武逆||24",
-        "三国演义 3D||06"
-      ]
-    },
-    {
-      "timestamp": "2025-03-07T11:47:53.684758+08:00",
-      "fingerprint": [
-        "我能无限顿悟||41",
-        "遮天<font size='2' color='red'>（下集预告）</font>||100",
-        "剑道第一仙||104",
-        "君子无疾<font size='2' color='red'>（下集预告）</font>||06",
-        "三国演义 3D||06",
-        "斗战天下||17",
-        "剑道第一仙<font size='2' color='red'>（下集预告）</font>||105",
-        "天命大主宰<font size='2' color='red'>（下集预告）</font>||21",
-        "遮天||99"
-      ]
-    },
-    {
-      "timestamp": "2025-03-07T19:39:59.214921+08:00",
-      "fingerprint": [
-        "君子无疾<font size='2' color='red'>（下集预告）</font>||06",
-        "斗战天下||16",
-        "剑道第一仙||104",
-        "天命大主宰<font size='2' color='red'>（下集预告）</font>||21",
-        "三国演义 3D||06",
-        "遮天<font size='2' color='red'>（下集预告）</font>||100",
-        "遮天||99",
-        "剑道第一仙<font size='2' color='red'>（下集预告）</font>||105",
-        "我能无限顿悟||41"
-      ]
-    },
-    {
-      "timestamp": "2025-03-08T11:40:08.493184+08:00",
-      "fingerprint": [
-        "全球高武||14",
-        "全球高武<font size='2' color='red'>（下集预告）</font>||15",
-        "虎鹤妖师录||24",
-        "凡人修仙传||133",
-        "宗门里除了我都是卧底||47",
-        "我能无限顿悟||42",
-        "凡人修仙传<font size='2' color='red'>（下集预告）</font>||134",
-        "最强升级<font size='2' color='red'>（下集预告）</font>||07",
-        "宗门里除了我都是卧底<font size='2' color='red'>（下集预告）</font>||48",
-        "最强升级||06"
-      ]
-    },
-    {
-      "timestamp": "2025-03-08T15:34:15.367679+08:00",
-      "fingerprint": [
-        "最强升级<font size='2' color='red'>（下集预告）</font>||07",
-        "凡人修仙传<font size='2' color='red'>（下集预告）</font>||134",
-        "凡人修仙传||133",
-        "全球高武||14",
-        "炼气十万年<font size='2' color='red'>（下集预告）</font>||222",
-        "万界独尊||310",
-        "全球高武<font size='2' color='red'>（下集预告）</font>||15",
-        "万界独尊<font size='2' color='red'>（下集预告）</font>||311",
-        "虎鹤妖师录||24",
-        "炼气十万年||221"
-      ]
-    },
-    {
-      "timestamp": "2025-03-08T19:38:56.948320+08:00",
-      "fingerprint": [
-        "炼气十万年||221",
-        "凡人修仙传||133",
-        "斗破苍穹年番<font size='2' color='red'>（下集预告）</font>||",
-        "万界独尊||310",
-        "万界独尊<font size='2' color='red'>（下集预告）</font>||311",
-        "凡人修仙传<font size='2' color='red'>（下集预告）</font>||134",
-        "虎鹤妖师录||24",
-        "炼气十万年<font size='2' color='red'>（下集预告）</font>||222",
-        "全球高武<font size='2' color='red'>（下集预告）</font>||15"
+        "仙武传||104",
+        "武神主宰||527",
+        "长歌行||04",
+        "牧神记<font size='2' color='red'>（下集预告）</font>||22",
+        "最强升级<font size='2' color='red'>（下集预告）</font>||08",
+        "仙武传<font size='2' color='red'>（下集预告）</font>||105",
+        "武神主宰<font size='2' color='red'>（下集预告）</font>||528",
+        "长歌行<font size='2' color='red'>（下集预告）</font>||05",
+        "长生界||24",
+        "牧神记||21"
       ]
     }
   ]
