@@ -113,6 +113,10 @@ def get_youtube_updates():
                                     end_pos = original_title.find('】')
                                     name = original_title[start_pos:end_pos] if start_pos != 0 and end_pos != -1 else original_title
 
+                                    # 如果标题包含4K（不区分大小写），则添加到name后面
+                                    if "4k" in original_title.lower():
+                                        name += " 4k"
+
                                     # 检查是否为预告片
                                     if "Preview" in original_title:
                                         name += "<font size='2' color='red'>（下集预告）</font>"
