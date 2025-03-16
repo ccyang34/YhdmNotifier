@@ -22,29 +22,17 @@ def get_beijing_time():
 
 def load_history():
     """原子化加载历史记录"""
-    current_time = get_beijing_time()
-    current_weekday = current_time.weekday()  # 0 表示周一，6 表示周日
-    three_days_ago = current_time - datetime.timedelta(days=3)
-
     try:
         if os.path.exists(HISTORY_FILE):
             with open(HISTORY_FILE, 'r', encoding='utf-8') as f:
                 history = json.load(f)
-
-                # 检查是否是周日，若是则重置历史记录
-                if current_weekday == 6:
-                    print(f"检测到周日，重置历史记录")
-                    return {"week_number": current_time.isocalendar()[1], "pushes": []}
-
-                # 清除3天前的记录
-                history['pushes'] = [push for push in history['pushes'] if
-                                     datetime.datetime.fromisoformat(push['timestamp']) > three_days_ago]
-
+                # 只保留最近20条记录
+                history['pushes'] = history['pushes'][-20:]
                 return history
-        return {"week_number": current_time.isocalendar()[1], "pushes": []}
+        return {"pushes": []}
     except Exception as e:
         print(f"历史记录加载失败: {str(e)}")
-        return {"week_number": current_time.isocalendar()[1], "pushes": []}
+        return {"pushes": []}
 
 def save_history(new_push):
     """原子化保存历史记录"""
