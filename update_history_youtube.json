@@ -2,21 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-03-23T11:49:53.480084+08:00",
-      "fingerprint": [
-        "长歌行<font size='2' color='red'>（下集预告）</font>||07",
-        "武神主宰||531",
-        "长歌行||06",
-        "剑道第一仙<font size='2' color='red'>（下集预告）</font>||110",
-        "剑道第一仙||109",
-        "武炼巅峰||40",
-        "仙武传<font size='2' color='red'>（下集预告）</font>||107",
-        "牧神记||23",
-        "牧神记<font size='2' color='red'>（下集预告）</font>||24",
-        "武炼巅峰<font size='2' color='red'>（下集预告）</font>||41"
-      ]
-    },
-    {
       "timestamp": "2025-03-23T19:39:14.665165+08:00",
       "fingerprint": [
         "仙逆||82",
@@ -149,6 +134,21 @@
         "遮天<font size='2' color='red'>（下集预告）</font>||103",
         "遮天||102",
         "武神主宰<font size='2' color='red'>（下集预告）</font>||533"
+      ]
+    },
+    {
+      "timestamp": "2025-03-26T11:49:28.173095+08:00",
+      "fingerprint": [
+        "君子无疾||07",
+        "剑道第一仙||110",
+        "天命大主宰<font size='2' color='red'>（下集预告）</font>||27",
+        "遮天 4k||102",
+        "剑道第一仙<font size='2' color='red'>（下集预告）</font>||111",
+        "我能无限顿悟||47",
+        "天命大主宰||26",
+        "遮天||102",
+        "遮天<font size='2' color='red'>（下集预告）</font>||103",
+        "君子无疾<font size='2' color='red'>（下集预告）</font>||08"
       ]
     }
   ]
