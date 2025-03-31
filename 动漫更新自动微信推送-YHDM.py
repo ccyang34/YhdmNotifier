@@ -132,8 +132,9 @@ if __name__ == "__main__":
     history = load_history()
     new_updates = get_anime_updates()
 
-    # 生成内容指纹（顺序无关）
-    content_fingerprint = {f"{u['title']}||{u['episode']}" for u in new_updates}
+    # 只取前5条更新内容生成指纹
+    top_five_updates = new_updates[:5]
+    content_fingerprint = {f"{u['title']}||{u['episode']}" for u in top_five_updates}
 
     if content_fingerprint:
         # 获取最近一次推送指纹（无条件获取最后一次）
@@ -143,7 +144,7 @@ if __name__ == "__main__":
         last_fingerprint = set(last_push)
 
         if content_fingerprint == last_fingerprint:
-            print("⏭️ 内容与最近推送一致，跳过发送")
+            print("⏭️ 前5条内容与最近推送一致，跳过发送")
         else:
             message = format_message(new_updates)
             if send_wechat(message):
