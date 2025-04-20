@@ -2,21 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-04-17T21:15:41.240312+08:00",
-      "fingerprint": [
-        "武逆||30",
-        "剑道第一仙<font size='2' color='red'>（下集预告）</font>||117",
-        "画江湖之不良人||05",
-        "完美世界 4k||211",
-        "完美世界<font size='2' color='red'>（下集预告）</font>||212",
-        "画江湖之不良人||01",
-        "画江湖之不良人<font size='2' color='red'>（下集预告）</font>||06",
-        "武炼巅峰<font size='2' color='red'>（下集预告）</font>||48",
-        "武炼巅峰||47",
-        "完美世界||211"
-      ]
-    },
-    {
       "timestamp": "2025-04-18T11:51:07.478963+08:00",
       "fingerprint": [
         "灵剑尊<font size='2' color='red'>（下集预告）</font>||589",
@@ -148,6 +133,21 @@
         "仙武传<font size='2' color='red'>（下集预告）</font>||111",
         "武炼巅峰||48",
         "牧神记<font size='2' color='red'>（下集预告）</font>||28"
+      ]
+    },
+    {
+      "timestamp": "2025-04-20T19:39:44.370556+08:00",
+      "fingerprint": [
+        "仙逆 4k||85",
+        "长歌行||10",
+        "牧神记<font size='2' color='red'>（下集预告）</font>||28",
+        "最强升级||01",
+        "长歌行<font size='2' color='red'>（下集预告）</font>||11",
+        "仙逆||85",
+        "仙武传<font size='2' color='red'>（下集预告）</font>||111",
+        "仙武传||110",
+        "仙逆<font size='2' color='red'>（下集预告）</font>||86",
+        "武神主宰||532"
       ]
     }
   ]
