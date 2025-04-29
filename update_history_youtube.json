@@ -2,21 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-04-27T11:52:57.625624+08:00",
-      "fingerprint": [
-        "长歌行||11",
-        "最强升级||21",
-        "仙武传||111",
-        "牧神记<font size='2' color='red'>（下集预告）</font>||29",
-        "长歌行<font size='2' color='red'>（下集预告）</font>||12",
-        "斗破苍穹年番 4k<font size='2' color='red'>（下集预告）</font>||",
-        "我的师兄太强了||13",
-        "仙武传<font size='2' color='red'>（下集预告）</font>||112",
-        "最强升级<font size='2' color='red'>（下集预告）</font>||22",
-        "牧神记||28"
-      ]
-    },
-    {
       "timestamp": "2025-04-27T15:33:48.562276+08:00",
       "fingerprint": [
         "牧神记||28",
@@ -149,6 +134,21 @@
         "万界独尊||325",
         "武神主宰<font size='2' color='red'>（下集预告）</font>||543",
         "炼气十万年||236"
+      ]
+    },
+    {
+      "timestamp": "2025-04-29T21:21:19.459330+08:00",
+      "fingerprint": [
+        "灵剑尊||591",
+        "炼气十万年<font size='2' color='red'>（下集预告）</font>||237",
+        "遮天 4k||107",
+        "灵剑尊<font size='2' color='red'>（下集预告）</font>||592",
+        "万界独尊<font size='2' color='red'>（下集预告）</font>||326",
+        "遮天<font size='2' color='red'>（下集预告）</font>||108",
+        "万界独尊||325",
+        "遮天||107",
+        "武神主宰<font size='2' color='red'>（下集预告）</font>||543",
+        "武神主宰||542"
       ]
     }
   ]
