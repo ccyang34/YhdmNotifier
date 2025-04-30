@@ -2,21 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-04-27T15:33:48.562276+08:00",
-      "fingerprint": [
-        "牧神记||28",
-        "无尽神域||76",
-        "仙武传<font size='2' color='red'>（下集预告）</font>||112",
-        "长歌行||11",
-        "最强升级<font size='2' color='red'>（下集预告）</font>||22",
-        "武神主宰<font size='2' color='red'>（下集预告）</font>||542",
-        "武神主宰||541",
-        "长歌行<font size='2' color='red'>（下集预告）</font>||12",
-        "仙武传||111",
-        "牧神记<font size='2' color='red'>（下集预告）</font>||29"
-      ]
-    },
-    {
       "timestamp": "2025-04-27T19:39:39.557894+08:00",
       "fingerprint": [
         "仙逆||86",
@@ -149,6 +134,21 @@
         "遮天||107",
         "武神主宰<font size='2' color='red'>（下集预告）</font>||543",
         "武神主宰||542"
+      ]
+    },
+    {
+      "timestamp": "2025-04-30T15:36:11.738723+08:00",
+      "fingerprint": [
+        "灵剑尊<font size='2' color='red'>（下集预告）</font>||592",
+        "剑道第一仙||120",
+        "遮天 4k||107",
+        "遮天||107",
+        "遮天<font size='2' color='red'>（下集预告）</font>||108",
+        "武神主宰<font size='2' color='red'>（下集预告）</font>||543",
+        "武神主宰||542",
+        "剑道第一仙<font size='2' color='red'>（下集预告）</font>||121",
+        "灵剑尊||591",
+        "剑道第一仙||119"
       ]
     }
   ]
