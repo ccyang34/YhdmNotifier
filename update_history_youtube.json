@@ -2,20 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-05-08T15:37:37.765870+08:00",
-      "fingerprint": [
-        "画江湖之不良人||08",
-        "完美世界<font size='2' color='red'>（下集预告）</font>||215",
-        "完美世界<font size='2' color='red'>（下集预告）</font>||216",
-        "画江湖之不良人<font size='2' color='red'>（下集预告）</font>||09",
-        "神印王座 4k||158",
-        "鲸吞天下之掌门归来||03",
-        "遮天 4k||108",
-        "双生武魂||",
-        "完美世界||"
-      ]
-    },
-    {
       "timestamp": "2025-05-08T19:40:53.639362+08:00",
       "fingerprint": [
         "完美世界||",
@@ -145,6 +131,21 @@
         "最强升级||25",
         "牧神记<font size='2' color='red'>（下集预告）</font>||31",
         "仙武传<font size='2' color='red'>（下集预告）</font>||115"
+      ]
+    },
+    {
+      "timestamp": "2025-05-11T19:39:42.973120+08:00",
+      "fingerprint": [
+        "无尽神域||80",
+        "仙逆||88",
+        "武神主宰||545",
+        "牧神记<font size='2' color='red'>（下集预告）</font>||31",
+        "凡人修仙传<font size='2' color='red'>（下集预告）</font>||143",
+        "最强升级||25",
+        "最强升级<font size='2' color='red'>（下集预告）</font>||26",
+        "牧神记||30",
+        "武神主宰<font size='2' color='red'>（下集预告）</font>||546",
+        "仙逆<font size='2' color='red'>（下集预告）</font>||89"
       ]
     }
   ]
