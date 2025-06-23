@@ -2,21 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-06-20T12:00:38.421864+08:00",
-      "fingerprint": [
-        "无上神帝||501",
-        "灵剑尊||606",
-        "完美世界 4k||220",
-        "逆天至尊<font size='2' color='red'>（下集预告）</font>||421",
-        "灵剑尊<font size='2' color='red'>（下集预告）</font>||607",
-        "无上神帝<font size='2' color='red'>（下集预告）</font>||502",
-        "逆天至尊||420",
-        "失业魔王<font size='2' color='red'>（下集预告）</font>||26",
-        "失业魔王||25",
-        "丹道至尊||129"
-      ]
-    },
-    {
       "timestamp": "2025-06-20T19:42:54.792185+08:00",
       "fingerprint": [
         "灵剑尊||606",
@@ -143,6 +128,18 @@
         "逆天至尊<font size='2' color='red'>（下集预告）</font>||422",
         "逆天至尊||421",
         "吞天记<font size='2' color='red'>（下集预告）</font>||15"
+      ]
+    },
+    {
+      "timestamp": "2025-06-23T19:42:28.497756+08:00",
+      "fingerprint": [
+        "大猿魂||01",
+        "吞噬星空<font size='2' color='red'>（下集预告）</font>||178",
+        "星辰变||17",
+        "星辰变<font size='2' color='red'>（下集预告）</font>||18",
+        "逆天至尊<font size='2' color='red'>（下集预告）</font>||422",
+        "吞噬星空||177",
+        "星辰变||"
       ]
     }
   ]
