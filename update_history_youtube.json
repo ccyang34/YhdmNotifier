@@ -2,20 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-06-22T12:07:15.371526+08:00",
-      "fingerprint": [
-        "魔天记||04",
-        "斗破苍穹年番 4k||",
-        "最强升级<font size='2' color='red'>（下集预告）</font>||38",
-        "最强升级||37",
-        "凡人修仙传<font size='2' color='red'>（下集预告）</font>||149",
-        "牧神记||36",
-        "武神主宰<font size='2' color='red'>（下集预告）</font>||558",
-        "武神主宰||557",
-        "牧神记<font size='2' color='red'>（下集预告）</font>||37"
-      ]
-    },
-    {
       "timestamp": "2025-06-22T19:41:21.050202+08:00",
       "fingerprint": [
         "最强升级<font size='2' color='red'>（下集预告）</font>||38",
@@ -142,6 +128,21 @@
         "遮天<font size='2' color='red'>（下集预告）</font>||116",
         "灵剑尊||607",
         "武神主宰<font size='2' color='red'>（下集预告）</font>||559"
+      ]
+    },
+    {
+      "timestamp": "2025-06-25T12:04:58.379376+08:00",
+      "fingerprint": [
+        "吞天记<font size='2' color='red'>（下集预告）</font>||16",
+        "遮天 4k||115",
+        "一念永恒||55",
+        "一念永恒<font size='2' color='red'>（下集预告）</font>||56",
+        "灵剑尊||607",
+        "吞天记||14",
+        "灵剑尊<font size='2' color='red'>（下集预告）</font>||608",
+        "遮天||",
+        "遮天<font size='2' color='red'>（下集预告）</font>||116",
+        "遮天||115"
       ]
     }
   ]
