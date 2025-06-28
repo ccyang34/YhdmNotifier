@@ -2,21 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-06-25T12:04:58.379376+08:00",
-      "fingerprint": [
-        "吞天记<font size='2' color='red'>（下集预告）</font>||16",
-        "遮天 4k||115",
-        "一念永恒||55",
-        "一念永恒<font size='2' color='red'>（下集预告）</font>||56",
-        "灵剑尊||607",
-        "吞天记||14",
-        "灵剑尊<font size='2' color='red'>（下集预告）</font>||608",
-        "遮天||",
-        "遮天<font size='2' color='red'>（下集预告）</font>||116",
-        "遮天||115"
-      ]
-    },
-    {
       "timestamp": "2025-06-25T19:42:58.428762+08:00",
       "fingerprint": [
         "诛仙||",
@@ -146,6 +131,20 @@
         "凡人修仙传<font size='2' color='red'>（下集预告）</font>||150",
         "炼气十万年||253",
         "诡秘之主||03"
+      ]
+    },
+    {
+      "timestamp": "2025-06-28T19:41:34.682952+08:00",
+      "fingerprint": [
+        "诡秘之主||03",
+        "斗破苍穹年番 4k||",
+        "斗破苍穹年番 4k<font size='2' color='red'>（下集预告）</font>||",
+        "炼气十万年||253",
+        "炼气十万年<font size='2' color='red'>（下集预告）</font>||254",
+        "万界独尊||342",
+        "凡人修仙传<font size='2' color='red'>（下集预告）</font>||150",
+        "神国之上<font size='2' color='red'>（下集预告）</font>||07",
+        "万界独尊<font size='2' color='red'>（下集预告）</font>||343"
       ]
     }
   ]
