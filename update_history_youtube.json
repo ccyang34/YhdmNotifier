@@ -2,20 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-06-26T19:42:39.731308+08:00",
-      "fingerprint": [
-        "完美世界||",
-        "诛仙||",
-        "完美世界<font size='2' color='red'>（下集预告）</font>||222",
-        "吞天记<font size='2' color='red'>（下集预告）</font>||16",
-        "诛仙<font size='2' color='red'>（下集预告）</font>||06",
-        "完美世界<font size='2' color='red'>（下集预告）</font>||223",
-        "神印王座||",
-        "吞天记||14",
-        "完美世界||221"
-      ]
-    },
-    {
       "timestamp": "2025-06-26T21:21:44.060905+08:00",
       "fingerprint": [
         "神印王座||",
@@ -143,6 +129,21 @@
         "魔天记<font size='2' color='red'>（下集预告）</font>||06",
         "武神主宰<font size='2' color='red'>（下集预告）</font>||560",
         "最强升级||39"
+      ]
+    },
+    {
+      "timestamp": "2025-06-29T19:40:47.070273+08:00",
+      "fingerprint": [
+        "魔天记||05",
+        "斗破苍穹年番 4k<font size='2' color='red'>（下集预告）</font>||",
+        "牧神记<font size='2' color='red'>（下集预告）</font>||38",
+        "仙逆||96",
+        "仙逆||95",
+        "武神主宰||559",
+        "最强升级||39",
+        "武神主宰<font size='2' color='red'>（下集预告）</font>||560",
+        "魔天记<font size='2' color='red'>（下集预告）</font>||06",
+        "最强升级<font size='2' color='red'>（下集预告）</font>||40"
       ]
     }
   ]
