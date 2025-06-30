@@ -2,20 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-06-27T19:42:15.121203+08:00",
-      "fingerprint": [
-        "完美世界<font size='2' color='red'>（下集预告）</font>||223",
-        "无上神帝<font size='2' color='red'>（下集预告）</font>||504",
-        "逆天至尊||422",
-        "无上神帝||503",
-        "斗罗大陆Ⅱ绝世唐门||107",
-        "斗罗大陆Ⅱ绝世唐门||",
-        "完美世界||",
-        "逆天至尊<font size='2' color='red'>（下集预告）</font>||423",
-        "斗罗大陆Ⅱ绝世唐门<font size='2' color='red'>（下集预告）</font>||108"
-      ]
-    },
-    {
       "timestamp": "2025-06-27T21:19:59.610152+08:00",
       "fingerprint": [
         "逆天至尊<font size='2' color='red'>（下集预告）</font>||423",
@@ -145,6 +131,21 @@
         "逆天至尊<font size='2' color='red'>（下集预告）</font>||424",
         "大猿魂<font size='2' color='red'>（下集预告）</font>||07",
         "吞天记<font size='2' color='red'>（下集预告）</font>||17"
+      ]
+    },
+    {
+      "timestamp": "2025-06-30T19:44:15.748678+08:00",
+      "fingerprint": [
+        "天都异录||24",
+        "无上神帝<font size='2' color='red'>（下集预告）</font>||505",
+        "吞噬星空||",
+        "大猿魂||06",
+        "吞噬星空<font size='2' color='red'>（下集预告）</font>||179",
+        "天都异录<font size='2' color='red'>（下集预告）</font>||25",
+        "星辰变||18",
+        "星辰变<font size='2' color='red'>（下集预告）</font>||19",
+        "大猿魂<font size='2' color='red'>（下集预告）</font>||07",
+        "吞噬星空||178"
       ]
     }
   ]
