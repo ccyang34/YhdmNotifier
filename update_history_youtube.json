@@ -2,21 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-06-28T11:58:06.227200+08:00",
-      "fingerprint": [
-        "凡人修仙传<font size='2' color='red'>（下集预告）</font>||150",
-        "神国之上<font size='2' color='red'>（下集预告）</font>||07",
-        "凡人修仙传||149",
-        "万界独尊<font size='2' color='red'>（下集预告）</font>||343",
-        "炼气十万年<font size='2' color='red'>（下集预告）</font>||254",
-        "神国之上||05",
-        "神国之上<font size='2' color='red'>（下集预告）</font>||06",
-        "炼气十万年||253",
-        "万界独尊||342",
-        "最强升级<font size='2' color='red'>（下集预告）</font>||39"
-      ]
-    },
-    {
       "timestamp": "2025-06-28T15:35:58.554991+08:00",
       "fingerprint": [
         "万界独尊||342",
@@ -145,6 +130,21 @@
         "天都异录||24",
         "大猿魂<font size='2' color='red'>（下集预告）</font>||07",
         "星辰变<font size='2' color='red'>（下集预告）</font>||19"
+      ]
+    },
+    {
+      "timestamp": "2025-07-01T12:23:05.649695+08:00",
+      "fingerprint": [
+        "武神主宰||560",
+        "炼气十万年||254",
+        "万界独尊<font size='2' color='red'>（下集预告）</font>||344",
+        "万界独尊||343",
+        "灵剑尊||609",
+        "灵剑尊<font size='2' color='red'>（下集预告）</font>||610",
+        "武神主宰<font size='2' color='red'>（下集预告）</font>||561",
+        "炼气十万年<font size='2' color='red'>（下集预告）</font>||255",
+        "绝世战魂||127",
+        "丹道至尊||132"
       ]
     }
   ]
