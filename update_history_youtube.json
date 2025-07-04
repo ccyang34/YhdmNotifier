@@ -2,20 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-06-30T21:21:48.010995+08:00",
-      "fingerprint": [
-        "吞噬星空<font size='2' color='red'>（下集预告）</font>||179",
-        "天都异录<font size='2' color='red'>（下集预告）</font>||25",
-        "吞噬星空||",
-        "星辰变||18",
-        "吞噬星空 4k||178",
-        "吞噬星空||178",
-        "天都异录||24",
-        "大猿魂<font size='2' color='red'>（下集预告）</font>||07",
-        "星辰变<font size='2' color='red'>（下集预告）</font>||19"
-      ]
-    },
-    {
       "timestamp": "2025-07-01T12:23:05.649695+08:00",
       "fingerprint": [
         "武神主宰||560",
@@ -140,6 +126,21 @@
         "新世界加载中||01",
         "无上神帝<font size='2' color='red'>（下集预告）</font>||506",
         "逆天至尊<font size='2' color='red'>（下集预告）</font>||425"
+      ]
+    },
+    {
+      "timestamp": "2025-07-04T15:39:55.280236+08:00",
+      "fingerprint": [
+        "逆天至尊<font size='2' color='red'>（下集预告）</font>||425",
+        "无上神帝||505",
+        "灵剑尊<font size='2' color='red'>（下集预告）</font>||611",
+        "无上神帝<font size='2' color='red'>（下集预告）</font>||506",
+        "完美世界||",
+        "新世界加载中||01",
+        "灵剑尊||610",
+        "逆天至尊||424",
+        "灵笼<font size='2' color='red'>（下集预告）</font>||09",
+        "丹道至尊||133"
       ]
     }
   ]
