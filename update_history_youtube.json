@@ -2,21 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-07-05T11:59:28.447090+08:00",
-      "fingerprint": [
-        "新世界加载中<font size='2' color='red'>（下集预告）</font>||03",
-        "炼气十万年||255",
-        "凌天独尊<font size='2' color='red'>（下集预告）</font>||06",
-        "万界独尊||344",
-        "凡人修仙传||150",
-        "凌天独尊||05",
-        "凡人修仙传<font size='2' color='red'>（下集预告）</font>||151",
-        "炼气十万年<font size='2' color='red'>（下集预告）</font>||256",
-        "新世界加载中||02",
-        "万界独尊<font size='2' color='red'>（下集预告）</font>||345"
-      ]
-    },
-    {
       "timestamp": "2025-07-05T19:40:37.899305+08:00",
       "fingerprint": [
         "万界独尊||344",
@@ -144,6 +129,21 @@
         "灵剑尊||611",
         "武神主宰<font size='2' color='red'>（下集预告）</font>||563",
         "灵剑尊<font size='2' color='red'>（下集预告）</font>||612"
+      ]
+    },
+    {
+      "timestamp": "2025-07-08T19:43:12.102759+08:00",
+      "fingerprint": [
+        "遮天||117",
+        "万界独尊<font size='2' color='red'>（下集预告）</font>||346",
+        "武神主宰||562",
+        "炼气十万年<font size='2' color='red'>（下集预告）</font>||257",
+        "一念永恒<font size='2' color='red'>（下集预告）</font>||58",
+        "一念永恒||57",
+        "遮天<font size='2' color='red'>（下集预告）</font>||118",
+        "武神主宰<font size='2' color='red'>（下集预告）</font>||563",
+        "万界独尊||345",
+        "炼气十万年||256"
       ]
     }
   ]
