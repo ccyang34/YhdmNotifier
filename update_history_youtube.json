@@ -2,20 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-07-06T19:41:02.864194+08:00",
-      "fingerprint": [
-        "仙逆||96",
-        "仙逆<font size='2' color='red'>（下集预告）</font>||97",
-        "武神主宰||561",
-        "斗破苍穹年番 4k||",
-        "魔天记<font size='2' color='red'>（下集预告）</font>||07",
-        "牧神记<font size='2' color='red'>（下集预告）</font>||39",
-        "最强升级||01",
-        "魔天记||06",
-        "武神主宰<font size='2' color='red'>（下集预告）</font>||562"
-      ]
-    },
-    {
       "timestamp": "2025-07-06T21:15:48.052332+08:00",
       "fingerprint": [
         "仙逆 4k||96",
@@ -146,6 +132,21 @@
         "凌天独尊<font size='2' color='red'>（下集预告）</font>||07",
         "遮天||117",
         "吞天记||19"
+      ]
+    },
+    {
+      "timestamp": "2025-07-09T19:44:20.637824+08:00",
+      "fingerprint": [
+        "吞天记||19",
+        "神印王座||",
+        "神印王座||167",
+        "神印王座<font size='2' color='red'>（下集预告）</font>||168",
+        "吞天记<font size='2' color='red'>（下集预告）</font>||20",
+        "诛仙<font size='2' color='red'>（下集预告）</font>||08",
+        "遮天 4k||117",
+        "凌天独尊<font size='2' color='red'>（下集预告）</font>||07",
+        "遮天||117",
+        "诛仙||07"
       ]
     }
   ]
