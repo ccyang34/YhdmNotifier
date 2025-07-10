@@ -2,20 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-07-07T19:42:33.706850+08:00",
-      "fingerprint": [
-        "星辰变 4k||19",
-        "星辰变<font size='2' color='red'>（下集预告）</font>||20",
-        "无上神帝<font size='2' color='red'>（下集预告）</font>||507",
-        "逆天至尊<font size='2' color='red'>（下集预告）</font>||426",
-        "吞噬星空||",
-        "无上神帝||506",
-        "星辰变||19",
-        "吞噬星空<font size='2' color='red'>（下集预告）</font>||180",
-        "吞噬星空||179"
-      ]
-    },
-    {
       "timestamp": "2025-07-07T21:22:08.448106+08:00",
       "fingerprint": [
         "吞噬星空<font size='2' color='red'>（下集预告）</font>||180",
@@ -147,6 +133,21 @@
         "吞天记||19",
         "吞天记<font size='2' color='red'>（下集预告）</font>||20",
         "诛仙||07"
+      ]
+    },
+    {
+      "timestamp": "2025-07-10T15:39:49.765081+08:00",
+      "fingerprint": [
+        "吞天记<font size='2' color='red'>（下集预告）</font>||20",
+        "小仙之瑶||27",
+        "神印王座||",
+        "余烬行者||07",
+        "余烬行者<font size='2' color='red'>（下集预告）</font>||08",
+        "凌天独尊<font size='2' color='red'>（下集预告）</font>||07",
+        "吞天记||19",
+        "遮天 4k||117",
+        "小仙之瑶<font size='2' color='red'>（下集预告）</font>||28",
+        "诛仙<font size='2' color='red'>（下集预告）</font>||08"
       ]
     }
   ]
