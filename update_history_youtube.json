@@ -2,18 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-07-13T19:43:28.274608+08:00",
-      "fingerprint": [
-        "牧神记<font size='2' color='red'>（下集预告）</font>||40",
-        "武神主宰||563",
-        "仙逆||",
-        "武神主宰<font size='2' color='red'>（下集预告）</font>||564",
-        "仙逆 4k||97",
-        "仙逆<font size='2' color='red'>（下集预告）</font>||98",
-        "仙逆||97"
-      ]
-    },
-    {
       "timestamp": "2025-07-13T21:17:13.482759+08:00",
       "fingerprint": [
         "仙逆||",
@@ -141,6 +129,21 @@
         "遮天||118",
         "武神主宰||564",
         "遮天 4k||118"
+      ]
+    },
+    {
+      "timestamp": "2025-07-16T15:41:20.946612+08:00",
+      "fingerprint": [
+        "吞天记||26",
+        "遮天<font size='2' color='red'>（下集预告）</font>||120",
+        "凌天独尊<font size='2' color='red'>（下集预告）</font>||09",
+        "遮天 4k||118",
+        "遮天||118",
+        "武神主宰||564",
+        "吞天记<font size='2' color='red'>（下集预告）</font>||27",
+        "武神主宰<font size='2' color='red'>（下集预告）</font>||565",
+        "凌天独尊||08",
+        "遮天<font size='2' color='red'>（下集预告）</font>||119"
       ]
     }
   ]
