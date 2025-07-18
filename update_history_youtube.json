@@ -2,21 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-07-15T12:24:00.843612+08:00",
-      "fingerprint": [
-        "丹道至尊||136",
-        "万界独尊||347",
-        "绝世战魂||131",
-        "丹道至尊<font size='2' color='red'>（下集预告）</font>||137",
-        "炼气十万年<font size='2' color='red'>（下集预告）</font>||259",
-        "炼气十万年||258",
-        "灵剑尊<font size='2' color='red'>（下集预告）</font>||614",
-        "灵剑尊||613",
-        "万界独尊<font size='2' color='red'>（下集预告）</font>||348",
-        "绝世战魂<font size='2' color='red'>（下集预告）</font>||132"
-      ]
-    },
-    {
       "timestamp": "2025-07-15T15:41:31.289211+08:00",
       "fingerprint": [
         "星辰变||27",
@@ -149,6 +134,21 @@
         "小仙之瑶<font size='2' color='red'>（下集预告）</font>||30",
         "妖神记||383",
         "完美世界<font size='2' color='red'>（下集预告）</font>||226"
+      ]
+    },
+    {
+      "timestamp": "2025-07-18T12:23:44.005185+08:00",
+      "fingerprint": [
+        "龙族||01",
+        "逆天至尊||428",
+        "灵剑尊||614",
+        "无上神帝<font size='2' color='red'>（下集预告）</font>||510",
+        "无上神帝||509",
+        "逆天至尊<font size='2' color='red'>（下集预告）</font>||429",
+        "龙族<font size='2' color='red'>（下集预告）</font>||04",
+        "龙族||03",
+        "龙族||02",
+        "灵剑尊<font size='2' color='red'>（下集预告）</font>||615"
       ]
     }
   ]
