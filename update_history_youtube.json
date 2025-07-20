@@ -2,21 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-07-16T19:44:17.464339+08:00",
-      "fingerprint": [
-        "诛仙<font size='2' color='red'>（下集预告）</font>||09",
-        "凌天独尊<font size='2' color='red'>（下集预告）</font>||09",
-        "诛仙||08",
-        "神印王座||168",
-        "神印王座||",
-        "吞天记<font size='2' color='red'>（下集预告）</font>||27",
-        "吞天记||26",
-        "神印王座<font size='2' color='red'>（下集预告）</font>||169",
-        "遮天 4k||118",
-        "遮天||118"
-      ]
-    },
-    {
       "timestamp": "2025-07-16T21:25:33.744869+08:00",
       "fingerprint": [
         "诛仙<font size='2' color='red'>（下集预告）</font>||09",
@@ -148,6 +133,20 @@
         "斗破苍穹年番 4k<font size='2' color='red'>（下集预告）</font>||",
         "炼气十万年<font size='2' color='red'>（下集预告）</font>||260",
         "凡人修仙传<font size='2' color='red'>（下集预告）</font>||153"
+      ]
+    },
+    {
+      "timestamp": "2025-07-20T12:29:17.897656+08:00",
+      "fingerprint": [
+        "牧神记||40",
+        "凡人修仙传||152",
+        "凡人修仙传<font size='2' color='red'>（下集预告）</font>||153",
+        "灵笼||10",
+        "牧神记<font size='2' color='red'>（下集预告）</font>||41",
+        "灵笼<font size='2' color='red'>（下集预告）</font>||11",
+        "魔天记<font size='2' color='red'>（下集预告）</font>||09",
+        "斗破苍穹年番 4k<font size='2' color='red'>（下集预告）</font>||",
+        "魔天记||08"
       ]
     }
   ]
