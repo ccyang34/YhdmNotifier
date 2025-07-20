@@ -2,21 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-07-17T12:21:50.403642+08:00",
-      "fingerprint": [
-        "完美世界<font size='2' color='red'>（下集预告）</font>||226",
-        "妖神记<font size='2' color='red'>（下集预告）</font>||384",
-        "妖神记||381",
-        "完美世界<font size='2' color='red'>（下集预告）</font>||225",
-        "诛仙<font size='2' color='red'>（下集预告）</font>||09",
-        "妖神记||383",
-        "小仙之瑶<font size='2' color='red'>（下集预告）</font>||30",
-        "妖神记<font size='2' color='red'>（下集预告）</font>||385",
-        "妖神记||382",
-        "小仙之瑶||29"
-      ]
-    },
-    {
       "timestamp": "2025-07-17T19:44:36.084144+08:00",
       "fingerprint": [
         "妖神记||381",
@@ -146,6 +131,21 @@
         "武神主宰||565",
         "魔天记||08",
         "牧神记<font size='2' color='red'>（下集预告）</font>||41"
+      ]
+    },
+    {
+      "timestamp": "2025-07-20T19:42:14.123916+08:00",
+      "fingerprint": [
+        "魔天记||08",
+        "大猿魂<font size='2' color='red'>（下集预告）</font>||10",
+        "武神主宰<font size='2' color='red'>（下集预告）</font>||566",
+        "牧神记||40",
+        "武神主宰||565",
+        "仙逆||98",
+        "大猿魂 4k||09",
+        "牧神记<font size='2' color='red'>（下集预告）</font>||41",
+        "魔天记<font size='2' color='red'>（下集预告）</font>||09",
+        "仙逆<font size='2' color='red'>（下集预告）</font>||99"
       ]
     }
   ]
