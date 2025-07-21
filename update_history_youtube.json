@@ -2,21 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-07-18T12:23:44.005185+08:00",
-      "fingerprint": [
-        "龙族||01",
-        "逆天至尊||428",
-        "灵剑尊||614",
-        "无上神帝<font size='2' color='red'>（下集预告）</font>||510",
-        "无上神帝||509",
-        "逆天至尊<font size='2' color='red'>（下集预告）</font>||429",
-        "龙族<font size='2' color='red'>（下集预告）</font>||04",
-        "龙族||03",
-        "龙族||02",
-        "灵剑尊<font size='2' color='red'>（下集预告）</font>||615"
-      ]
-    },
-    {
       "timestamp": "2025-07-18T19:45:53.746867+08:00",
       "fingerprint": [
         "星辰变 4k||24",
@@ -146,6 +131,21 @@
         "武神主宰||565",
         "大猿魂<font size='2' color='red'>（下集预告）</font>||10",
         "仙逆||98"
+      ]
+    },
+    {
+      "timestamp": "2025-07-21T12:29:40.239457+08:00",
+      "fingerprint": [
+        "大猿魂 4k||09",
+        "逆天至尊<font size='2' color='red'>（下集预告）</font>||430",
+        "吞天记||27",
+        "小仙之瑶<font size='2' color='red'>（下集预告）</font>||31",
+        "小仙之瑶||30",
+        "大猿魂<font size='2' color='red'>（下集预告）</font>||10",
+        "无上神帝<font size='2' color='red'>（下集预告）</font>||511",
+        "吞天记<font size='2' color='red'>（下集预告）</font>||28",
+        "无上神帝||510",
+        "逆天至尊||429"
       ]
     }
   ]
