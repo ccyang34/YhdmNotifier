@@ -2,21 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-07-19T12:06:32.822353+08:00",
-      "fingerprint": [
-        "神国之上<font size='2' color='red'>（下集预告）</font>||09",
-        "炼气十万年||259",
-        "炼气十万年<font size='2' color='red'>（下集预告）</font>||260",
-        "凌天独尊<font size='2' color='red'>（下集预告）</font>||10",
-        "凌天独尊||09",
-        "神国之上||08",
-        "妖神记<font size='2' color='red'>（下集预告）</font>||385",
-        "绝世战魂||132",
-        "龙族||01",
-        "妖神记||384"
-      ]
-    },
-    {
       "timestamp": "2025-07-19T15:37:32.705894+08:00",
       "fingerprint": [
         "灵笼||10",
@@ -146,6 +131,21 @@
         "灵剑尊<font size='2' color='red'>（下集预告）</font>||616",
         "万界独尊<font size='2' color='red'>（下集预告）</font>||350",
         "丹道至尊||138"
+      ]
+    },
+    {
+      "timestamp": "2025-07-22T19:44:23.761903+08:00",
+      "fingerprint": [
+        "一念永恒||59",
+        "万界独尊||349",
+        "遮天||119",
+        "灵剑尊||615",
+        "武神主宰||566",
+        "遮天<font size='2' color='red'>（下集预告）</font>||121",
+        "万界独尊<font size='2' color='red'>（下集预告）</font>||350",
+        "灵剑尊<font size='2' color='red'>（下集预告）</font>||616",
+        "遮天<font size='2' color='red'>（下集预告）</font>||120",
+        "武神主宰<font size='2' color='red'>（下集预告）</font>||567"
       ]
     }
   ]
