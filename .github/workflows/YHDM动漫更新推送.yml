@@ -34,7 +34,7 @@ jobs:
       - name: 执行推送
         env:
           APP_TOKEN: ${{ secrets.APP_TOKEN }}
-        run: python 动漫更新自动微信推送-YHDM.py
+        run: python YHDM动漫更新推送.py
 
       - name: 提交历史记录
         env:
