@@ -2,21 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-07-24T19:44:13.897740+08:00",
-      "fingerprint": [
-        "妖神记<font size='2' color='red'>（下集预告）</font>||387",
-        "完美世界 4k||225",
-        "妖神记<font size='2' color='red'>（下集预告）</font>||386",
-        "完美世界<font size='2' color='red'>（下集预告）</font>||227",
-        "妖神记||385",
-        "完美世界<font size='2' color='red'>（下集预告）</font>||226",
-        "完美世界||225",
-        "妖神记||381",
-        "小仙之瑶<font size='2' color='red'>（下集预告）</font>||32",
-        "双生武魂||01"
-      ]
-    },
-    {
       "timestamp": "2025-07-25T12:23:42.313072+08:00",
       "fingerprint": [
         "灵剑尊<font size='2' color='red'>（下集预告）</font>||617",
@@ -149,6 +134,21 @@
         "吞噬星空 4k||182",
         "吞噬星空<font size='2' color='red'>（下集预告）</font>||183",
         "吞噬星空||182"
+      ]
+    },
+    {
+      "timestamp": "2025-07-29T12:33:01.706204+08:00",
+      "fingerprint": [
+        "万界独尊||347",
+        "武神主宰<font size='2' color='red'>（下集预告）</font>||569",
+        "炼气十万年||263",
+        "万界独尊<font size='2' color='red'>（下集预告）</font>||352",
+        "灵剑尊||614",
+        "万界独尊||351",
+        "灵剑尊<font size='2' color='red'>（下集预告）</font>||618",
+        "武神主宰||568",
+        "炼气十万年||259",
+        "炼气十万年<font size='2' color='red'>（下集预告）</font>||264"
       ]
     }
   ]
