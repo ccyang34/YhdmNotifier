@@ -2,21 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-07-27T12:30:28.230404+08:00",
-      "fingerprint": [
-        "魔天记||09",
-        "牧神记<font size='2' color='red'>（下集预告）</font>||42",
-        "凡人修仙传||153",
-        "在下“英台”<font size='2' color='red'>（下集预告）</font>||03",
-        "在下“英台”||01",
-        "在下“英台”||02",
-        "牧神记||41",
-        "炼气十万年||258",
-        "诡秘之主<font size='2' color='red'>（下集预告）</font>||07",
-        "魔天记<font size='2' color='red'>（下集预告）</font>||10"
-      ]
-    },
-    {
       "timestamp": "2025-07-27T15:38:10.950947+08:00",
       "fingerprint": [
         "武神主宰<font size='2' color='red'>（下集预告）</font>||568",
@@ -149,6 +134,21 @@
         "吞天记||01",
         "双生武魂||07",
         "双生武魂<font size='2' color='red'>（下集预告）</font>||08"
+      ]
+    },
+    {
+      "timestamp": "2025-07-31T21:26:57.502230+08:00",
+      "fingerprint": [
+        "妖神记<font size='2' color='red'>（下集预告）</font>||389",
+        "吞天记||01",
+        "完美世界||226",
+        "完美世界 4k||226",
+        "双生武魂<font size='2' color='red'>（下集预告）</font>||08",
+        "完美世界<font size='2' color='red'>（下集预告）</font>||228",
+        "妖神记<font size='2' color='red'>（下集预告）</font>||388",
+        "小仙之瑶<font size='2' color='red'>（下集预告）</font>||34",
+        "完美世界<font size='2' color='red'>（下集预告）</font>||227",
+        "妖神记||387"
       ]
     }
   ]
