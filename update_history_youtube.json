@@ -2,21 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-07-26T12:19:31.967534+08:00",
-      "fingerprint": [
-        "炼气十万年||262",
-        "炼气十万年<font size='2' color='red'>（下集预告）</font>||263",
-        "诡秘之主||06",
-        "炼气十万年||258",
-        "诡秘之主<font size='2' color='red'>（下集预告）</font>||07",
-        "神国之上<font size='2' color='red'>（下集预告）</font>||10",
-        "神国之上||09",
-        "凡人修仙传||153",
-        "万界独尊<font size='2' color='red'>（下集预告）</font>||351",
-        "神国之上<font size='2' color='red'>（下集预告）</font>||11"
-      ]
-    },
-    {
       "timestamp": "2025-07-27T12:30:28.230404+08:00",
       "fingerprint": [
         "魔天记||09",
@@ -149,6 +134,21 @@
         "诛仙<font size='2' color='red'>（下集预告）</font>||11",
         "神印王座||170",
         "吞天记||30"
+      ]
+    },
+    {
+      "timestamp": "2025-07-31T12:27:46.140945+08:00",
+      "fingerprint": [
+        "诛仙<font size='2' color='red'>（下集预告）</font>||11",
+        "小仙之瑶<font size='2' color='red'>（下集预告）</font>||34",
+        "妖神记<font size='2' color='red'>（下集预告）</font>||388",
+        "妖神记<font size='2' color='red'>（下集预告）</font>||389",
+        "妖神记||387",
+        "吞天记<font size='2' color='red'>（下集预告）</font>||31",
+        "小仙之瑶||33",
+        "吞天记||01",
+        "双生武魂||07",
+        "双生武魂<font size='2' color='red'>（下集预告）</font>||08"
       ]
     }
   ]
