@@ -15,7 +15,7 @@ except ImportError:
 # 推送配置参数
 # ------------------------------
 BEIJING_TZ = ZoneInfo("Asia/Shanghai")
-HISTORY_FILE = os.path.join(os.getcwd(), "update_history.json")
+HISTORY_FILE = os.path.join(os.getcwd(), "update_history_jinshan.json")
 APP_TOKEN = "AT_UHus2F8p0yjnG6XvGEDzdCp5GkwvLdkc"
 BASE_URL = "https://wxpusher.zjiecode.com/api"
 TARGET_TOPIC_ID = [32277]
