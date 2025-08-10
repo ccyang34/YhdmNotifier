@@ -2,21 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-08-05T19:45:13.579190+08:00",
-      "fingerprint": [
-        "遮天<font size='2' color='red'>（下集预告）</font>||122",
-        "紫川 4k||04",
-        "遮天||121",
-        "紫川||04",
-        "灵剑尊||616",
-        "武神主宰<font size='2' color='red'>（下集预告）</font>||571",
-        "遮天<font size='2' color='red'>（下集预告）</font>||123",
-        "武神主宰||570",
-        "遮天 4k||121",
-        "紫川<font size='2' color='red'>（下集预告）</font>||05"
-      ]
-    },
-    {
       "timestamp": "2025-08-06T12:31:14.618678+08:00",
       "fingerprint": [
         "缥缈剑仙传||02",
@@ -148,6 +133,21 @@
         "万界独尊<font size='2' color='red'>（下集预告）</font>||355",
         "炼气十万年||261",
         "炼气十万年||266"
+      ]
+    },
+    {
+      "timestamp": "2025-08-10T12:26:52.766674+08:00",
+      "fingerprint": [
+        "缥缈剑仙传<font size='2' color='red'>（下集预告）</font>||07",
+        "武神主宰<font size='2' color='red'>（下集预告）</font>||572",
+        "魔天记<font size='2' color='red'>（下集预告）</font>||12",
+        "牧神记<font size='2' color='red'>（下集预告）</font>||44",
+        "在下“英台”||06",
+        "在下“英台”<font size='2' color='red'>（下集预告）</font>||07",
+        "牧神记||43",
+        "魔天记||11",
+        "武神主宰||571",
+        "缥缈剑仙传||06"
       ]
     }
   ]
