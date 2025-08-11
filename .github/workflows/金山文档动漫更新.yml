@@ -45,7 +45,7 @@ jobs:
           # 同步最新代码
           git pull origin main --rebase --autostash
           
-          git add update_history.json
+          git add update_history_jinshan.json
           if ! git diff --staged --quiet; then
             git commit -m "自动更新: $(date +'%Y-%m-%d %H:%M')"
             git push origin HEAD:main || exit 1
