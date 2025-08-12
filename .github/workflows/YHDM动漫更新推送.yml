@@ -1,11 +1,12 @@
 name: 樱花动漫更新自动推送
-on:
-  schedule:
-    - cron: '33 03 * * *'  # 北京时间11:33
-    - cron: '30 07 * * *'  # 北京时间15:30
-    - cron: '33 11 * * *'  # 北京时间19:33
-    - cron: '50 12 * * *'  # 北京时间20:50
-  workflow_dispatch:
+# 注释掉触发配置，关闭工作流运行
+# on:
+#   schedule:
+#     - cron: '33 03 * * *'  # 北京时间11:33
+#     - cron: '30 07 * * *'  # 北京时间15:30
+#     - cron: '33 11 * * *'  # 北京时间19:33
+#     - cron: '50 12 * * *'  # 北京时间20:50
+#   workflow_dispatch:
 
 concurrency:
   group: anime-${{ github.ref }}
