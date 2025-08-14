@@ -2,21 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-08-09T12:04:01.514971+08:00",
-      "fingerprint": [
-        "Multi Sub【诡秘之主 | Lord of Mysteries | Episode 08||08",
-        "炼气十万年||266",
-        "炼气十万年||261",
-        "万界独尊||350",
-        "万界独尊||354",
-        "炼气十万年<font size='2' color='red'>（下集预告）</font>||267",
-        "凡人修仙传||155",
-        "万界独尊<font size='2' color='red'>（下集预告）</font>||355",
-        "凡人修仙传<font size='2' color='red'>（下集预告）</font>||156",
-        "诡秘之主<font size='2' color='red'>（下集预告）</font>||09"
-      ]
-    },
-    {
       "timestamp": "2025-08-09T15:36:36.079723+08:00",
       "fingerprint": [
         "炼气十万年||261",
@@ -149,6 +134,21 @@
         "双生武魂||11",
         "凌天独尊<font size='2' color='red'>（下集预告）</font>||17",
         "吞天记<font size='2' color='red'>（下集预告）</font>||35"
+      ]
+    },
+    {
+      "timestamp": "2025-08-14T12:04:44.893179+08:00",
+      "fingerprint": [
+        "吞天记||34",
+        "双生武魂<font size='2' color='red'>（下集预告）</font>||17",
+        "妖神记||391",
+        "双生武魂||16",
+        "双生武魂||12",
+        "凌天独尊<font size='2' color='red'>（下集预告）</font>||17",
+        "妖神记<font size='2' color='red'>（下集预告）</font>||393",
+        "吞天记<font size='2' color='red'>（下集预告）</font>||35",
+        "妖神记<font size='2' color='red'>（下集预告）</font>||392",
+        "双生武魂<font size='2' color='red'>（下集预告）</font>||16"
       ]
     }
   ]
