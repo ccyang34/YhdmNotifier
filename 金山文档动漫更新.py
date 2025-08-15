@@ -104,15 +104,27 @@ def extract_text_from_data(raw_data):
             text = soup.get_text()
             # 初步清理文本
             text = unicodedata.normalize("NFKC", text)
-            text = re.sub(r'\s+', ' ', text)
-            text = re.sub(r'[\u200b\u200c\u200d\u2060\uFEFF]', '', text)
+            text = re.sub(r'\s+', ' ', text)  # 将多个空白字符替换为单个空格
+            text = re.sub(r'[\u200b\u200c\u200d\u2060\uFEFF]', '', text)  # 移除零宽字符
+            text = re.sub(r'[\s\-]', '', text)  # 清除所有空格和连字符
             
             if text:
                 extracted_text.append(text)
         except Exception as e:
             print(f"从HTML提取文本时出错: {e}")
     
-    return ' '.join(extracted_text)
+    # 合并提取到的文本
+    full_text = ' '.join(extracted_text)
+    
+    # ------------------------------
+    # 新增：打印文本片段（前500字符+后200字符，避免过长）
+    # ------------------------------
+    print(f"\n【提取到的完整文本】")
+    print(full_text)
+    print(f"【文本总长度】：{len(full_text)} 字符")
+    # ------------------------------
+    
+    return full_text
 
 # ------------------------------
 # 信息提取模块
@@ -124,17 +136,14 @@ def extract_anime_info(content):
     
     # 指定动漫名称列表
     anime_names = [
-        "斗破苍穹", "牧神记", "凡人修仙传", "完美世界", "仙逆", "遮天", "斗罗大陆", "吞噬星空"
+        "斗破苍穹", "牧神记", "凡人修仙传", "完美世界", "仙逆", "遮天", "斗罗大陆", "吞噬星空", "神墓"
     ]
     
     updates = []
     # 构建正则表达式，匹配动漫名称和紧跟的更新信息
     for anime in anime_names:
-        # 匹配动漫名称和后面紧跟的更新信息（如动漫4k更新至xxx集 或 动漫第二季4k暂时完结全xxx集，支持“第xx季”）
-        # 匹配包含动漫名称的字符串和后面紧跟的更新信息
-        # 兼容"第二季4k"和"4k第二季"两种格式
-        # 允许季数和4k的顺序互换
-        pattern = rf'([^，,。.]*?{anime}[^，,。.]*?)(动漫(?:第[\d一二三四五六七八九十]+季)?(?:4k)?(?:第[\d一二三四五六七八九十]+季)?4k?(?:更新至\d+集|暂时完结全\d+集))'
+        # 匹配动漫名称和后面紧跟的更新信息（兼容季数、4k的顺序变化）
+        pattern = rf'({anime}[^，,。.]*?)(动漫(?:第[\d一二三四五六七八九十]+季|4k)*?(?:更新至\d+集|暂时完结全\d+集))'
         match = re.search(pattern, cleaned_content)
         if match:
             cleaned_name = match.group(1)
@@ -301,4 +310,3 @@ if __name__ == "__main__":
         print(f"❌ 获取数据失败: {raw_data['message']}")
     
     print("=== 执行结束 ===")
-    
