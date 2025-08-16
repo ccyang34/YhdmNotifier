@@ -224,7 +224,7 @@ def format_message(updates):
         )
         if update["baidu_link"]:
             message.append(
-                f'<a href="{update["baidu_link"]}" style="color: orange; text-decoration: underline;">百度网盘链接</a>\n\n'
+                f'<a href="{update["baidu_link"]}" style="color: orange; text-decoration: underline;">{update["baidu_link"]}\n\n'
             )
         else:
             message.append("百度链接: 未找到\n\n")
