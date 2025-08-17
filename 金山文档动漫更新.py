@@ -116,13 +116,9 @@ def extract_text_from_data(raw_data):
     # 合并提取到的文本
     full_text = ' '.join(extracted_text)
     
-    # ------------------------------
-    # 新增：打印文本片段（前500字符+后200字符，避免过长）
-    # ------------------------------
     print(f"\n【提取到的完整文本】")
     print(full_text)
     print(f"【文本总长度】：{len(full_text)} 字符")
-    # ------------------------------
     
     return full_text
 
@@ -278,30 +274,43 @@ if __name__ == "__main__":
                 for update in anime_updates:
                     print(f"- {update['title']} {update['update_info']}")
                 
+                # 提取当前记录中的动漫名称集合
+                current_anime_names = {update['title'] for update in anime_updates}
+                
                 # 加载历史记录
                 history = load_history()
                 
-                # 生成内容指纹
-                content_fingerprint = {f"{u['title']}||{u['update_info']}" for u in anime_updates}
-                
                 # 检查是否需要推送
-                if content_fingerprint:
-                    # 获取最近一次推送指纹
-                    last_push = history['pushes'][-1]['fingerprint'] if history['pushes'] else set()
-                    last_fingerprint = set(last_push)
+                if not history['pushes']:  # 如果没有历史记录，直接推送
+                    print("\n4. 无历史记录，准备推送...")
+                    message = format_message(anime_updates)
+                    print("5. 正在发送微信推送...")
+                    if send_wechat(message):
+                        # 记录推送信息，保存当前动漫名称集合
+                        save_history({
+                            "timestamp": get_beijing_time().isoformat(),
+                            "anime_names": list(current_anime_names)
+                        })
+                else:
+                    # 获取上一条记录中的动漫名称集合
+                    last_anime_names = set(history['pushes'][-1]['anime_names'])
                     
-                    if content_fingerprint == last_fingerprint:
-                        print("⏭️ 内容与最近推送一致，跳过发送")
-                    else:
-                        print("\n4. 正在生成推送消息...")
+                    # 找出当前记录比上一条多的动漫名称
+                    new_anime_names = current_anime_names - last_anime_names
+                    
+                    if new_anime_names:  # 只有存在新的动漫名称时才推送
+                        print(f"\n4. 发现新的动漫更新: {', '.join(new_anime_names)}")
+                        print("5. 正在生成推送消息...")
                         message = format_message(anime_updates)
-                        print("5. 正在发送微信推送...")
+                        print("6. 正在发送微信推送...")
                         if send_wechat(message):
-                            # 记录推送信息
+                            # 记录推送信息，保存当前动漫名称集合
                             save_history({
                                 "timestamp": get_beijing_time().isoformat(),
-                                "fingerprint": list(content_fingerprint)
+                                "anime_names": list(current_anime_names)
                             })
+                    else:
+                        print("⏭️ 没有新增的动漫名称，与上一条记录对比后不推送")
             else:
                 print("❌ 未找到任何动漫更新信息")
         else:
