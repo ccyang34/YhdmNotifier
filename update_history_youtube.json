@@ -2,21 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-08-11T12:29:41.671354+08:00",
-      "fingerprint": [
-        "吞天记<font size='2' color='red'>（下集预告）</font>||34",
-        "无上神帝<font size='2' color='red'>（下集预告）</font>||517",
-        "吞天记||33",
-        "无上神帝||516",
-        "在下“英台”<font size='2' color='red'>（下集预告）</font>||08",
-        "逆天至尊||431",
-        "逆天至尊<font size='2' color='red'>（下集预告）</font>||436",
-        "逆天至尊||435",
-        "在下“英台”||07",
-        "无上神帝||510"
-      ]
-    },
-    {
       "timestamp": "2025-08-12T12:02:09.756806+08:00",
       "fingerprint": [
         "炼气十万年<font size='2' color='red'>（下集预告）</font>||268",
@@ -149,6 +134,21 @@
         "妖神记<font size='2' color='red'>（下集预告）</font>||393",
         "凡人修仙传<font size='2' color='red'>（下集预告）</font>||157",
         "凡人修仙传||156"
+      ]
+    },
+    {
+      "timestamp": "2025-08-17T12:08:56.364083+08:00",
+      "fingerprint": [
+        "魔天记<font size='2' color='red'>（下集预告）</font>||13",
+        "魔天记||12",
+        "万界独尊||356",
+        "牧神记||44",
+        "牧神记<font size='2' color='red'>（下集预告）</font>||45",
+        "凡人修仙传||156",
+        "武神主宰||573",
+        "武神主宰<font size='2' color='red'>（下集预告）</font>||574",
+        "凡人修仙传<font size='2' color='red'>（下集预告）</font>||157",
+        "万界独尊<font size='2' color='red'>（下集预告）</font>||357"
       ]
     }
   ]
