@@ -202,10 +202,7 @@ def save_history(new_push):
 def format_message(updates):
     """生成推送消息"""
     current_time = get_beijing_time()
-    # message = [
-    #     f"<center><span style='font-size: 24px; color: red;'>🔥 金山动漫更新通知 🔥</span></center>",
-    #     f"<center><span style='font-size: 14px; color: #666;'>检测时间：{current_time.strftime('%Y-%m-%d %H:%M:%S')}</span></center>\n"
-    # ]
+    message = []
 
     if not updates:
         message.append("<p>本次未检测到任何动漫更新信息</p>")
