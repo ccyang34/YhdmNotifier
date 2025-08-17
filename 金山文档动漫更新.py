@@ -148,7 +148,7 @@ def extract_anime_info(content):
     # 构建正则表达式，匹配动漫名称和紧跟的更新信息
     for anime in anime_names:
         # 匹配动漫名称和后面紧跟的更新信息（兼容季数、4k的顺序变化）
-        pattern = rf'({anime}[^，,。.]*?)(动漫(?:第[\d一二三四五六七八九十]+季|4k)*?(?:更新至\d+集|暂时完结全\d+集))'
+        pattern = rf'({anime}[^，,。.]*?)(动漫(?:第[\d一二三四五六七八九十]+季|4k|高清|全彩)*?(?:更新至\d+集|已更新\d+集|开播\d+集|连载至\d+集|共\d+集|全\d+集|暂时完结全\d+集|完结|连载中|已完结))'
         match = re.search(pattern, cleaned_content)
         if match:
             cleaned_name = match.group(1)
