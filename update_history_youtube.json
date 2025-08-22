@@ -2,21 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-08-14T12:04:44.893179+08:00",
-      "fingerprint": [
-        "吞天记||34",
-        "双生武魂<font size='2' color='red'>（下集预告）</font>||17",
-        "妖神记||391",
-        "双生武魂||16",
-        "双生武魂||12",
-        "凌天独尊<font size='2' color='red'>（下集预告）</font>||17",
-        "妖神记<font size='2' color='red'>（下集预告）</font>||393",
-        "吞天记<font size='2' color='red'>（下集预告）</font>||35",
-        "妖神记<font size='2' color='red'>（下集预告）</font>||392",
-        "双生武魂<font size='2' color='red'>（下集预告）</font>||16"
-      ]
-    },
-    {
       "timestamp": "2025-08-14T19:44:05.211850+08:00",
       "fingerprint": [
         "双生武魂<font size='2' color='red'>（下集预告）</font>||17",
@@ -147,6 +132,21 @@
         "无上神帝||511",
         "炼气十万年||268",
         "妖神记 4k||392"
+      ]
+    },
+    {
+      "timestamp": "2025-08-22T11:54:29.790752+08:00",
+      "fingerprint": [
+        "神墓||01",
+        "万界独尊||356",
+        "妖神记 4k||392",
+        "炼气十万年<font size='2' color='red'>（下集预告）</font>||269",
+        "妖神记||394",
+        "妖神记<font size='2' color='red'>（下集预告）</font>||393",
+        "武神主宰||573",
+        "万界独尊<font size='2' color='red'>（下集预告）</font>||357",
+        "炼气十万年||268",
+        "武神主宰<font size='2' color='red'>（下集预告）</font>||574"
       ]
     }
   ]
