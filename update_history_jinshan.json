@@ -25,15 +25,21 @@
       "anime_unique_keys": [
         "遮天_无4K"
       ]
+    },
+    {
+      "timestamp": "2025-09-02T19:16:30.354438+08:00",
+      "anime_unique_keys": [
+        "遮天_有4K"
+      ]
     }
   ],
   "anime_details": [
     {
       "title": "遮天",
-      "update_info": "动漫更新至125集",
+      "update_info": "动漫4k更新至125集",
       "baidu_link": "https://pan.baidu.com/s/1v8XzFO82ysLWy5m1P1cJg?pwd=3baw",
-      "has_4k": false,
-      "unique_key": "遮天_无4K"
+      "has_4k": true,
+      "unique_key": "遮天_有4K"
     }
   ]
 }
