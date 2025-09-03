@@ -31,15 +31,21 @@
       "anime_unique_keys": [
         "遮天_有4K"
       ]
+    },
+    {
+      "timestamp": "2025-09-03T19:15:54.547200+08:00",
+      "anime_unique_keys": [
+        "诛仙_有4K"
+      ]
     }
   ],
   "anime_details": [
     {
-      "title": "遮天",
-      "update_info": "动漫4k更新至125集",
-      "baidu_link": "https://pan.baidu.com/s/1v8XzFO82ysLWy5m1P1cJg?pwd=3baw",
+      "title": "诛仙",
+      "update_info": "动漫第三季4k更新至15集",
+      "baidu_link": "https://pan.baidu.com/s/1BfTGlvN25XVUY01xn1DBg?pwd=wqqd",
       "has_4k": true,
-      "unique_key": "遮天_有4K"
+      "unique_key": "诛仙_有4K"
     }
   ]
 }
