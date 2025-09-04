@@ -51,15 +51,22 @@
         "完美世界_无4K",
         "武碎星河_有4K"
       ]
+    },
+    {
+      "timestamp": "2025-09-04T19:15:38.073637+08:00",
+      "anime_unique_keys": [
+        "完美世界_有4K",
+        "武碎星河_有4K"
+      ]
     }
   ],
   "anime_details": [
     {
       "title": "完美世界",
-      "update_info": "动漫更新至231集",
+      "update_info": "动漫4k更新至231集",
       "baidu_link": "https://pan.baidu.com/s/14f1VbQ4yVOPPnfSvFke6w?pwd=py7j",
-      "has_4k": false,
-      "unique_key": "完美世界_无4K"
+      "has_4k": true,
+      "unique_key": "完美世界_有4K"
     },
     {
       "title": "武碎星河",
