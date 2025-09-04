@@ -37,6 +37,13 @@
       "anime_unique_keys": [
         "诛仙_有4K"
       ]
+    },
+    {
+      "timestamp": "2025-09-04T10:20:28.013906+08:00",
+      "anime_unique_keys": [
+        "诛仙_有4K",
+        "武碎星河_有4K"
+      ]
     }
   ],
   "anime_details": [
@@ -46,6 +53,13 @@
       "baidu_link": "https://pan.baidu.com/s/1BfTGlvN25XVUY01xn1DBg?pwd=wqqd",
       "has_4k": true,
       "unique_key": "诛仙_有4K"
+    },
+    {
+      "title": "武碎星河",
+      "update_info": "动漫4k更新至09集",
+      "baidu_link": "https://pan.baidu.com/s/1znmJDQASw0q7XxqCMBbYjw?pwd=eswu",
+      "has_4k": true,
+      "unique_key": "武碎星河_有4K"
     }
   ]
 }
