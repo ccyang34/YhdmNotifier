@@ -64,15 +64,21 @@
       "anime_unique_keys": [
         "斗罗大陆_无4K"
       ]
+    },
+    {
+      "timestamp": "2025-09-05T19:15:33.134642+08:00",
+      "anime_unique_keys": [
+        "斗罗大陆_有4K"
+      ]
     }
   ],
   "anime_details": [
     {
       "title": "斗罗大陆",
-      "update_info": "动漫第二季更新至117集",
+      "update_info": "动漫4k第二季更新至117集",
       "baidu_link": "https://pan.baidu.com/s/1jl8Sw1djKf8rEW9wvGbi6g?pwd=wene",
-      "has_4k": false,
-      "unique_key": "斗罗大陆_无4K"
+      "has_4k": true,
+      "unique_key": "斗罗大陆_有4K"
     }
   ]
 }
