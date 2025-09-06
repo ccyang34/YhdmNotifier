@@ -84,15 +84,22 @@
         "斗破苍穹_无4K",
         "凡人修仙传_有4K"
       ]
+    },
+    {
+      "timestamp": "2025-09-06T19:13:24.463657+08:00",
+      "anime_unique_keys": [
+        "斗破苍穹_有4K",
+        "凡人修仙传_有4K"
+      ]
     }
   ],
   "anime_details": [
     {
       "title": "斗破苍穹",
-      "update_info": "动漫更新至163集",
+      "update_info": "动漫4k更新至163集",
       "baidu_link": "https://pan.baidu.com/s/1gLt6z1AMvLfb1TxyD85JQA?pwd=ammk",
-      "has_4k": false,
-      "unique_key": "斗破苍穹_无4K"
+      "has_4k": true,
+      "unique_key": "斗破苍穹_有4K"
     },
     {
       "title": "凡人修仙传",
