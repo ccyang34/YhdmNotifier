@@ -98,6 +98,14 @@
         "武碎星河_有4K",
         "斗破苍穹_有4K"
       ]
+    },
+    {
+      "timestamp": "2025-09-07T11:47:12.960677+08:00",
+      "anime_unique_keys": [
+        "斗破苍穹_有4K",
+        "牧神记_有4K",
+        "武碎星河_有4K"
+      ]
     }
   ],
   "anime_details": [
@@ -107,6 +115,13 @@
       "baidu_link": "https://pan.baidu.com/s/1gLt6z1AMvLfb1TxyD85JQA?pwd=ammk",
       "has_4k": true,
       "unique_key": "斗破苍穹_有4K"
+    },
+    {
+      "title": "牧神记",
+      "update_info": "动漫4k更新至47集",
+      "baidu_link": "https://pan.baidu.com/s/1pPxHA62DSzI6QhLFJLqEYw?pwd=5wsg",
+      "has_4k": true,
+      "unique_key": "牧神记_有4K"
     },
     {
       "title": "武碎星河",
