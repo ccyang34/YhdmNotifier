@@ -104,7 +104,7 @@ def extract_anime_info(content):
     updates = []
     
     for anime in anime_names:
-        pattern = rf'({anime})(动漫(?:4k)?[^，,。.]*?(?:更新至\d+集|已更新\d+集|开播\d+集|连载至\d+集|共\d+集|全\d+集|暂时完结全\d+集|完结|连载中|已完结))'
+        pattern = rf'({anime})(动漫(?:第[一二三四五六七八九十\d]+季)?(?:4k)?[^，,。.]*?(?:更新至\d+集|已更新\d+集|开播\d+集|连载至\d+集|共\d+集|全\d+集|暂时完结全\d+集|完结|连载中|已完结))'
         match = re.search(pattern, cleaned_content, re.IGNORECASE)
         
         if match:
