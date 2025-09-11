@@ -1,12 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-09-02T19:16:30.354438+08:00",
-      "anime_unique_keys": [
-        "遮天_有4K"
-      ]
-    },
-    {
       "timestamp": "2025-09-03T19:15:54.547200+08:00",
       "anime_unique_keys": [
         "诛仙_有4K"
@@ -133,15 +127,22 @@
         "诛仙_有4K",
         "武碎星河_有4K"
       ]
+    },
+    {
+      "timestamp": "2025-09-11T18:14:28.780390+08:00",
+      "anime_unique_keys": [
+        "武碎星河_有4K",
+        "完美世界_无4K"
+      ]
     }
   ],
   "anime_details": [
     {
-      "title": "诛仙",
-      "update_info": "动漫第三季4k更新至16集",
-      "baidu_link": "https://pan.baidu.com/s/1Ayth_ounZ8PBTRE8G9yxEw?pwd=ptww",
-      "has_4k": true,
-      "unique_key": "诛仙_有4K"
+      "title": "完美世界",
+      "update_info": "动漫更新至232集",
+      "baidu_link": "https://pan.baidu.com/s/1wTJLoHem5tRAmk2fzBzUg?pwd=aak3",
+      "has_4k": false,
+      "unique_key": "完美世界_无4K"
     },
     {
       "title": "武碎星河",
