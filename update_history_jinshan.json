@@ -1,14 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-09-07T18:17:15.919404+08:00",
-      "anime_unique_keys": [
-        "牧神记_有4K",
-        "仙逆_无4K",
-        "武碎星河_有4K"
-      ]
-    },
-    {
       "timestamp": "2025-09-07T18:48:51.371959+08:00",
       "anime_unique_keys": [
         "武碎星河_有4K",
@@ -139,29 +131,21 @@
         "仙逆_有4K",
         "牧神记_有4K"
       ]
+    },
+    {
+      "timestamp": "2025-09-15T18:15:50.980914+08:00",
+      "anime_unique_keys": [
+        "吞噬星空_无4K"
+      ]
     }
   ],
   "anime_details": [
     {
-      "title": "牧神记",
-      "update_info": "动漫4k更新至48集",
-      "baidu_link": "https://pan.baidu.com/s/1mtp5S8Qkq1GtfLnn9s9gNg?pwd=3ix5",
-      "has_4k": true,
-      "unique_key": "牧神记_有4K"
-    },
-    {
-      "title": "仙逆",
-      "update_info": "动漫4k更新至106集",
-      "baidu_link": "https://pan.baidu.com/s/1jDmAPXacen8x_IRJ59WZw?pwd=74ny",
-      "has_4k": true,
-      "unique_key": "仙逆_有4K"
-    },
-    {
-      "title": "武碎星河",
-      "update_info": "动漫4k更新至12集",
-      "baidu_link": "https://pan.baidu.com/s/1CDLKNwX4aCKR7nO0MIp0pw?pwd=uwav",
-      "has_4k": true,
-      "unique_key": "武碎星河_有4K"
+      "title": "吞噬星空",
+      "update_info": "动漫更新至189集",
+      "baidu_link": "https://pan.baidu.com/s/17hUFRxTUvpQiWe3EoDt1tg?pwd=9v4v",
+      "has_4k": false,
+      "unique_key": "吞噬星空_无4K"
     }
   ]
 }
