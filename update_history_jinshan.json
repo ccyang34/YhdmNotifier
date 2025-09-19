@@ -1,13 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-09-12T10:19:56.880740+08:00",
-      "anime_unique_keys": [
-        "完美世界_有4K",
-        "神墓_有4K"
-      ]
-    },
-    {
       "timestamp": "2025-09-12T18:15:18.466218+08:00",
       "anime_unique_keys": [
         "斗罗大陆_无4K",
@@ -137,15 +130,22 @@
         "神墓_有4K",
         "斗罗大陆_无4K"
       ]
+    },
+    {
+      "timestamp": "2025-09-19T18:49:41.843974+08:00",
+      "anime_unique_keys": [
+        "神墓_有4K",
+        "斗罗大陆_有4K"
+      ]
     }
   ],
   "anime_details": [
     {
       "title": "斗罗大陆",
-      "update_info": "动漫更新至119集",
+      "update_info": "动漫4k更新至119集",
       "baidu_link": "https://pan.baidu.com/s/1fLkkQ68BfQxpLYCnF3GOQ?pwd=6bq9",
-      "has_4k": false,
-      "unique_key": "斗罗大陆_无4K"
+      "has_4k": true,
+      "unique_key": "斗罗大陆_有4K"
     },
     {
       "title": "神墓",
