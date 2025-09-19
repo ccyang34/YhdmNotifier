@@ -1,13 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-09-11T18:48:42.948339+08:00",
-      "anime_unique_keys": [
-        "武碎星河_有4K",
-        "完美世界_有4K"
-      ]
-    },
-    {
       "timestamp": "2025-09-12T10:19:56.880740+08:00",
       "anime_unique_keys": [
         "完美世界_有4K",
@@ -137,15 +130,22 @@
         "神墓_有4K",
         "完美世界_有4K"
       ]
+    },
+    {
+      "timestamp": "2025-09-19T18:15:41.170028+08:00",
+      "anime_unique_keys": [
+        "神墓_有4K",
+        "斗罗大陆_无4K"
+      ]
     }
   ],
   "anime_details": [
     {
-      "title": "完美世界",
-      "update_info": "动漫4k更新至233集",
-      "baidu_link": "https://pan.baidu.com/s/1FUAQni5jyWMoZNpUxQVxnA?pwd=d65i",
-      "has_4k": true,
-      "unique_key": "完美世界_有4K"
+      "title": "斗罗大陆",
+      "update_info": "动漫更新至119集",
+      "baidu_link": "https://pan.baidu.com/s/1fLkkQ68BfQxpLYCnF3GOQ?pwd=6bq9",
+      "has_4k": false,
+      "unique_key": "斗罗大陆_无4K"
     },
     {
       "title": "神墓",
