@@ -1,14 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-09-14T18:29:13.070841+08:00",
-      "anime_unique_keys": [
-        "武碎星河_有4K",
-        "牧神记_有4K",
-        "仙逆_无4K"
-      ]
-    },
-    {
       "timestamp": "2025-09-14T18:48:53.398579+08:00",
       "anime_unique_keys": [
         "武碎星河_有4K",
@@ -138,15 +130,21 @@
       "anime_unique_keys": [
         "吞噬星空_无4K"
       ]
+    },
+    {
+      "timestamp": "2025-09-22T18:42:42.144435+08:00",
+      "anime_unique_keys": [
+        "吞噬星空_有4K"
+      ]
     }
   ],
   "anime_details": [
     {
       "title": "吞噬星空",
-      "update_info": "动漫更新至190集",
+      "update_info": "动漫4k更新至190集",
       "baidu_link": "https://pan.baidu.com/s/1hi7pj6WZLij3wCaWasaAYA?pwd=4tt6",
-      "has_4k": false,
-      "unique_key": "吞噬星空_无4K"
+      "has_4k": true,
+      "unique_key": "吞噬星空_有4K"
     }
   ]
 }
