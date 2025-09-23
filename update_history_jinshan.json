@@ -1,12 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-09-15T18:15:50.980914+08:00",
-      "anime_unique_keys": [
-        "吞噬星空_无4K"
-      ]
-    },
-    {
       "timestamp": "2025-09-15T18:50:17.800054+08:00",
       "anime_unique_keys": [
         "吞噬星空_有4K"
@@ -134,15 +128,21 @@
       "anime_unique_keys": [
         "遮天_无4K"
       ]
+    },
+    {
+      "timestamp": "2025-09-23T18:49:54.881252+08:00",
+      "anime_unique_keys": [
+        "遮天_有4K"
+      ]
     }
   ],
   "anime_details": [
     {
       "title": "遮天",
-      "update_info": "动漫更新至128集",
+      "update_info": "动漫4k更新至128集",
       "baidu_link": "https://pan.baidu.com/s/1Hp0iQ6bdtXu5ZysRVLFfQ?pwd=t7u2",
-      "has_4k": false,
-      "unique_key": "遮天_无4K"
+      "has_4k": true,
+      "unique_key": "遮天_有4K"
     }
   ]
 }
