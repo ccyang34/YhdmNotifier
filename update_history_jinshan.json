@@ -1,12 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-09-17T19:11:39.181741+08:00",
-      "anime_unique_keys": [
-        "诛仙_有4K"
-      ]
-    },
-    {
       "timestamp": "2025-09-18T10:21:18.872750+08:00",
       "anime_unique_keys": [
         "武碎星河_有4K",
@@ -136,15 +130,22 @@
         "武碎星河_有4K",
         "完美世界_无4K"
       ]
+    },
+    {
+      "timestamp": "2025-09-25T18:50:28.506802+08:00",
+      "anime_unique_keys": [
+        "武碎星河_有4K",
+        "完美世界_有4K"
+      ]
     }
   ],
   "anime_details": [
     {
       "title": "完美世界",
-      "update_info": "动漫更新至234集",
+      "update_info": "动漫4k更新至234集",
       "baidu_link": "https://pan.baidu.com/s/1Lfhyv6o6OWNZixrrKEnMQ?pwd=m5ij",
-      "has_4k": false,
-      "unique_key": "完美世界_无4K"
+      "has_4k": true,
+      "unique_key": "完美世界_有4K"
     },
     {
       "title": "武碎星河",
