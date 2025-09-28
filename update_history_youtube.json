@@ -2,21 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-09-23T19:40:20.698436+08:00",
-      "fingerprint": [
-        "遮天 4k||128",
-        "遮天<font size='2' color='red'>（下集预告）</font>||129",
-        "紫川<font size='2' color='red'>（下集预告）</font>||12",
-        "紫川||11",
-        "武神主宰<font size='2' color='red'>（下集预告）</font>||585",
-        "遮天||128",
-        "武神主宰||584",
-        "灵剑尊<font size='2' color='red'>（下集预告）</font>||634",
-        "灵剑尊||633",
-        "遮天<font size='2' color='red'>（下集预告）</font>||130"
-      ]
-    },
-    {
       "timestamp": "2025-09-24T11:49:13.894732+08:00",
       "fingerprint": [
         "万界独尊||367",
@@ -147,6 +132,21 @@
         "武神主宰<font size='2' color='red'>（下集预告）</font>||586",
         "我在天庭收废品<font size='2' color='red'>（下集预告）</font>||04",
         "我在天庭收废品<font size='2' color='red'>（下集预告）</font>||05",
+        "我在天庭收废品||01"
+      ]
+    },
+    {
+      "timestamp": "2025-09-28T15:33:49.394480+08:00",
+      "fingerprint": [
+        "武神主宰||585",
+        "牧神记 4k||50",
+        "我在天庭收废品||03",
+        "我在天庭收废品<font size='2' color='red'>（下集预告）</font>||04",
+        "我在天庭收废品<font size='2' color='red'>（下集预告）</font>||05",
+        "牧神记||50",
+        "我在天庭收废品||02",
+        "牧神记<font size='2' color='red'>（下集预告）</font>||51",
+        "武神主宰<font size='2' color='red'>（下集预告）</font>||586",
         "我在天庭收废品||01"
       ]
     }
