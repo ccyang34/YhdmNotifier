@@ -1,12 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-09-22T18:16:25.338477+08:00",
-      "anime_unique_keys": [
-        "吞噬星空_无4K"
-      ]
-    },
-    {
       "timestamp": "2025-09-22T18:42:42.144435+08:00",
       "anime_unique_keys": [
         "吞噬星空_有4K"
@@ -135,15 +129,21 @@
       "anime_unique_keys": [
         "吞噬星空_有4K"
       ]
+    },
+    {
+      "timestamp": "2025-09-30T18:20:10.110317+08:00",
+      "anime_unique_keys": [
+        "遮天_无4K"
+      ]
     }
   ],
   "anime_details": [
     {
-      "title": "吞噬星空",
-      "update_info": "动漫4k更新至191集",
-      "baidu_link": "https://pan.baidu.com/s/1Hwj1GYrV2XDTZL4Ssrln8Q?pwd=z2zc",
-      "has_4k": true,
-      "unique_key": "吞噬星空_有4K"
+      "title": "遮天",
+      "update_info": "动漫更新至129集",
+      "baidu_link": "https://pan.baidu.com/s/1PN8jyFZ2oYfSaK24Nqcbiw?pwd=r374",
+      "has_4k": false,
+      "unique_key": "遮天_无4K"
     }
   ]
 }
