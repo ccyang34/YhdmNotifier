@@ -2,21 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-09-25T19:40:42.210554+08:00",
-      "fingerprint": [
-        "完美世界 4k||234",
-        "万古剑帝<font size='2' color='red'>（下集预告）</font>||16",
-        "万剑王座<font size='2' color='red'>（下集预告）</font>||21",
-        "万剑王座||20",
-        "完美世界<font size='2' color='red'>（下集预告）</font>||236",
-        "双生武魂||28",
-        "双生武魂<font size='2' color='red'>（下集预告）</font>||29",
-        "完美世界||234",
-        "万古剑帝||15",
-        "完美世界<font size='2' color='red'>（下集预告）</font>||235"
-      ]
-    },
-    {
       "timestamp": "2025-09-26T11:48:51.999182+08:00",
       "fingerprint": [
         "神墓<font size='2' color='red'>（下集预告）</font>||10",
@@ -146,6 +131,21 @@
         "万界独尊||369",
         "谷围南亭||01",
         "武魂大陆<font size='2' color='red'>（下集预告）</font>||09"
+      ]
+    },
+    {
+      "timestamp": "2025-09-30T15:36:49.679989+08:00",
+      "fingerprint": [
+        "谷围南亭<font size='2' color='red'>（下集预告）</font>||03",
+        "万界独尊<font size='2' color='red'>（下集预告）</font>||370",
+        "绝世神皇||01",
+        "灵剑尊<font size='2' color='red'>（下集预告）</font>||636",
+        "武魂大陆||01",
+        "谷围南亭||01",
+        "武魂大陆<font size='2' color='red'>（下集预告）</font>||09",
+        "灵剑尊||635",
+        "武魂大陆||08",
+        "谷围南亭||02"
       ]
     }
   ]
