@@ -1,13 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-09-25T10:24:52.607172+08:00",
-      "anime_unique_keys": [
-        "武碎星河_有4K",
-        "诛仙_有4K"
-      ]
-    },
-    {
       "timestamp": "2025-09-25T18:15:22.871416+08:00",
       "anime_unique_keys": [
         "武碎星河_有4K",
@@ -137,15 +130,22 @@
         "诛仙_无4K",
         "武碎星河_有4K"
       ]
+    },
+    {
+      "timestamp": "2025-10-02T17:19:51.665817+08:00",
+      "anime_unique_keys": [
+        "武碎星河_有4K",
+        "诛仙_有4K"
+      ]
     }
   ],
   "anime_details": [
     {
       "title": "诛仙",
-      "update_info": "动漫第三季大结局完结",
+      "update_info": "动漫4k大结局完结",
       "baidu_link": "https://pan.baidu.com/s/1G0ZtXY_awXOBNkiEaN1Msg?pwd=emjw",
-      "has_4k": false,
-      "unique_key": "诛仙_无4K"
+      "has_4k": true,
+      "unique_key": "诛仙_有4K"
     },
     {
       "title": "武碎星河",
