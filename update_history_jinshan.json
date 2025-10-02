@@ -1,13 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-09-25T18:15:22.871416+08:00",
-      "anime_unique_keys": [
-        "武碎星河_有4K",
-        "完美世界_无4K"
-      ]
-    },
-    {
       "timestamp": "2025-09-25T18:50:28.506802+08:00",
       "anime_unique_keys": [
         "武碎星河_有4K",
@@ -137,9 +130,24 @@
         "武碎星河_有4K",
         "诛仙_有4K"
       ]
+    },
+    {
+      "timestamp": "2025-10-02T18:18:57.196421+08:00",
+      "anime_unique_keys": [
+        "诛仙_有4K",
+        "武碎星河_有4K",
+        "完美世界_无4K"
+      ]
     }
   ],
   "anime_details": [
+    {
+      "title": "完美世界",
+      "update_info": "动漫更新至235集",
+      "baidu_link": "https://pan.baidu.com/s/1OVB8V8JOWy5oMBRDFI3Qg?pwd=7cvi",
+      "has_4k": false,
+      "unique_key": "完美世界_无4K"
+    },
     {
       "title": "诛仙",
       "update_info": "动漫4k大结局完结",
