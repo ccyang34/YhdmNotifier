@@ -1,12 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-09-23T18:49:54.881252+08:00",
-      "anime_unique_keys": [
-        "遮天_有4K"
-      ]
-    },
-    {
       "timestamp": "2025-09-24T19:12:05.749694+08:00",
       "anime_unique_keys": [
         "诛仙_有4K"
@@ -135,6 +129,13 @@
       "anime_unique_keys": [
         "诛仙_有4K"
       ]
+    },
+    {
+      "timestamp": "2025-10-02T10:21:19.378022+08:00",
+      "anime_unique_keys": [
+        "诛仙_有4K",
+        "武碎星河_有4K"
+      ]
     }
   ],
   "anime_details": [
@@ -144,6 +145,13 @@
       "baidu_link": "https://pan.baidu.com/s/1zq4AfDKWDQKJjwBjCe3A?pwd=37vh",
       "has_4k": true,
       "unique_key": "诛仙_有4K"
+    },
+    {
+      "title": "武碎星河",
+      "update_info": "动漫4k更新至17集",
+      "baidu_link": "https://pan.baidu.com/s/1Xrcqkz8njxCkyVFJmkzNag?pwd=da73",
+      "has_4k": true,
+      "unique_key": "武碎星河_有4K"
     }
   ]
 }
