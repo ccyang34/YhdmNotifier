@@ -1,13 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-09-26T18:14:52.734579+08:00",
-      "anime_unique_keys": [
-        "神墓_有4K",
-        "斗罗大陆_无4K"
-      ]
-    },
-    {
       "timestamp": "2025-09-26T18:49:06.233468+08:00",
       "anime_unique_keys": [
         "神墓_有4K",
@@ -140,15 +133,23 @@
         "诛仙_有4K",
         "完美世界_有4K"
       ]
+    },
+    {
+      "timestamp": "2025-10-03T18:19:43.003131+08:00",
+      "anime_unique_keys": [
+        "神墓_有4K",
+        "斗罗大陆_无4K",
+        "诛仙_有4K"
+      ]
     }
   ],
   "anime_details": [
     {
-      "title": "完美世界",
-      "update_info": "动漫4k更新至235集",
-      "baidu_link": "https://pan.baidu.com/s/1OVB8V8JOWy5oMBRDFI3Qg?pwd=7cvi",
-      "has_4k": true,
-      "unique_key": "完美世界_有4K"
+      "title": "斗罗大陆",
+      "update_info": "动漫更新至121集",
+      "baidu_link": "https://pan.baidu.com/s/1JyODnrNylKMcT_LBSze_Q?pwd=s8gh",
+      "has_4k": false,
+      "unique_key": "斗罗大陆_无4K"
     },
     {
       "title": "诛仙",
