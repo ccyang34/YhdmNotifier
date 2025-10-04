@@ -1,13 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-09-27T11:22:42.109581+08:00",
-      "anime_unique_keys": [
-        "斗罗大陆_有4K",
-        "凡人修仙传_有4K"
-      ]
-    },
-    {
       "timestamp": "2025-09-27T18:17:44.734270+08:00",
       "anime_unique_keys": [
         "凡人修仙传_有4K",
@@ -142,9 +135,24 @@
         "诛仙_有4K",
         "斗罗大陆_有4K"
       ]
+    },
+    {
+      "timestamp": "2025-10-04T11:19:33.533746+08:00",
+      "anime_unique_keys": [
+        "凡人修仙传_有4K",
+        "斗罗大陆_有4K",
+        "诛仙_有4K"
+      ]
     }
   ],
   "anime_details": [
+    {
+      "title": "凡人修仙传",
+      "update_info": "动漫4k更新至163集",
+      "baidu_link": "https://pan.baidu.com/s/1z66m5CH7xCCj49qos0tAg?pwd=vz5s",
+      "has_4k": true,
+      "unique_key": "凡人修仙传_有4K"
+    },
     {
       "title": "斗罗大陆",
       "update_info": "动漫4k更新至121集",
@@ -158,13 +166,6 @@
       "baidu_link": "https://pan.baidu.com/s/1G0ZtXY_awXOBNkiEaN1Msg?pwd=emjw",
       "has_4k": true,
       "unique_key": "诛仙_有4K"
-    },
-    {
-      "title": "神墓",
-      "update_info": "动漫年番4k更新至10集",
-      "baidu_link": "https://pan.baidu.com/s/1OgD6KHTE4AJdjcnYfRPzAg?pwd=9xe1",
-      "has_4k": true,
-      "unique_key": "神墓_有4K"
     }
   ]
 }
