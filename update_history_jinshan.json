@@ -1,12 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-09-29T18:16:26.592074+08:00",
-      "anime_unique_keys": [
-        "吞噬星空_无4K"
-      ]
-    },
-    {
       "timestamp": "2025-09-29T18:50:58.399384+08:00",
       "anime_unique_keys": [
         "吞噬星空_有4K"
@@ -147,15 +141,22 @@
         "诛仙_有4K",
         "吞噬星空_无4K"
       ]
+    },
+    {
+      "timestamp": "2025-10-06T18:50:23.126375+08:00",
+      "anime_unique_keys": [
+        "诛仙_有4K",
+        "吞噬星空_有4K"
+      ]
     }
   ],
   "anime_details": [
     {
       "title": "吞噬星空",
-      "update_info": "动漫更新至192集",
+      "update_info": "动漫4k更新至192集",
       "baidu_link": "https://pan.baidu.com/s/1VYIa4aOox0pVs0IntfW4A?pwd=kse5",
-      "has_4k": false,
-      "unique_key": "吞噬星空_无4K"
+      "has_4k": true,
+      "unique_key": "吞噬星空_有4K"
     },
     {
       "title": "诛仙",
