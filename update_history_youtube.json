@@ -2,21 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-10-05T15:33:29.775735+08:00",
-      "fingerprint": [
-        "武魂大陆<font size='2' color='red'>（下集预告）</font>||10",
-        "我在天庭收废品||01",
-        "我在天庭收废品||05",
-        "武魂大陆||09",
-        "我在天庭收废品<font size='2' color='red'>（下集预告）</font>||06",
-        "武神主宰||587",
-        "我在天庭收废品<font size='2' color='red'>（下集预告）</font>||07",
-        "牧神记 4k||51",
-        "武神主宰<font size='2' color='red'>（下集预告）</font>||588",
-        "武碎星河||18"
-      ]
-    },
-    {
       "timestamp": "2025-10-05T19:39:30.754240+08:00",
       "fingerprint": [
         "武魂大陆<font size='2' color='red'>（下集预告）</font>||10",
@@ -149,6 +134,21 @@
         "我在天庭收废品||06",
         "双生武魂<font size='2' color='red'>（下集预告）</font>||32",
         "荒古恩仇录<font size='2' color='red'>（下集预告）</font>||12"
+      ]
+    },
+    {
+      "timestamp": "2025-10-09T11:49:53.614717+08:00",
+      "fingerprint": [
+        "双生武魂||32",
+        "大唐乘风录||05",
+        "万剑王座<font size='2' color='red'>（下集预告）</font>||25",
+        "天命大神皇||13",
+        "双生武魂<font size='2' color='red'>（下集预告）</font>||33",
+        "万古剑帝||19",
+        "大唐乘风录<font size='2' color='red'>（下集预告）</font>||06",
+        "万古剑帝<font size='2' color='red'>（下集预告）</font>||20",
+        "天命大神皇<font size='2' color='red'>（下集预告）</font>||14",
+        "万剑王座||24"
       ]
     }
   ]
