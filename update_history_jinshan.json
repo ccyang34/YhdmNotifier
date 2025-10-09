@@ -1,12 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-10-01T19:13:30.260692+08:00",
-      "anime_unique_keys": [
-        "诛仙_有4K"
-      ]
-    },
-    {
       "timestamp": "2025-10-02T10:21:19.378022+08:00",
       "anime_unique_keys": [
         "诛仙_有4K",
@@ -150,9 +144,23 @@
       "anime_unique_keys": [
         "武碎星河_有4K"
       ]
+    },
+    {
+      "timestamp": "2025-10-09T18:50:54.627364+08:00",
+      "anime_unique_keys": [
+        "完美世界_有4K",
+        "武碎星河_有4K"
+      ]
     }
   ],
   "anime_details": [
+    {
+      "title": "完美世界",
+      "update_info": "动漫4k更新至236集",
+      "baidu_link": "https://pan.baidu.com/s/1YCLexOIZhkoYzvAYEtV8g?pwd=n4ez",
+      "has_4k": true,
+      "unique_key": "完美世界_有4K"
+    },
     {
       "title": "武碎星河",
       "update_info": "动漫4k更新至19集",
