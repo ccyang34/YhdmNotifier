@@ -1,14 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-10-03T10:20:58.095883+08:00",
-      "anime_unique_keys": [
-        "神墓_有4K",
-        "诛仙_有4K",
-        "完美世界_有4K"
-      ]
-    },
-    {
       "timestamp": "2025-10-03T18:19:43.003131+08:00",
       "anime_unique_keys": [
         "神墓_有4K",
@@ -149,15 +141,22 @@
         "凡人修仙传_有4K",
         "斗破苍穹_无4K"
       ]
+    },
+    {
+      "timestamp": "2025-10-11T18:49:03.700002+08:00",
+      "anime_unique_keys": [
+        "斗破苍穹_有4K",
+        "凡人修仙传_有4K"
+      ]
     }
   ],
   "anime_details": [
     {
       "title": "斗破苍穹",
-      "update_info": "动漫更新至168集",
+      "update_info": "动漫4k更新至168集",
       "baidu_link": "https://pan.baidu.com/s/13o4bfxCrwaebyu5vvMY6Wg?pwd=v4p2",
-      "has_4k": false,
-      "unique_key": "斗破苍穹_无4K"
+      "has_4k": true,
+      "unique_key": "斗破苍穹_有4K"
     },
     {
       "title": "凡人修仙传",
