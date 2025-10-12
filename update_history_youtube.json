@@ -2,21 +2,6 @@
   "week_number": 11,
   "pushes": [
     {
-      "timestamp": "2025-10-07T19:40:19.776496+08:00",
-      "fingerprint": [
-        "遮天||130",
-        "灵剑尊<font size='2' color='red'>（下集预告）</font>||638",
-        "武魂大陆||01",
-        "紫川||13",
-        "武神主宰<font size='2' color='red'>（下集预告）</font>||589",
-        "遮天<font size='2' color='red'>（下集预告）</font>||131",
-        "紫川||14",
-        "遮天<font size='2' color='red'>（下集预告）</font>||132",
-        "灵剑尊||637",
-        "遮天 4k||130"
-      ]
-    },
-    {
       "timestamp": "2025-10-08T11:48:33.467920+08:00",
       "fingerprint": [
         "双生武魂<font size='2' color='red'>（下集预告）</font>||32",
@@ -149,6 +134,21 @@
         "万界独尊||372",
         "绝世神皇<font size='2' color='red'>（下集预告）</font>||14",
         "凡人修仙传<font size='2' color='red'>（下集预告）</font>||165"
+      ]
+    },
+    {
+      "timestamp": "2025-10-12T11:49:42.348669+08:00",
+      "fingerprint": [
+        "万界独尊<font size='2' color='red'>（下集预告）</font>||373",
+        "万古剑帝<font size='2' color='red'>（下集预告）</font>||21",
+        "炼气十万年||284",
+        "万古剑帝||20",
+        "谷围南亭<font size='2' color='red'>（下集预告）</font>||05",
+        "谷围南亭||04",
+        "万界独尊||372",
+        "炼气十万年<font size='2' color='red'>（下集预告）</font>||285",
+        "绝世神皇<font size='2' color='red'>（下集预告）</font>||14",
+        "绝世神皇||13"
       ]
     }
   ]
