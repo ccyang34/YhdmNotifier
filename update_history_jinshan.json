@@ -1,14 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-10-12T11:30:22.769622+08:00",
-      "anime_unique_keys": [
-        "武碎星河_有4K",
-        "斗破苍穹_有4K",
-        "牧神记_有4K"
-      ]
-    },
-    {
       "timestamp": "2025-10-12T18:18:00.257602+08:00",
       "anime_unique_keys": [
         "牧神记_有4K",
@@ -140,15 +132,21 @@
       "anime_unique_keys": [
         "吞噬星空_无4K"
       ]
+    },
+    {
+      "timestamp": "2025-10-20T18:52:36.600722+08:00",
+      "anime_unique_keys": [
+        "吞噬星空_有4K"
+      ]
     }
   ],
   "anime_details": [
     {
       "title": "吞噬星空",
-      "update_info": "动漫更新至194集",
+      "update_info": "动漫4k更新至194集",
       "baidu_link": "https://pan.baidu.com/s/1TtAOberOFE2rhpaB3ADk9g?pwd=9sqw",
-      "has_4k": false,
-      "unique_key": "吞噬星空_无4K"
+      "has_4k": true,
+      "unique_key": "吞噬星空_有4K"
     }
   ]
 }
