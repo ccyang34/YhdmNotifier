@@ -1,14 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-10-12T18:39:05.194840+08:00",
-      "anime_unique_keys": [
-        "仙逆_有4K",
-        "武碎星河_有4K",
-        "牧神记_有4K"
-      ]
-    },
-    {
       "timestamp": "2025-10-13T18:23:22.064642+08:00",
       "anime_unique_keys": [
         "吞噬星空_无4K"
@@ -136,15 +128,21 @@
       "anime_unique_keys": [
         "遮天_无4K"
       ]
+    },
+    {
+      "timestamp": "2025-10-21T18:51:59.368012+08:00",
+      "anime_unique_keys": [
+        "遮天_有4K"
+      ]
     }
   ],
   "anime_details": [
     {
       "title": "遮天",
-      "update_info": "动漫更新至132集",
+      "update_info": "动漫4k更新至132集",
       "baidu_link": "https://pan.baidu.com/s/14kqKQU_PNSuiKvFkvkQWXQ?pwd=kp4w",
-      "has_4k": false,
-      "unique_key": "遮天_无4K"
+      "has_4k": true,
+      "unique_key": "遮天_有4K"
     }
   ]
 }
