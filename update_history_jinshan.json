@@ -1,12 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-10-16T10:25:53.010262+08:00",
-      "anime_unique_keys": [
-        "武碎星河_有4K"
-      ]
-    },
-    {
       "timestamp": "2025-10-16T18:42:50.726234+08:00",
       "anime_unique_keys": [
         "武碎星河_有4K",
@@ -136,6 +130,13 @@
         "武碎星河_有4K",
         "完美世界_有4K"
       ]
+    },
+    {
+      "timestamp": "2025-10-24T10:23:40.176834+08:00",
+      "anime_unique_keys": [
+        "神墓_有4K",
+        "完美世界_有4K"
+      ]
     }
   ],
   "anime_details": [
@@ -147,11 +148,11 @@
       "unique_key": "完美世界_有4K"
     },
     {
-      "title": "武碎星河",
-      "update_info": "动漫4k更新至23集",
-      "baidu_link": "https://pan.baidu.com/s/1GvBqhRKDg9GKc_cykvfJZA?pwd=vt4r",
+      "title": "神墓",
+      "update_info": "动漫年番4k更新至13集",
+      "baidu_link": "https://pan.baidu.com/s/1b20UYV0JPtNl4HNgjbAeTw?pwd=gab7",
       "has_4k": true,
-      "unique_key": "武碎星河_有4K"
+      "unique_key": "神墓_有4K"
     }
   ]
 }
