@@ -1,14 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-10-19T18:18:05.616312+08:00",
-      "anime_unique_keys": [
-        "仙逆_无4K",
-        "牧神记_有4K",
-        "武碎星河_有4K"
-      ]
-    },
-    {
       "timestamp": "2025-10-19T18:48:58.450610+08:00",
       "anime_unique_keys": [
         "仙逆_有4K",
@@ -136,15 +128,21 @@
       "anime_unique_keys": [
         "吞噬星空_有4K"
       ]
+    },
+    {
+      "timestamp": "2025-10-28T18:46:04.866280+08:00",
+      "anime_unique_keys": [
+        "遮天_有4K"
+      ]
     }
   ],
   "anime_details": [
     {
-      "title": "吞噬星空",
-      "update_info": "动漫4k更新至195集",
-      "baidu_link": "https://pan.baidu.com/s/1SYet0KhR9QesgCzXSZLYmQ?pwd=spee",
+      "title": "遮天",
+      "update_info": "动漫4k更新至133集",
+      "baidu_link": "https://pan.baidu.com/s/1Ydu9KntJ8wHt1ei43PaBHQ?pwd=8vic",
       "has_4k": true,
-      "unique_key": "吞噬星空_有4K"
+      "unique_key": "遮天_有4K"
     }
   ]
 }
