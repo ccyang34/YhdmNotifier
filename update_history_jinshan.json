@@ -1,12 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-10-20T18:52:36.600722+08:00",
-      "anime_unique_keys": [
-        "吞噬星空_有4K"
-      ]
-    },
-    {
       "timestamp": "2025-10-21T18:42:14.166451+08:00",
       "anime_unique_keys": [
         "遮天_无4K"
@@ -133,15 +127,22 @@
         "武碎星河_有4K",
         "完美世界_无4K"
       ]
+    },
+    {
+      "timestamp": "2025-10-30T18:42:59.525718+08:00",
+      "anime_unique_keys": [
+        "完美世界_有4K",
+        "武碎星河_有4K"
+      ]
     }
   ],
   "anime_details": [
     {
       "title": "完美世界",
-      "update_info": "动漫更新至239集",
+      "update_info": "动漫4k更新至239集",
       "baidu_link": "https://pan.baidu.com/s/1PjD5likNWDiUtFvPY0rv5A?pwd=rxtx",
-      "has_4k": false,
-      "unique_key": "完美世界_无4K"
+      "has_4k": true,
+      "unique_key": "完美世界_有4K"
     },
     {
       "title": "武碎星河",
