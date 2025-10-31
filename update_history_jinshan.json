@@ -1,12 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-10-23T10:26:58.617161+08:00",
-      "anime_unique_keys": [
-        "武碎星河_有4K"
-      ]
-    },
-    {
       "timestamp": "2025-10-23T18:16:38.442873+08:00",
       "anime_unique_keys": [
         "完美世界_无4K",
@@ -136,15 +130,22 @@
         "神墓_有4K",
         "斗罗大陆_无4K"
       ]
+    },
+    {
+      "timestamp": "2025-10-31T18:51:36.275301+08:00",
+      "anime_unique_keys": [
+        "斗罗大陆_有4K",
+        "神墓_有4K"
+      ]
     }
   ],
   "anime_details": [
     {
       "title": "斗罗大陆",
-      "update_info": "动漫更新至125集",
+      "update_info": "动漫4k更新至125集",
       "baidu_link": "https://pan.baidu.com/s/1XhcI8hsXsoEMKzaA_rhPg?pwd=jm95",
-      "has_4k": false,
-      "unique_key": "斗罗大陆_无4K"
+      "has_4k": true,
+      "unique_key": "斗罗大陆_有4K"
     },
     {
       "title": "神墓",
