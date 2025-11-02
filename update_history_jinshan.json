@@ -1,13 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-10-24T18:17:05.689312+08:00",
-      "anime_unique_keys": [
-        "神墓_有4K",
-        "斗罗大陆_无4K"
-      ]
-    },
-    {
       "timestamp": "2025-10-24T18:42:59.486897+08:00",
       "anime_unique_keys": [
         "斗罗大陆_有4K",
@@ -137,6 +130,13 @@
         "斗破苍穹_有4K",
         "凡人修仙传_有4K"
       ]
+    },
+    {
+      "timestamp": "2025-11-02T10:46:49.013638+08:00",
+      "anime_unique_keys": [
+        "武碎星河_有4K",
+        "斗破苍穹_有4K"
+      ]
     }
   ],
   "anime_details": [
@@ -148,11 +148,11 @@
       "unique_key": "斗破苍穹_有4K"
     },
     {
-      "title": "凡人修仙传",
-      "update_info": "动漫4k更新至167集",
-      "baidu_link": "https://pan.baidu.com/s/1DQpEbYoPKdmtipIKr8I5w?pwd=maiv",
+      "title": "武碎星河",
+      "update_info": "动漫4k更新至26集",
+      "baidu_link": "https://pan.baidu.com/s/1VYCGSfm33y8Ne1PmLpMQNw?pwd=sn9f",
       "has_4k": true,
-      "unique_key": "凡人修仙传_有4K"
+      "unique_key": "武碎星河_有4K"
     }
   ]
 }
