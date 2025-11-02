@@ -1,13 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-10-25T18:18:17.330721+08:00",
-      "anime_unique_keys": [
-        "斗破苍穹_无4K",
-        "凡人修仙传_有4K"
-      ]
-    },
-    {
       "timestamp": "2025-10-25T18:49:05.204582+08:00",
       "anime_unique_keys": [
         "凡人修仙传_有4K",
@@ -139,6 +132,14 @@
         "仙逆_无4K",
         "武碎星河_有4K"
       ]
+    },
+    {
+      "timestamp": "2025-11-02T18:48:55.095950+08:00",
+      "anime_unique_keys": [
+        "武碎星河_有4K",
+        "牧神记_有4K",
+        "仙逆_有4K"
+      ]
     }
   ],
   "anime_details": [
@@ -151,10 +152,10 @@
     },
     {
       "title": "仙逆",
-      "update_info": "动漫更新至113集",
+      "update_info": "动漫4k更新至113集",
       "baidu_link": "https://pan.baidu.com/s/1py7PpwuTWCsWiTtaUoYhLQ?pwd=rq6j",
-      "has_4k": false,
-      "unique_key": "仙逆_无4K"
+      "has_4k": true,
+      "unique_key": "仙逆_有4K"
     },
     {
       "title": "武碎星河",
