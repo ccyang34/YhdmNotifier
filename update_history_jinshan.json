@@ -1,13 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-10-31T18:16:12.787940+08:00",
-      "anime_unique_keys": [
-        "神墓_有4K",
-        "斗罗大陆_无4K"
-      ]
-    },
-    {
       "timestamp": "2025-10-31T18:51:36.275301+08:00",
       "anime_unique_keys": [
         "斗罗大陆_有4K",
@@ -138,15 +131,22 @@
         "凡人修仙传_有4K",
         "斗破苍穹_无4K"
       ]
+    },
+    {
+      "timestamp": "2025-11-08T18:49:00.369156+08:00",
+      "anime_unique_keys": [
+        "斗破苍穹_有4K",
+        "凡人修仙传_有4K"
+      ]
     }
   ],
   "anime_details": [
     {
       "title": "斗破苍穹",
-      "update_info": "动漫更新至172集",
+      "update_info": "动漫4k更新至172集",
       "baidu_link": "https://pan.baidu.com/s/10kxXlhXW4VbA8_A07PS76A?pwd=xkr4",
-      "has_4k": false,
-      "unique_key": "斗破苍穹_无4K"
+      "has_4k": true,
+      "unique_key": "斗破苍穹_有4K"
     },
     {
       "title": "凡人修仙传",
