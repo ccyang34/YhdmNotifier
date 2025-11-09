@@ -1,13 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-11-01T11:11:38.404904+08:00",
-      "anime_unique_keys": [
-        "凡人修仙传_有4K",
-        "斗罗大陆_有4K"
-      ]
-    },
-    {
       "timestamp": "2025-11-01T18:18:45.671293+08:00",
       "anime_unique_keys": [
         "凡人修仙传_有4K",
@@ -138,6 +131,14 @@
         "斗破苍穹_有4K",
         "武碎星河_有4K"
       ]
+    },
+    {
+      "timestamp": "2025-11-09T11:13:34.098159+08:00",
+      "anime_unique_keys": [
+        "武碎星河_有4K",
+        "牧神记_有4K",
+        "斗破苍穹_有4K"
+      ]
     }
   ],
   "anime_details": [
@@ -147,6 +148,13 @@
       "baidu_link": "https://pan.baidu.com/s/10kxXlhXW4VbA8_A07PS76A?pwd=xkr4",
       "has_4k": true,
       "unique_key": "斗破苍穹_有4K"
+    },
+    {
+      "title": "牧神记",
+      "update_info": "动漫4k更新至56集",
+      "baidu_link": "https://pan.baidu.com/s/1UUnBb7lh8QSxqXPIliPyjw?pwd=rxmy",
+      "has_4k": true,
+      "unique_key": "牧神记_有4K"
     },
     {
       "title": "武碎星河",
