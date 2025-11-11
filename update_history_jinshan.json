@@ -1,14 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-11-02T18:48:55.095950+08:00",
-      "anime_unique_keys": [
-        "武碎星河_有4K",
-        "牧神记_有4K",
-        "仙逆_有4K"
-      ]
-    },
-    {
       "timestamp": "2025-11-03T18:17:55.576699+08:00",
       "anime_unique_keys": [
         "吞噬星空_无4K"
@@ -136,15 +128,21 @@
       "anime_unique_keys": [
         "遮天_无4K"
       ]
+    },
+    {
+      "timestamp": "2025-11-11T18:46:30.387389+08:00",
+      "anime_unique_keys": [
+        "遮天_有4K"
+      ]
     }
   ],
   "anime_details": [
     {
       "title": "遮天",
-      "update_info": "动漫更新至135集",
+      "update_info": "动漫4k更新至135集",
       "baidu_link": "https://pan.baidu.com/s/1MDEBb_5LsKlQvPsyirTc_A?pwd=9s3h",
-      "has_4k": false,
-      "unique_key": "遮天_无4K"
+      "has_4k": true,
+      "unique_key": "遮天_有4K"
     }
   ]
 }
