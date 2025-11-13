@@ -111,7 +111,10 @@ def extract_anime_info(content):
             cleaned_name = match.group(1)
             raw_update_info = match.group(2)
             has_4k = '4k' in raw_update_info.lower()
-            anime_unique_key = f"{cleaned_name}_有4K" if has_4k else f"{cleaned_name}_无4K"
+            # 仅当包含4K时才记录
+            if not has_4k:
+                continue
+            anime_unique_key = f"{cleaned_name}_有4K"
             
             baidu_link = ""
             after_pos = match.end()
@@ -123,7 +126,7 @@ def extract_anime_info(content):
                 "title": cleaned_name,
                 "update_info": raw_update_info,
                 "baidu_link": baidu_link,
-                "has_4k": has_4k,
+                "has_4k": True,
                 "unique_key": anime_unique_key
             })
     
