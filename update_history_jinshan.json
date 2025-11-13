@@ -1,12 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-11-04T18:47:20.849327+08:00",
-      "anime_unique_keys": [
-        "遮天_有4K"
-      ]
-    },
-    {
       "timestamp": "2025-11-06T10:44:36.351316+08:00",
       "anime_unique_keys": [
         "武碎星河_有4K"
@@ -135,15 +129,22 @@
         "完美世界_无4K",
         "武碎星河_有4K"
       ]
+    },
+    {
+      "timestamp": "2025-11-13T18:45:00.147181+08:00",
+      "anime_unique_keys": [
+        "完美世界_有4K",
+        "武碎星河_有4K"
+      ]
     }
   ],
   "anime_details": [
     {
       "title": "完美世界",
-      "update_info": "动漫更新至241集",
+      "update_info": "动漫4k更新至241集",
       "baidu_link": "https://pan.baidu.com/s/1zIMEnsiDxLB5YN_clvpArw?pwd=ziqj",
-      "has_4k": false,
-      "unique_key": "完美世界_无4K"
+      "has_4k": true,
+      "unique_key": "完美世界_有4K"
     },
     {
       "title": "武碎星河",
