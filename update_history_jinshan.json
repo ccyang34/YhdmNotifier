@@ -1,13 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-11-08T18:49:00.369156+08:00",
-      "anime_unique_keys": [
-        "斗破苍穹_有4K",
-        "凡人修仙传_有4K"
-      ]
-    },
-    {
       "timestamp": "2025-11-09T10:44:53.970544+08:00",
       "anime_unique_keys": [
         "斗破苍穹_有4K",
@@ -138,15 +131,21 @@
       "anime_unique_keys": [
         "吞噬星空_有4K"
       ]
+    },
+    {
+      "timestamp": "2025-11-18T18:45:18.136016+08:00",
+      "anime_unique_keys": [
+        "遮天_有4K"
+      ]
     }
   ],
   "anime_details": [
     {
-      "title": "吞噬星空",
-      "update_info": "动漫4k更新至198集",
-      "baidu_link": "https://pan.baidu.com/s/1hkHokn6LRgvhpN9Z0XMJHg?pwd=75mm",
+      "title": "遮天",
+      "update_info": "动漫4k更新至136集",
+      "baidu_link": "https://pan.baidu.com/s/1G0HckEwZ1qvjPBbMi96iqQ?pwd=4h9f",
       "has_4k": true,
-      "unique_key": "吞噬星空_有4K"
+      "unique_key": "遮天_有4K"
     }
   ]
 }
