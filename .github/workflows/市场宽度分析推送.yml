@@ -2,8 +2,8 @@ name: 定时运行市场宽度快速报告
 
 on:
   schedule:
-    - cron: '30 7 * * 1-5'  # 北京时间15:30
-  workflow_dispatch:
+    - cron: '30 7 * * 1-5'  # 北京时间每周一至周五15:30
+  workflow_dispatch:  # 允许手动触发测试
 
 jobs:
   run_report:
@@ -11,18 +11,19 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - name: 检出代码（必须步骤，拉取仓库文件）
-        uses: actions/checkout@v4  # 确保这一步存在，否则找不到脚本
+      - name: 检出仓库代码（关键步骤）
+        uses: actions/checkout@v4  # 必须保留，否则运行环境中没有你的脚本
 
-      - name: 设置Python环境（不启用pip缓存）
+      - name: 配置Python环境
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'  # 移除cache: 'pip'，避免寻找依赖文件
+          python-version: '3.11'  # 选择兼容的Python版本
 
-      - name: 直接安装依赖
+      - name: 安装所有第三方依赖（含pytz）
         run: |
           python -m pip install --upgrade pip
-          pip install requests pandas  # 手动安装所需库
+          # 明确安装脚本中用到的所有第三方库
+          pip install requests pandas pytz
 
-      - name: 执行脚本
-        run: python "市场宽度快速报告.py"  # 确保脚本名与仓库中一致
+      - name: 执行脚本（验证模块导入）
+        run: python "市场宽度快速报告.py"  # 确保脚本路径正确
