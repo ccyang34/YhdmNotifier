@@ -2,40 +2,27 @@ name: 定时运行市场宽度快速报告
 
 on:
   schedule:
-    # 北京时间每周一至周五 15:30 运行（对应 UTC 07:30）
-    - cron: '30 7 * * 1-5'
-  workflow_dispatch:  # 允许手动触发
+    - cron: '30 7 * * 1-5'  # 北京时间15:30
+  workflow_dispatch:
 
 jobs:
   run_report:
     runs-on: ubuntu-latest
-    timeout-minutes: 10  # 超时控制
+    timeout-minutes: 10
 
     steps:
-      - name: 检出代码（关键步骤：确保拉取仓库文件）
-        uses: actions/checkout@v4  # 必须有这一步，否则无法访问仓库中的脚本
+      - name: 检出代码（必须步骤，拉取仓库文件）
+        uses: actions/checkout@v4  # 确保这一步存在，否则找不到脚本
 
-      - name: 设置Python环境
+      - name: 设置Python环境（不启用pip缓存）
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-          cache: 'pip'  # 缓存依赖加速后续运行
+          python-version: '3.11'  # 移除cache: 'pip'，避免寻找依赖文件
 
-      - name: 直接安装所需依赖（无需requirements.txt）
+      - name: 直接安装依赖
         run: |
           python -m pip install --upgrade pip
-          # 明确安装脚本中用到的第三方库
-          pip install requests pandas
+          pip install requests pandas  # 手动安装所需库
 
-      - name: 执行市场宽度快速报告脚本
-        run: python "市场宽度快速报告.py"  # 确保脚本文件名与仓库中一致
-
-      # 可选：如果脚本生成了报告文件，保存为产物
-      - name: 保存报告结果
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: market-breadth-report
-          path: |
-            *.csv
-            *.txt
+      - name: 执行脚本
+        run: python "市场宽度快速报告.py"  # 确保脚本名与仓库中一致
