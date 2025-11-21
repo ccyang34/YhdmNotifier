@@ -1,14 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-11-09T18:18:21.564301+08:00",
-      "anime_unique_keys": [
-        "牧神记_有4K",
-        "武碎星河_有4K",
-        "仙逆_无4K"
-      ]
-    },
-    {
       "timestamp": "2025-11-09T18:48:50.056930+08:00",
       "anime_unique_keys": [
         "仙逆_有4K",
@@ -137,6 +129,13 @@
         "完美世界_有4K",
         "武碎星河_有4K"
       ]
+    },
+    {
+      "timestamp": "2025-11-21T10:42:04.566674+08:00",
+      "anime_unique_keys": [
+        "完美世界_有4K",
+        "神墓_有4K"
+      ]
     }
   ],
   "anime_details": [
@@ -148,18 +147,11 @@
       "unique_key": "完美世界_有4K"
     },
     {
-      "title": "武动乾坤",
-      "update_info": "动漫第六季4k开播02集",
-      "baidu_link": "https://pan.baidu.com/s/1TiND0XuC_KGHhIt5yrv7Q?pwd=1vtr",
+      "title": "神墓",
+      "update_info": "动漫年番4k更新至17集",
+      "baidu_link": "https://pan.baidu.com/s/1Gaz16p0SBOIbiM848K1GQ?pwd=f42w",
       "has_4k": true,
-      "unique_key": "武动乾坤_有4K"
-    },
-    {
-      "title": "武碎星河",
-      "update_info": "动漫4k更新至31集",
-      "baidu_link": "https://pan.baidu.com/s/1osA5sYPJW5Tep3WyrsNmQ?pwd=a2cy",
-      "has_4k": true,
-      "unique_key": "武碎星河_有4K"
+      "unique_key": "神墓_有4K"
     }
   ]
 }
