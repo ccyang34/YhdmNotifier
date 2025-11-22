@@ -1,12 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-11-10T18:45:03.045285+08:00",
-      "anime_unique_keys": [
-        "吞噬星空_有4K"
-      ]
-    },
-    {
       "timestamp": "2025-11-11T18:17:39.223752+08:00",
       "anime_unique_keys": [
         "遮天_无4K"
@@ -135,9 +129,23 @@
       "anime_unique_keys": [
         "凡人修仙传_有4K"
       ]
+    },
+    {
+      "timestamp": "2025-11-22T18:48:25.862482+08:00",
+      "anime_unique_keys": [
+        "凡人修仙传_有4K",
+        "斗破苍穹_有4K"
+      ]
     }
   ],
   "anime_details": [
+    {
+      "title": "斗破苍穹",
+      "update_info": "动漫4k更新至174集",
+      "baidu_link": "https://pan.baidu.com/s/1RdE9nT3Te83oY37g2GA4g?pwd=qkfj",
+      "has_4k": true,
+      "unique_key": "斗破苍穹_有4K"
+    },
     {
       "title": "凡人修仙传",
       "update_info": "动漫4k更新至170集",
