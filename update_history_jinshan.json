@@ -1,13 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-11-14T10:43:49.896478+08:00",
-      "anime_unique_keys": [
-        "完美世界_有4K",
-        "神墓_有4K"
-      ]
-    },
-    {
       "timestamp": "2025-11-14T18:52:52.311018+08:00",
       "anime_unique_keys": [
         "神墓_有4K",
@@ -139,15 +132,21 @@
       "anime_unique_keys": [
         "遮天_有4K"
       ]
+    },
+    {
+      "timestamp": "2025-11-27T10:43:03.489369+08:00",
+      "anime_unique_keys": [
+        "武碎星河_有4K"
+      ]
     }
   ],
   "anime_details": [
     {
-      "title": "遮天",
-      "update_info": "动漫4k更新至137集",
-      "baidu_link": "https://pan.baidu.com/s/1XR0_K_gU9ElbU9BHglQRWQ?pwd=iedd",
+      "title": "武碎星河",
+      "update_info": "动漫4k更新至33集",
+      "baidu_link": "https://pan.baidu.com/s/1VFx7TjxWpRCFxUPsWlwltQ?pwd=f1ym",
       "has_4k": true,
-      "unique_key": "遮天_有4K"
+      "unique_key": "武碎星河_有4K"
     }
   ]
 }
