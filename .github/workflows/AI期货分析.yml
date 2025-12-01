@@ -17,7 +17,7 @@ jobs:
       - name: 配置Python环境
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'  # 与akshare兼容的版本
+          python-version: '3.13'  # 与akshare兼容的版本
 
       - name: 安装系统依赖（akshare部分功能需要）
         run: sudo apt-get update && sudo apt-get install -y libopenblas-dev  # 解决部分环境下akshare依赖缺失问题
