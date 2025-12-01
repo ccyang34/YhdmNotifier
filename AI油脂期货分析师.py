@@ -605,16 +605,74 @@ def call_deepseek_analysis(context):
     }
 
     try:
-        response = requests.post(
-            f"{DEEPSEEK_BASE_URL}/chat/completions",
-            headers={"Authorization": f"Bearer {DEEPSEEK_API_KEY}", "Content-Type": "application/json"},
-            json=payload,
-            timeout=60
-        )
-        if response.status_code == 200:
-            return response.json()['choices'][0]['message']['content']
-        else:
-            return f"AI 请求失败: {response.text}"
+        # 将超时时间缩短为5分钟（300秒），重试次数保持3次
+        max_retries = 3
+        timeout_seconds = 300  # 5分钟超时
+        
+        for attempt in range(max_retries):
+            try:
+                print(f"[Info] 正在请求 DeepSeek AI 分析 (第{attempt + 1}次尝试, 超时时间: {timeout_seconds}秒)...")
+                
+                response = requests.post(
+                    f"{DEEPSEEK_BASE_URL}/chat/completions",
+                    headers={"Authorization": f"Bearer {DEEPSEEK_API_KEY}", "Content-Type": "application/json"},
+                    json=payload,
+                    timeout=timeout_seconds
+                )
+                
+                if response.status_code == 200:
+                    result = response.json()['choices'][0]['message']['content']
+                    print(f"[Success] AI 分析完成!")
+                    return result
+                else:
+                    error_msg = f"AI 请求失败 (HTTP {response.status_code}): {response.text}"
+                    print(f"[Error] {error_msg}")
+                    
+                    if attempt < max_retries - 1:
+                        print(f"[Info] 等待5秒后重试...")
+                        import time
+                        time.sleep(5)
+                        continue
+                    else:
+                        return error_msg
+                        
+            except requests.exceptions.Timeout:
+                timeout_error = f"AI 请求超时 (>{timeout_seconds}秒)"
+                print(f"[Error] {timeout_error}")
+                
+                if attempt < max_retries - 1:
+                    print(f"[Info] 等待10秒后重试...")
+                    import time
+                    time.sleep(10)
+                    continue
+                else:
+                    return timeout_error
+                    
+            except requests.exceptions.ConnectionError as e:
+                connection_error = f"AI 连接错误: {e}"
+                print(f"[Error] {connection_error}")
+                
+                if attempt < max_retries - 1:
+                    print(f"[Info] 等待15秒后重试...")
+                    import time
+                    time.sleep(15)
+                    continue
+                else:
+                    return connection_error
+                    
+            except Exception as e:
+                general_error = f"AI 请求异常: {e}"
+                print(f"[Error] {general_error}")
+                
+                if attempt < max_retries - 1:
+                    print(f"[Info] 等待5秒后重试...")
+                    import time
+                    time.sleep(5)
+                    continue
+                else:
+                    return general_error
+        
+        return "AI 请求失败，已达到最大重试次数"
     except Exception as e:
         return f"AI 请求异常: {e}"
 
