@@ -26,7 +26,7 @@ def get_beijing_time():
 
 def fetch_futures_data(symbol, days=180):
     """
-    从 akshare 获取期货数据
+    从 akshare 获取期货数据（含实时行情拼接功能）
     symbols: 
     - 'y0' (豆油主力), 'm0' (豆粕主力), 'p0' (棕榈油主力)
     - 'B0' (大豆二号连续合约)
@@ -61,12 +61,89 @@ def fetch_futures_data(symbol, days=180):
         # 按日期排序
         df = df.sort_values('date')
         
+        # 确保数据类型正确（添加空值检查）
+        if 'volume' in df.columns:
+            df['volume'] = df['volume'].fillna(0).astype(int)
+        if 'hold' in df.columns:
+            df['hold'] = df['hold'].fillna(0).astype(int)
+        if 'open' in df.columns:
+            df['open'] = df['open'].fillna(0.0).astype(float)
+        if 'high' in df.columns:
+            df['high'] = df['high'].fillna(0.0).astype(float)
+        if 'low' in df.columns:
+            df['low'] = df['low'].fillna(0.0).astype(float)
+        if 'close' in df.columns:
+            df['close'] = df['close'].fillna(0.0).astype(float)
+        if 'settle' in df.columns:
+            df['settle'] = df['settle'].fillna(0.0).astype(float)
+        
         # 只保留最近 N 天的数据
         cutoff_date = (get_beijing_time() - timedelta(days=days)).replace(tzinfo=None)
         df = df[df['date'] >= cutoff_date]
         
-        print(f"✅ 成功获取 {symbol} 数据，共 {len(df)} 条记录")
-        print(f"   日期范围: {df['date'].min().strftime('%Y-%m-%d')} 至 {df['date'].max().strftime('%Y-%m-%d')}")
+        print(f"✅ 成功获取 {symbol} 历史数据，共 {len(df)} 条记录")
+        print(f"   历史数据日期范围: {df['date'].min().strftime('%Y-%m-%d')} 至 {df['date'].max().strftime('%Y-%m-%d')}")
+        
+        # 📡 拼接实时行情数据
+        print("📡 正在获取实时行情数据...")
+        try:
+            # 使用akshare的期货实时数据接口
+            realtime_data = ak.futures_zh_spot(symbol=symbol.upper())
+            
+            if realtime_data is not None and not realtime_data.empty:
+                print(f"✅ 成功获取 {symbol} 实时行情数据")
+                
+                # 解析实时数据
+                realtime_row = realtime_data.iloc[0]
+                
+                # 获取今日日期
+                today = pd.Timestamp.now().normalize()
+                
+                # 创建实时数据记录
+                realtime_record = {
+                    'date': today,
+                    'open': float(realtime_row['open']),
+                    'high': float(realtime_row['high']),
+                    'low': float(realtime_row['low']),
+                    'close': float(realtime_row['current_price']),
+                    'volume': int(realtime_row['volume']) if pd.notnull(realtime_row['volume']) else 0,
+                    'hold': int(realtime_row['hold']) if pd.notnull(realtime_row['hold']) else 0,
+                    'settle': float(realtime_row['last_settle_price'])
+                }
+                
+                # 将实时数据转换为DataFrame
+                realtime_df = pd.DataFrame([realtime_record])
+                
+                # 检查是否需要更新历史数据中的最新记录
+                if len(df) > 0:
+                    last_date = df['date'].max()
+                    
+                    # 如果实时数据的日期与历史数据最后日期相同，更新最后一条记录
+                    if last_date.date() == today.date():
+                        print(f"🔄 更新今日数据 (最新价: {realtime_record['close']:.2f}, 涨跌幅: {((realtime_record['close'] - realtime_row['last_close']) / realtime_row['last_close'] * 100):.2f}%)")
+                        # 更新最后一行数据，确保数据类型兼容
+                        for key, value in realtime_record.items():
+                            if key in df.columns:
+                                # 确保数据类型兼容性
+                                if key in ['volume', 'hold']:
+                                    df.loc[df.index[-1], key] = int(value) if pd.notnull(value) else 0
+                                elif key in ['open', 'high', 'low', 'close', 'settle']:
+                                    df.loc[df.index[-1], key] = float(value) if pd.notnull(value) else 0.0
+                                else:
+                                    df.loc[df.index[-1], key] = value
+                    else:
+                        # 如果实时数据日期更新，追加新记录
+                        print(f"➕ 添加新记录 (日期: {today.strftime('%Y-%m-%d')}, 最新价: {realtime_record['close']:.2f})")
+                        df = pd.concat([df, realtime_df], ignore_index=True)
+                
+                print(f"📊 最终数据范围: {df['date'].min().strftime('%Y-%m-%d')} 至 {df['date'].max().strftime('%Y-%m-%d')}")
+                print(f"最新价格: {df['close'].iloc[-1]:.2f} | 数据完整性: {df.dropna().shape[0]}/{df.shape[0]} 条记录")
+            else:
+                print("⚠️ 未获取到实时行情数据，仅使用历史数据")
+        
+        except Exception as e:
+            print(f"⚠️ 获取实时行情失败: {e}")
+            print("继续使用历史数据进行分析")
         
         return df
         
@@ -100,7 +177,7 @@ def fetch_us_data():
         us_data = ak.futures_foreign_hist(symbol=symbol)
         
         if us_data is not None and not us_data.empty:
-            print(f"✅ 成功获取美豆数据，共 {len(us_data)} 条记录")
+            print(f"✅ 成功获取美豆历史数据，共 {len(us_data)} 条记录")
             
             # 数据预处理和格式化
             if 'date' in us_data.columns:
@@ -120,7 +197,7 @@ def fetch_us_data():
                 # 确保所有必需列存在
                 required_columns = ['date', 'open', 'high', 'low', 'close', 'volume']
                 if all(col in us_data.columns for col in required_columns):
-                    print(f"美豆数据日期范围: {us_data['date'].min().strftime('%Y-%m-%d')} 至 {us_data['date'].max().strftime('%Y-%m-%d')}")
+                    print(f"美豆历史数据日期范围: {us_data['date'].min().strftime('%Y-%m-%d')} 至 {us_data['date'].max().strftime('%Y-%m-%d')}")
                     
                     # 删除多余的列（s列似乎是akshare的内部标识）
                     if 's' in us_data.columns:
@@ -135,6 +212,72 @@ def fetch_us_data():
                     
                     if 'hold' in us_data.columns:
                         us_data['hold'] = us_data['hold'].fillna(0).astype(int)
+                    
+                    # 拼接实时行情数据
+                    print("📡 正在获取美豆实时行情数据...")
+                    try:
+                        realtime_data = ak.futures_foreign_commodity_realtime(symbol=symbol)
+                        
+                        if realtime_data is not None and not realtime_data.empty:
+                            print(f"✅ 成功获取美豆实时行情数据")
+                            
+                            # 解析实时数据
+                            realtime_row = realtime_data.iloc[0]
+                            
+                            # 获取今日日期
+                            today = pd.Timestamp.now().normalize()
+                            
+                            # 创建实时数据记录
+                            realtime_record = {
+                                'date': today,
+                                'open': float(realtime_row['开盘价']),
+                                'high': float(realtime_row['最高价']),
+                                'low': float(realtime_row['最低价']),
+                                'close': float(realtime_row['最新价']),
+                                'volume': int(float(realtime_row['持仓量'])) if realtime_row['持仓量'] != '-' else 0,
+                                'hold': int(float(realtime_row['持仓量'])) if realtime_row['持仓量'] != '-' else 0,
+                                'settlement': float(realtime_row['昨日结算价']),
+                                'pct_change': float(realtime_row['涨跌幅'])
+                            }
+                            
+                            # 将实时数据转换为DataFrame
+                            realtime_df = pd.DataFrame([realtime_record])
+                            
+                            # 检查是否需要更新历史数据中的最新记录
+                            if len(us_data) > 0:
+                                last_date = us_data['date'].max()
+                                
+                                # 如果实时数据的日期与历史数据最后日期相同，更新最后一条记录
+                                if last_date.date() == today.date():
+                                    print(f"🔄 更新今日数据 (最新价: {realtime_record['close']:.2f})")
+                                    # 更新最后一行数据，确保数据类型兼容
+                                    for key, value in realtime_record.items():
+                                        if key in us_data.columns:
+                                            # 确保数据类型兼容性 - 先明确转换类型
+                                            if key in ['volume', 'hold']:
+                                                try:
+                                                    us_data.at[us_data.index[-1], key] = int(value) if pd.notnull(value) else 0
+                                                except (ValueError, TypeError):
+                                                    us_data.at[us_data.index[-1], key] = 0
+                                            elif key in ['open', 'high', 'low', 'close', 'settlement', 'pct_change']:
+                                                try:
+                                                    us_data.at[us_data.index[-1], key] = float(value) if pd.notnull(value) else 0.0
+                                                except (ValueError, TypeError):
+                                                    us_data.at[us_data.index[-1], key] = 0.0
+                                            else:
+                                                us_data.at[us_data.index[-1], key] = value
+                                else:
+                                    # 如果实时数据日期更新，追加新记录
+                                    print(f"➕ 添加新记录 (日期: {today.strftime('%Y-%m-%d')}, 最新价: {realtime_record['close']:.2f})")
+                                    us_data = pd.concat([us_data, realtime_df], ignore_index=True)
+                            
+                            print(f"📊 最终数据范围: {us_data['date'].min().strftime('%Y-%m-%d')} 至 {us_data['date'].max().strftime('%Y-%m-%d')}")
+                        else:
+                            print("⚠️ 未获取到实时行情数据，仅使用历史数据")
+                    
+                    except Exception as e:
+                        print(f"⚠️ 获取实时行情失败: {e}")
+                        print("继续使用历史数据进行分析")
                     
                     return us_data
                 else:
