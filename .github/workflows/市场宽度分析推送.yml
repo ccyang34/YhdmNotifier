@@ -1,4 +1,4 @@
-name: 定时运行市场宽度快速报告
+name: 市场宽度快速报告
 
 on:
   schedule:
