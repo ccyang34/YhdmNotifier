@@ -27,4 +27,4 @@ jobs:
           pip install requests pandas numpy pytz
 
       - name: 执行脚本（验证模块导入）
-        run: python "市场宽度快速报告.py"  # 确保脚本路径正确
+        run: python "AI市场宽度快速报告.py"  # 确保脚本路径正确
