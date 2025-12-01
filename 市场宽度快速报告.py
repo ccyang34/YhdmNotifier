@@ -18,6 +18,13 @@ WXPUSHER_APP_TOKEN = os.getenv("WXPUSHER_APP_TOKEN", "AT_UHus2F8p0yjnG6XvGEDzdCp
 WXPUSHER_TOPIC_IDS = [42540]  # 目标主题 ID 列表
 WXPUSHER_URL = "https://wxpusher.zjiecode.com/api/send/message"
 
+# 时区配置
+BEIJING_TZ = pytz.timezone('Asia/Shanghai')
+
+def get_beijing_time():
+    """获取北京时间"""
+    return datetime.now(BEIJING_TZ)
+
 # ================= 数据获取与处理 (复用 v2 核心逻辑) =================
 
 def fetch_data(retries=3, delay=2):
@@ -220,7 +227,8 @@ def send_push(title, content):
 # ================= 主程序 =================
 
 def main():
-    print(f"[{datetime.now().strftime('%H:%M:%S')}] 开始执行市场分析任务...")
+    beijing_time = get_beijing_time()
+    print(f"[{beijing_time.strftime('%H:%M:%S')}] 开始执行市场分析任务...")
     
     # 1. 获取数据
     data = fetch_data()
@@ -237,12 +245,13 @@ def main():
     print(context)
     
     # 4. 调用 AI 分析
-    print(f"[{datetime.now().strftime('%H:%M:%S')}] 正在请求 DeepSeek 进行分析...")
+    print(f"[{get_beijing_time().strftime('%H:%M:%S')}] 正在请求 DeepSeek 进行分析...")
     ai_report = call_deepseek_analysis(context)
     
     # 5. 组合最终报告
+    beijing_time = get_beijing_time()
     report_header = f"""
-> **推送时间**: {datetime.now().strftime('%Y-%m-%d %H:%M')} | 每个交易日下午 15:30 推送
+> **推送时间**: {beijing_time.strftime('%Y-%m-%d %H:%M')} (北京时间) | 每个交易日下午 15:30 推送
 > 
 > **市场宽度定义**: 市场宽度（Market Breadth）是指当前处于 20 日均线（MA20）之上的股票占比。宽度越高，说明市场参与度越广，赚钱效应越强；反之则表明市场情绪低迷，仅少数个股活跃。
 > - **< 20%**: 极度冰点，往往是底部区域
@@ -260,13 +269,13 @@ def main():
     
     # 6. 保存与推送
     # 保存
-    filename = f"ai_market_report_{datetime.now().strftime('%Y%m%d')}.md"
+    filename = f"ai_market_report_{beijing_time.strftime('%Y%m%d')}.md"
     with open(filename, 'w', encoding='utf-8') as f:
         f.write(final_report)
     print(f"[Info] 报告已保存至 {filename}")
     
     # 推送
-    push_title = f"A股市场宽度日报 ({datetime.now().strftime('%Y-%m-%d')})"
+    push_title = f"A股市场宽度日报 ({beijing_time.strftime('%Y-%m-%d')})"
     send_push(push_title, final_report)
 
 if __name__ == "__main__":
