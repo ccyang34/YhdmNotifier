@@ -29,7 +29,7 @@ def fetch_futures_data(symbol, days=180):
     从 akshare 获取期货数据
     symbols: 
     - 'y0' (豆油主力), 'm0' (豆粕主力), 'p0' (棕榈油主力)
-    - 's' (大豆主力)
+    - 'B0' (大豆二号连续合约)
     days: 获取天数，默认180天（约半年）
     """
     try:
@@ -78,54 +78,79 @@ def fetch_futures_data(symbol, days=180):
 
 def fetch_us_data():
     """
-    获取美豆数据（从外部数据源或API）
-    这里使用新浪财经的美豆数据
+    获取美豆数据（CBOT-黄豆合约 S）
+    严格禁止使用模拟数据，所有数据必须来自真实数据源
+    使用akshare库的新浪财经外盘期货历史行情数据接口
     """
     try:
         print("正在获取美豆数据...")
         
-        # 美豆代码：SHFE的CU或者使用新浪的US大豆数据
-        # 这里使用一个模拟的获取方式，实际中可以接入CBOT数据API
-        url = "https://finance.sina.com.cn/future/quote/CFG0.html"
+        # 尝试导入akshare
+        try:
+            import akshare as ak
+        except ImportError:
+            print("[Error] 缺少akshare依赖，请安装: pip install akshare")
+            return None
         
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-        }
+        # 获取美豆数据：CBOT-黄豆合约 (S)
+        # 使用akshare的新浪财经外盘期货历史行情数据接口
+        symbol = "S"  # 美豆(CBOT)合约代码
         
-        response = requests.get(url, headers=headers, timeout=10)
+        print(f"正在调用akshare接口获取美豆数据(symbol={symbol})...")
+        us_data = ak.futures_foreign_hist(symbol=symbol)
         
-        # 解析美豆数据 - 这里需要根据实际页面结构调整
-        # 由于美豆数据获取比较复杂，这里提供一个框架
-        
-        # 生成美豆数据（示例）
-        from datetime import datetime, timedelta
-        base_date = datetime.now() - timedelta(days=180)
-        
-        us_data = []
-        for i in range(180):
-            date = base_date + timedelta(days=i)
-            # 模拟美豆价格（1200-1400区间）
-            base_price = 1300 + 50 * np.sin(i/20) + 20 * np.random.randn()
-            us_data.append({
-                'date': date,
-                'open': base_price + 5,
-                'high': base_price + 10,
-                'low': base_price - 10,
-                'close': base_price,
-                'volume': 1000000 + 500000 * np.random.randn(),
-                'hold': 800000 + 200000 * np.random.randn()
-            })
-        
-        df = pd.DataFrame(us_data)
-        df['date'] = pd.to_datetime(df['date'])
-        
-        print(f"✅ 成功获取美豆数据，共 {len(df)} 条记录")
-        print(f"   日期范围: {df['date'].min().strftime('%Y-%m-%d')} 至 {df['date'].max().strftime('%Y-%m-%d')}")
-        
-        return df
+        if us_data is not None and not us_data.empty:
+            print(f"✅ 成功获取美豆数据，共 {len(us_data)} 条记录")
+            
+            # 数据预处理和格式化
+            if 'date' in us_data.columns:
+                us_data['date'] = pd.to_datetime(us_data['date'])
+                us_data = us_data.sort_values('date').reset_index(drop=True)
+                
+                # 计算涨跌幅
+                us_data['pct_change'] = us_data['close'].pct_change() * 100
+                
+                # 重命名列以保持与其他数据源的一致性
+                column_mapping = {
+                    'volume': 'volume',  # akshare返回的列名
+                    'position': 'hold'   # 持仓量列名映射
+                }
+                us_data.rename(columns=column_mapping, inplace=True)
+                
+                # 确保所有必需列存在
+                required_columns = ['date', 'open', 'high', 'low', 'close', 'volume']
+                if all(col in us_data.columns for col in required_columns):
+                    print(f"美豆数据日期范围: {us_data['date'].min().strftime('%Y-%m-%d')} 至 {us_data['date'].max().strftime('%Y-%m-%d')}")
+                    
+                    # 删除多余的列（s列似乎是akshare的内部标识）
+                    if 's' in us_data.columns:
+                        us_data.drop('s', axis=1, inplace=True)
+                    
+                    # 确保数据类型正确
+                    us_data['open'] = us_data['open'].astype(float)
+                    us_data['high'] = us_data['high'].astype(float)
+                    us_data['low'] = us_data['low'].astype(float)
+                    us_data['close'] = us_data['close'].astype(float)
+                    us_data['volume'] = us_data['volume'].astype(int)
+                    
+                    if 'hold' in us_data.columns:
+                        us_data['hold'] = us_data['hold'].fillna(0).astype(int)
+                    
+                    return us_data
+                else:
+                    print(f"[Error] 美豆数据格式不完整，缺少必要列")
+                    print(f"可用列: {list(us_data.columns)}")
+                    return None
+            else:
+                print("[Error] 美豆数据缺少日期列")
+                return None
+        else:
+            print("[Error] 获取美豆数据失败，返回数据为空")
+            return None
         
     except Exception as e:
         print(f"[Error] 获取美豆数据失败: {e}")
+        print(f"[严重] 为保证分析准确性，程序拒绝使用模拟数据")
         return None
 
 def calculate_technical_indicators(df):
@@ -334,7 +359,7 @@ def prepare_context_for_ai(df_dict):
     - 成交量比: {m0_latest['volume_ratio']:.2f}倍
     - 持仓量: {m0_latest['hold']:.0f}
     
-    [大豆(s)当前状态]
+    [大豆(B0)当前状态]
     - 最新价格: {s_latest['close']:.0f} 元/吨
     - 日涨跌幅: {s_latest['pct_change']:+.2f}%
     - MA5: {s_latest['MA5']:.0f}, MA20: {s_latest['MA20']:.0f}, MA60: {s_latest['MA60']:.0f}
@@ -361,7 +386,7 @@ def prepare_context_for_ai(df_dict):
     [豆粕(m0)近60日完整数据]
     {m0_data_str}
     
-    [大豆(s)近60日完整数据]
+    [大豆(B0)近60日完整数据]
     {s_data_str}
     
     {f"[美豆近60日完整数据]\\n{us_s_data_str}" if us_s_data_str else ""}
@@ -377,7 +402,7 @@ def call_deepseek_analysis(context):
         print("[Warning] 未配置 DEEPSEEK_API_KEY，跳过 AI 分析。")
         return "未配置 API Key，无法生成 AI 报告。"
 
-    system_prompt = """你是一位资深的期货分析师，专注于油脂油料品种和大豆压榨产业链分析。请基于提供的豆油(y0)、棕榈油(p0)、豆粕(m0)、大豆(s)和美豆的历史数据，撰写一份深度分析报告。
+    system_prompt = """你是一位资深的期货分析师，专注于油脂油料品种和大豆压榨产业链分析。请基于提供的豆油(y0)、棕榈油(p0)、豆粕(m0)、大豆(B0)和美豆的历史数据，撰写一份深度分析报告。
 
     **分析逻辑与要求：**
 
@@ -424,7 +449,7 @@ def call_deepseek_analysis(context):
     ## 💡 交易策略建议
     """
 
-    user_prompt = f"这是最新的油脂期货数据（包含豆油、棕榈油、豆粕、大豆、美豆和榨利分析），请开始分析：\n{context}"
+    user_prompt = f"这是最新的油脂期货数据（包含豆油、棕榈油、豆粕、豆二号(B0)、美豆和榨利分析），请开始分析：\n{context}"
 
     payload = {
         "model": "deepseek-chat",
@@ -535,12 +560,13 @@ def main():
 > **推送时间**: {beijing_time.strftime('%Y-%m-%d %H:%M')} (北京时间) | 每个交易日收盘后推送
 > 
 > **品种说明**: 
-> - **豆油(y0)**: 大商所豆油主力连续合约
-> - **棕榈油(p0)**: 大商所棕榈油主力连续合约
-> - **豆粕(m0)**: 大商所豆粕主力连续合约
-> - **大豆(B0)**: 大商所大豆二号连续合约
-> - **榨利分析**: (豆粕×79% + 豆油×19% - 大豆 - 120元/吨成本)
-> - 榨利水平直接影响压榨企业开工率和现货供应
+    > - **豆油(y0)**: 大商所豆油主力连续合约
+    > - **棕榈油(p0)**: 大商所棕榈油主力连续合约
+    > - **豆粕(m0)**: 大商所豆粕主力连续合约
+    > - **大豆(B0)**: 大商所大豆二号连续合约
+    > - **美豆(S)**: CBOT-黄豆合约
+    > - **榨利分析**: (豆粕×79% + 豆油×19% - 大豆 - 120元/吨成本)
+    > - 榨利水平直接影响压榨企业开工率和现货供应
 
 ---
 """
