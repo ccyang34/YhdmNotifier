@@ -3,6 +3,7 @@ name: AI油脂期货分析师
 on:
   schedule:
     - cron: '30 7 * * 1-5'  # 北京时间每周一至周五15:30
+    - cron: '5 23 * * 1-5'  # 北京时间每周一至周五23:05
   workflow_dispatch:  # 允许手动触发测试
 
 jobs:
