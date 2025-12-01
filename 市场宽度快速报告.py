@@ -256,7 +256,8 @@ def main():
     print(f"[Info] 报告已保存至 {filename}")
     
     # 推送
-    send_push("A股市场宽度日报", final_report)
+    push_title = f"A股市场宽度日报 ({datetime.now().strftime('%Y-%m-%d')})"
+    send_push(push_title, final_report)
 
 if __name__ == "__main__":
     main()
