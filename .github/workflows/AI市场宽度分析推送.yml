@@ -18,7 +18,7 @@ jobs:
       - name: 配置Python环境
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'  # 选择兼容的Python版本
+          python-version: '3.13'  # 选择兼容的Python版本
 
       - name: 安装所有第三方依赖（含新增numpy）
         run: |
