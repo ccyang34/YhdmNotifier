@@ -777,11 +777,11 @@ def main():
 *数据来源: AkShare | AI 分析: DeepSeek*
     """
     
-    # 8. 保存分析报告
-    filename = f"futures_oil_report_enhanced_{beijing_time.strftime('%Y%m%d')}.md"
-    with open(filename, 'w', encoding='utf-8') as f:
-        f.write(final_report)
-    print(f"[Info] 报告已保存至 {filename}")
+    # # 8. 保存分析报告
+    # filename = f"futures_oil_report_enhanced_{beijing_time.strftime('%Y%m%d')}.md"
+    # with open(filename, 'w', encoding='utf-8') as f:
+    #     f.write(final_report)
+    # print(f"[Info] 报告已保存至 {filename}")
     
     # 9. 推送分析报告
     push_title = f"油脂期货分析日报（含榨利）({beijing_time.strftime('%Y-%m-%d')})"
@@ -789,3 +789,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
