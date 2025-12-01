@@ -268,11 +268,11 @@ def main():
     """
     
     # 6. 保存与推送
-    # 保存
-    filename = f"ai_market_report_{beijing_time.strftime('%Y%m%d')}.md"
-    with open(filename, 'w', encoding='utf-8') as f:
-        f.write(final_report)
-    print(f"[Info] 报告已保存至 {filename}")
+    # # 保存
+    # filename = f"ai_market_report_{beijing_time.strftime('%Y%m%d')}.md"
+    # with open(filename, 'w', encoding='utf-8') as f:
+    #     f.write(final_report)
+    # print(f"[Info] 报告已保存至 {filename}")
     
     # 推送
     push_title = f"A股市场宽度日报 ({beijing_time.strftime('%Y-%m-%d')})"
