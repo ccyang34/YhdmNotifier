@@ -241,11 +241,21 @@ def main():
     ai_report = call_deepseek_analysis(context)
     
     # 5. 组合最终报告
-    final_report = f"""
-{ai_report}
+    report_header = f"""
+> **推送时间**: {datetime.now().strftime('%Y-%m-%d %H:%M')} | 每个交易日下午 15:30 推送
+> 
+> **市场宽度定义**: 市场宽度（Market Breadth）是指当前处于 20 日均线（MA20）之上的股票占比。宽度越高，说明市场参与度越广，赚钱效应越强；反之则表明市场情绪低迷，仅少数个股活跃。
+> - **< 20%**: 极度冰点，往往是底部区域
+> - **20-80%**: 正常震荡区间
+> - **> 80%**: 极度过热，往往是顶部区域
 
 ---
-*数据来源: 大盘云图 | 生成时间: {datetime.now().strftime('%H:%M')}*
+"""
+    
+    final_report = report_header + ai_report + f"""
+
+---
+*数据来源: 大盘云图 | AI 分析: DeepSeek*
     """
     
     # 6. 保存与推送
