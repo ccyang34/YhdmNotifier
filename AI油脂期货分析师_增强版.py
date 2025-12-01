@@ -511,7 +511,7 @@ def prepare_context_for_ai(df_dict):
     - 成交量比: {s_latest['volume_ratio']:.2f}倍
     - 持仓量: {s_latest['hold']:.0f}
     
-    {f"[美豆当前状态]\n- 最新价格: {us_s_latest['close']:.0f} 美元/吨\n- 日涨跌幅: {us_s_latest['pct_change']:+.2f}%\n- 成交量比: {us_s_latest['volume_ratio']:.2f}倍\n" if us_s_latest is not None else ""}
+    {("[美豆当前状态]\n- 最新价格: " + f"{us_s_latest['close']:.0f}" + " 美元/吨\n- 日涨跌幅: " + f"{us_s_latest['pct_change']:+.2f}" + "%\n- 成交量比: " + f"{us_s_latest['volume_ratio']:.2f}" + "倍\n") if us_s_latest is not None else ""}
     
     [价差分析]
     - 当前价差(豆油-棕榈油): {price_spread:+.0f} 元/吨
