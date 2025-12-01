@@ -532,7 +532,7 @@ def prepare_context_for_ai(df_dict):
     [大豆(B0)近60日完整数据]
     {s_data_str}
     
-    {f"[美豆近60日完整数据]{us_s_data_str}" if us_s_data_str else ""}
+    {"[美豆近60日完整数据]" + us_s_data_str if us_s_data_str else ""}
 
     """
     return context
