@@ -15,7 +15,7 @@ DEEPSEEK_BASE_URL = "https://api.deepseek.com/v1"  # DeepSeek 官方 API 地址
 
 # 推送配置 (WxPusher)
 WXPUSHER_APP_TOKEN = os.getenv("WXPUSHER_APP_TOKEN", "AT_UHus2F8p0yjnG6XvGEDzdCp5GkwvLdkc")
-WXPUSHER_TOPIC_IDS = [32277]  # 目标主题 ID 列表
+WXPUSHER_TOPIC_IDS = [42540]  # 目标主题 ID 列表
 WXPUSHER_URL = "https://wxpusher.zjiecode.com/api/send/message"
 
 # ================= 数据获取与处理 (复用 v2 核心逻辑) =================
@@ -170,7 +170,7 @@ def call_deepseek_analysis(context):
             {"role": "user", "content": user_prompt}
         ],
         "temperature": 0.5, # 降低温度以增加分析的严谨性
-        "max_tokens": 20000
+        "max_tokens": 2000
     }
 
     try:
