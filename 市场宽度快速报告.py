@@ -1,378 +1,262 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""市场宽度快速报告生成工具
-直接获取数据并在控制台打印完整报告，包含行业趋势和ETF推荐"""
 
 import requests
-import json
 import pandas as pd
+import numpy as np
 from datetime import datetime
 import pytz
-import warnings
-warnings.filterwarnings('ignore')
+import time
+import os
+import json
 
-# 推送配置
-APP_TOKEN = "AT_UHus2F8p0yjnG6XvGEDzdCp5GkwvLdkc"
-BASE_URL = "https://wxpusher.zjiecode.com/api"
-TARGET_TOPIC_ID = [42540]
+# ================= 配置区域 =================
+# 请在环境变量中设置 DEEPSEEK_API_KEY，或直接在此处填入 (不推荐直接提交到代码库)
+DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "sk-063857d175bd48038684520e7b6ec934")
+DEEPSEEK_BASE_URL = "https://api.deepseek.com/v1"  # DeepSeek 官方 API 地址
 
-# 颜色常量定义
-class Colors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'  # 绿色文本
-    WARNING_TEXT = '\033[93m'  # 黄色文本警告
-    FAIL = '\033[91m'  # 红色文本
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-    
-    # 特殊符号
-    UP_ARROW = '📈'
-    DOWN_ARROW = '📉'
-    STAR = '⭐'
-    INFO = 'ℹ️'
-    WARNING_SYMBOL = '⚠️'
+# 推送配置 (WxPusher)
+WXPUSHER_APP_TOKEN = os.getenv("WXPUSHER_APP_TOKEN", "AT_UHus2F8p0yjnG6XvGEDzdCp5GkwvLdkc")
+WXPUSHER_TOPIC_IDS = [32277]  # 目标主题 ID 列表
+WXPUSHER_URL = "https://wxpusher.zjiecode.com/api/send/message"
 
-# 行业对应的ETF映射关系
-industry_etf_map = {
-    '船舶制造': ['512760', '中国船舶ETF'],
-    '航天航空': ['516670', '军工ETF'],
-    '燃气': ['159651', '燃气ETF'],
-    '能源金属': ['516060', '稀土ETF'],
-    '橡胶制品': ['159996', '家电ETF'],  # 橡胶制品相关ETF较少，可用化工ETF替代
-    '教育': ['513360', '教育ETF'],
-    '珠宝首饰': ['159646', '黄金ETF'],  # 珠宝首饰相关ETF较少，可用黄金ETF替代
-    '软件开发': ['515330', '软件ETF'],
-    '互联网服务': ['513050', '中概互联ETF'],
-    '化纤行业': ['159885', '化纤ETF'],
-    '装修建材': ['159745', '建材ETF'],
-    '造纸印刷': ['159679', '造纸ETF'],
-    '酿酒行业': ['512690', '酒ETF'],
-    '采掘行业': ['159825', '煤炭ETF'],
-    '钢铁行业': ['515210', '钢铁ETF'],
-    '食品饮料': ['159843', '食品饮料ETF'],
-    '半导体': ['512480', '半导体ETF'],
-    '小金属': ['516020', '有色金属ETF'],  # 小金属相关ETF较少，可用有色金属ETF替代
-    '贵金属': ['518880', '黄金ETF']
-}
+# ================= 数据获取与处理 (复用 v2 核心逻辑) =================
 
-def get_and_parse_data():
-    """获取并解析市场宽度数据"""
-    print(f"{Colors.OKGREEN}{Colors.BOLD}🚀 市场宽度快速报告生成工具{Colors.ENDC}")
-    print(f"{Colors.OKBLUE}正在获取最新的行业市场宽度数据...{Colors.ENDC}")
-    print(f"{Colors.HEADER}=========================================")
-    
-    # API配置
+def fetch_data(retries=3, delay=2):
     url = 'https://sckd.dapanyuntu.com/api/api/industry_ma20_analysis_page?page=0'
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
         'Referer': 'https://sckd.dapanyuntu.com/'
     }
-    
-    try:
-        response = requests.get(url, headers=headers)
-        if response.status_code != 200:
-            print(f"{Colors.FAIL}❌ API请求失败，状态码: {response.status_code}{Colors.ENDC}")
-            return None, None
-            
-        data = response.json()
-        
-        # 检查必要字段
-        required_fields = ['dates', 'industries', 'data']
-        for field in required_fields:
-            if field not in data:
-                print(f"{Colors.WARNING_SYMBOL} 数据中缺少必要字段: {field}{Colors.ENDC}")
-                return None, None
-                
-        dates = data['dates']
-        industries = data['industries']
-        raw_data = data['data']
-        
-        print(f"{Colors.OKGREEN}✅ 成功获取数据：{Colors.ENDC}")
-        print(f"  {Colors.INFO} - 日期范围: {dates[0]} 至 {dates[-1]} (共 {len(dates)} 天)")
-        print(f"  {Colors.INFO} - 行业数量: {len(industries)} 个")
-        print(f"  {Colors.INFO} - 数据点数量: {len(raw_data)}")
-        
-        # 解析数据点
-        parsed_data = []
-        for data_point in raw_data:
-            date_idx, industry_idx, breadth_ratio = data_point
-            date = dates[date_idx] if date_idx < len(dates) else "未知日期"
-            industry = industries[industry_idx] if industry_idx < len(industries) else "未知行业"
-            
-            parsed_data.append({
-                'date': date,
-                'industry': industry,
-                'above_ma20_ratio': breadth_ratio
-            })
-        
-        # 创建数据框并转换为二维表格式
-        df = pd.DataFrame(parsed_data)
-        pivot_df = df.pivot(index='industry', columns='date', values='above_ma20_ratio')
-        
-        print(f"{Colors.OKGREEN}✅ 数据解析完成{Colors.ENDC}")
-        return pivot_df, data
-        
-    except Exception as e:
-        print(f"{Colors.FAIL}❌ 获取数据失败: {e}{Colors.ENDC}")
-        return None, None
+    for attempt in range(retries):
+        try:
+            response = requests.get(url, headers=headers, timeout=10)
+            if response.status_code == 200:
+                return response.json()
+        except Exception as e:
+            print(f"[Error] Fetching data: {e}, retrying...")
+        time.sleep(delay)
+    return None
 
-def send_wxpush_message(title, content):
-    """使用WxPusher推送消息"""
-    import requests
-    import json
-    
-    url = f"{BASE_URL}/send/message"
-    headers = {
-        "Content-Type": "application/json"
+def process_data(data):
+    dates = data['dates']
+    industries = data['industries']
+    raw_data = data['data']
+    parsed_data = []
+    for point in raw_data:
+        d_idx, i_idx, val = point
+        if d_idx < len(dates) and i_idx < len(industries):
+            parsed_data.append({'date': dates[d_idx], 'industry': industries[i_idx], 'value': val})
+    df = pd.DataFrame(parsed_data)
+    df = df.drop_duplicates(subset=['industry', 'date'])
+    pivot = df.pivot(index='industry', columns='date', values='value')
+    return pivot, dates
+
+def get_sector_map():
+    return {
+        '科技成长': ['半导体', '电子元件', '光学光电子', '消费电子', '通信设备', '计算机设备', '软件开发', '互联网服务', '游戏', '通信服务', '电子化学品', '仪器仪表'],
+        '大消费': ['酿酒行业', '食品饮料', '家电行业', '汽车整车', '旅游酒店', '商业百货', '纺织服装', '医药商业', '中药', '美容护理', '医疗器械', '化学制药', '医疗服务', '生物制品', '农牧饲渔', '教育', '文化传媒', '装修建材', '汽车零部件', '珠宝首饰'],
+        '周期/制造': ['钢铁行业', '煤炭行业', '有色金属', '化工行业', '工程建设', '水泥建材', '航运港口', '物流行业', '电力行业', '光伏设备', '风电设备', '电池', '通用设备', '专用设备', '化肥行业', '农药兽药', '塑料制品', '橡胶制品', '玻璃玻纤', '造纸印刷', '包装材料', '船舶制造', '航空机场', '贵金属', '小金属', '能源金属', '化学原料'],
+        '大金融': ['银行', '证券', '保险', '多元金融'],
+        '防御/稳定': ['高速公路', '铁路公路', '公用事业', '燃气', '环保行业', '工程咨询服务'],
+        '房地产': ['房地产开发', '房地产服务']
     }
+
+# ================= 本地预分析 (为 AI 准备数据) =================
+
+def prepare_context_for_ai(pivot, dates):
+    latest_date = dates[-1]
+    
+    # --- 1. 全市场分布统计 (Market Distribution) ---
+    current_vals = pivot[latest_date]
+    total_inds = len(current_vals)
+    overheated = (current_vals > 80).sum()
+    oversold = (current_vals < 20).sum()
+    neutral = total_inds - overheated - oversold
+    median_breadth = current_vals.median()
+    avg_breadth = current_vals.mean()
+    
+    # --- 2. 构建完整历史数据矩阵 (Full History) ---
+    # 使用所有可用日期，不进行截断
+    full_dates = dates
+    
+    sector_map = get_sector_map()
+    ind_to_sector = {}
+    for sec, inds in sector_map.items():
+        for ind in inds:
+            ind_to_sector[ind] = sec
+            
+    # 构建 CSV 头: 行业,板块,日期1,日期2...
+    history_csv_lines = [f"行业名称,所属板块,{','.join(full_dates)}"]
+    
+    # 按最新宽度降序排列
+    sorted_inds = current_vals.sort_values(ascending=False).index
+    
+    for ind in sorted_inds:
+        sector = ind_to_sector.get(ind, "其他")
+        # 获取该行业在所有日期的值序列
+        vals = pivot.loc[ind, full_dates]
+        # 格式化数值，保留1位小数
+        vals_str = ",".join([f"{v:.1f}" if pd.notnull(v) else "" for v in vals])
+        history_csv_lines.append(f"{ind},{sector},{vals_str}")
+    
+    full_history_str = "\n".join(history_csv_lines)
+
+    # --- 3. 构建发送给 AI 的结构化上下文 ---
+    context = f"""
+    [分析基准]
+    数据截止日期: {latest_date}
+    包含历史天数: {len(full_dates)} 天
+
+    [市场全景统计]
+    - 全市场平均宽度: {avg_breadth:.1f}%
+    - 宽度中位数: {median_breadth:.1f}%
+    - 极度过热(>80%)行业数: {overheated} / {total_inds}
+    - 极度冰点(<20%)行业数: {oversold} / {total_inds}
+    - 正常区间(20-80%)行业数: {neutral} / {total_inds}
+
+    [全行业完整历史数据 (CSV矩阵)]
+    {full_history_str}
+    """
+    return context
+
+# ================= AI 分析模块 (DeepSeek) =================
+
+def call_deepseek_analysis(context):
+    if not DEEPSEEK_API_KEY or "sk-" not in DEEPSEEK_API_KEY:
+        print("[Warning] 未配置 DEEPSEEK_API_KEY，跳过 AI 分析。")
+        return "未配置 API Key，无法生成 AI 报告。"
+
+    system_prompt = """你是一位拥有20年经验的A股首席策略分析师。请基于提供的全市场行业宽度数据（Market Breadth），撰写一份深度市场分析报告。
+
+    **分析逻辑与要求：**
+
+    1.  **全景定调 (The Big Picture)**:
+        *   不要只看平均值。结合“过热/冰点”行业数量分布，判断市场情绪的极致程度。
+        *   如果中位数远低于平均值，说明是少数权重股在撑场面（指数失真）；反之则是普涨。
+        
+    2.  **结构与主线 (Structure & Rotation)**:
+        *   利用提供的全行业数据，识别当前最强的 1-2 个核心主线（Sector）。
+        *   **深度挖掘**: 找出“强中之强”（领涨行业）和“弱中之强”（底部刚启动）。
+        *   分析资金流向：哪些板块正在被资金抛弃（周变化大幅为负）？
+        
+    3.  **异动与背离 (Divergence)**:
+        *   寻找“背离”现象：例如某些高位板块虽然宽度仍高，但周变化开始转负（高位派发迹象）。
+        *   寻找“广度推力”：是否有大量行业在短时间内同时大幅上涨？
+
+    4.  **实战策略 (Actionable Strategy)**:
+        *   给出具体的仓位建议（0-10成）。
+        *   **进攻方向**: 具体到细分行业。
+        *   **防守/规避**: 点名需要回避的风险板块。
+
+    **输出格式要求：**
+    *   使用 Markdown 格式。
+    *   **必须引用数据**: 在分析时，必须引用具体的宽度数值或变化率作为支撑（例如：“通信设备宽度高达85%，且周涨幅+10%...”）。
+    *   语气专业、客观、有洞察力。不要使用模棱两可的废话。
+    *   字数控制在 600-800 字之间，内容要详实。
+
+    **报告结构：**
+    # 深度市场宽度日报
+    ## 📊 市场全景温度计
+    ## 🔄 核心主线与资金流向
+    ## ⚠️ 异动扫描与风险提示
+    ## 💡 交易策略与建议
+    """
+
+    user_prompt = f"这是最新的全市场行业宽度数据，请开始分析：\n{context}"
+
+    payload = {
+        "model": "deepseek-chat",
+        "messages": [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt}
+        ],
+        "temperature": 0.5, # 降低温度以增加分析的严谨性
+        "max_tokens": 20000
+    }
+
+    try:
+        response = requests.post(
+            f"{DEEPSEEK_BASE_URL}/chat/completions",
+            headers={"Authorization": f"Bearer {DEEPSEEK_API_KEY}", "Content-Type": "application/json"},
+            json=payload,
+            timeout=60 # 增加超时时间，因为生成内容变长了
+        )
+        if response.status_code == 200:
+            return response.json()['choices'][0]['message']['content']
+        else:
+            return f"AI 请求失败: {response.text}"
+    except Exception as e:
+        return f"AI 请求异常: {e}"
+
+# ================= 消息推送模块 =================
+
+def send_push(title, content):
+    """
+    使用 WxPusher 推送消息
+    """
+    print("\n" + "="*20 + f" PUSH: {title} " + "="*20)
+    # print(content) # 控制台不重复打印详细内容，避免刷屏
+    print("正在发送 WxPusher 推送...")
+    print("="*50 + "\n")
     
     payload = {
-        "appToken": APP_TOKEN,
+        "appToken": WXPUSHER_APP_TOKEN,
         "content": content,
-        "summary": title,
-        "contentType": 1,  # 纯文本格式，支持普通换行符和HTML颜色标签
-        "topicIds": TARGET_TOPIC_ID,
+        "summary": title, # 消息摘要，显示在列表页
+        "contentType": 3, # 3 表示 Markdown
+        "topicIds": WXPUSHER_TOPIC_IDS,
         "verifyPay": False
     }
     
     try:
-        response = requests.post(url, headers=headers, data=json.dumps(payload))
-        result = response.json()
-        if result.get("success"):
-            print(f"{Colors.OKGREEN}✅ 报告已成功推送到微信{Colors.ENDC}")
-            return True
+        response = requests.post(WXPUSHER_URL, json=payload, timeout=10)
+        resp_json = response.json()
+        if response.status_code == 200 and resp_json.get('code') == 1000:
+            print(f"[Info] WxPusher 推送成功: {resp_json.get('msg')}")
         else:
-            print(f"{Colors.FAIL}❌ 微信推送失败: {result.get('msg')}{Colors.ENDC}")
-            return False
+            print(f"[Error] WxPusher 推送失败: {resp_json}")
     except Exception as e:
-        print(f"{Colors.FAIL}❌ 微信推送异常: {e}{Colors.ENDC}")
-        return False
+        print(f"[Error] WxPusher 请求异常: {e}")
 
-def analyze_market_breadth(pivot_df, raw_data):
-    """分析市场宽度数据并生成报告"""
-    if pivot_df is None or pivot_df.empty:
-        print(f"{Colors.FAIL}❌ 没有可分析的数据{Colors.ENDC}")
-        return
-        
-    date_columns = pivot_df.columns
-    latest_date = date_columns[-1]
-    
-    print(f"\n{Colors.HEADER}=========================================")
-    print(f"{Colors.HEADER}{Colors.BOLD}📊 市场宽度行业趋势分析报告{Colors.ENDC}")
-    # 获取北京时间
-    beijing_tz = pytz.timezone('Asia/Shanghai')
-    beijing_time = datetime.now(beijing_tz)
-    print(f"{Colors.OKBLUE}分析日期: {beijing_time.strftime('%Y-%m-%d %H:%M')} (北京时间)")
-    print(f"数据时间范围: {date_columns[0]} 至 {latest_date}")
-    print(f"包含行业数量: {len(pivot_df)}{Colors.ENDC}")
-    print(f"{Colors.HEADER}=========================================")
-    
-    # 用于推送的文本内容
-    push_content = f"# 市场宽度行业趋势分析报告\n\n"
-    push_content += f"分析日期: {beijing_time.strftime('%Y-%m-%d %H:%M')} (北京时间)\n"
-    push_content += f"数据时间范围: {date_columns[0]} 至 {latest_date}\n"
-    push_content += f"包含行业数量: {len(pivot_df)}\n\n"
-    
-    # 计算指标
-    latest_values = pivot_df[latest_date]
-    
-    # 计算5日和10日变化率
-    five_day_change = {}  # 行业: 5日变化率
-    ten_day_change = {}   # 行业: 10日变化率
-    
-    for industry in pivot_df.index:
-        if len(date_columns) >= 5:
-            five_day_change[industry] = ((pivot_df.loc[industry, latest_date] - pivot_df.loc[industry, date_columns[-5]]) / 
-                                       pivot_df.loc[industry, date_columns[-5]] * 100) if pivot_df.loc[industry, date_columns[-5]] != 0 else 0
-        else:
-            five_day_change[industry] = 0
-            
-        if len(date_columns) >= 10:
-            ten_day_change[industry] = ((pivot_df.loc[industry, latest_date] - pivot_df.loc[industry, date_columns[-10]]) / 
-                                      pivot_df.loc[industry, date_columns[-10]] * 100) if pivot_df.loc[industry, date_columns[-10]] != 0 else 0
-        else:
-            ten_day_change[industry] = 0
-    
-    # 分类行业
-    strong_trend = []  # 强趋势行业
-    rising_trend = []  # 上升趋势行业
-    falling_trend = []  # 下降趋势行业
-    potential_value = []  # 低估值潜力行业
-    
-    for industry in pivot_df.index:
-        latest = latest_values[industry]
-        five_day = five_day_change[industry]
-        ten_day = ten_day_change[industry]
-        
-        if latest > 70 and ten_day > 10:
-            strong_trend.append((industry, latest, ten_day))
-        if five_day > 10:
-            rising_trend.append((industry, five_day))
-        if five_day < -10:
-            falling_trend.append((industry, five_day))
-        if latest < 30 and ten_day > 0:
-            potential_value.append((industry, latest, ten_day))
-    
-    # 按变化率排序
-    strong_trend.sort(key=lambda x: x[2], reverse=True)
-    rising_trend.sort(key=lambda x: x[1], reverse=True)
-    falling_trend.sort(key=lambda x: x[1])
-    potential_value.sort(key=lambda x: x[2], reverse=True)
-    
-    # 行业趋势分析
-    print(f"\n{Colors.BOLD}1. 行业趋势分析{Colors.ENDC}")
-    print(f"{Colors.HEADER}-" * 40)
-    push_content += "1. 行业趋势分析\n"
-    push_content += "-" * 40 + "\n"
-    
-    if strong_trend:
-        print(f"\n{Colors.STAR} 强趋势行业 ({len(strong_trend)}个):")
-        push_content += f"<b>⭐ 强趋势行业 ({len(strong_trend)}个):</b>\n"
-        for industry, latest, ten_day in strong_trend[:10]:  # 显示前10个
-            trend_color = Colors.FAIL if ten_day > 0 else Colors.OKGREEN
-            trend_arrow = Colors.UP_ARROW if ten_day > 0 else Colors.DOWN_ARROW
-            print(f"  {trend_arrow}  {industry}: 最新宽度 {latest:.2f}%, 10日变化 {trend_color}{ten_day:.2f}%{Colors.ENDC}")
-            # 使用HTML font标签添加颜色
-            color = "red" if ten_day > 0 else "green"
-            push_content += f"  {trend_arrow}  {industry}: 最新宽度 {latest:.2f}%, 10日变化 <font color='{color}'>{ten_day:.2f}%</font>\n"
-    else:
-        print(f"\n{Colors.WARNING_TEXT} 强趋势行业: 无{Colors.ENDC}")
-        push_content += "  强趋势行业: 无\n"
-        
-    if rising_trend:
-        print(f"\n{Colors.UP_ARROW} 上升趋势行业 ({len(rising_trend)}个):")
-        push_content += f"\n<b>📈 上升趋势行业 ({len(rising_trend)}个):</b>\n"
-        for industry, five_day in rising_trend[:10]:  # 显示前10个
-            print(f"  {Colors.UP_ARROW}  {industry}: 5日变化 {Colors.FAIL}{five_day:.2f}%{Colors.ENDC}")
-            push_content += f"  📈  {industry}: 5日变化 <font color='red'>{five_day:.2f}%</font>\n"
-    else:
-        print(f"\n{Colors.WARNING_TEXT} 上升趋势行业: 无{Colors.ENDC}")
-        push_content += "\n  上升趋势行业: 无\n"
-        
-    if falling_trend:
-        print(f"\n{Colors.DOWN_ARROW} 下降趋势行业 ({len(falling_trend)}个):")
-        push_content += f"\n<b>📉 下降趋势行业 ({len(falling_trend)}个):</b>\n"
-        for industry, five_day in falling_trend[:10]:  # 显示前10个
-            print(f"  {Colors.DOWN_ARROW}  {industry}: 5日变化 {Colors.OKGREEN}{five_day:.2f}%{Colors.ENDC}")
-            push_content += f"  📉  {industry}: 5日变化 <font color='green'>{five_day:.2f}%</font>\n"
-    else:
-        print(f"\n{Colors.WARNING_TEXT} 下降趋势行业: 无{Colors.ENDC}")
-        push_content += "\n  下降趋势行业: 无\n"
-        
-    if potential_value:
-        print(f"\n{Colors.STAR} 低估值潜力行业 ({len(potential_value)}个):")
-        push_content += f"\n<b>⭐ 低估值潜力行业 ({len(potential_value)}个):</b>\n"
-        for industry, latest, ten_day in potential_value[:10]:  # 显示前10个
-            print(f"  {Colors.STAR}  {industry}: 最新宽度 {Colors.WARNING_TEXT}{latest:.2f}%, 10日变化 {Colors.FAIL}{ten_day:.2f}%{Colors.ENDC}")
-            push_content += f"  ⭐  {industry}: 最新宽度 <font color='orange'>{latest:.2f}%</font>, 10日变化 <font color='red'>{ten_day:.2f}%</font>\n"
-    else:
-        print(f"\n{Colors.WARNING_TEXT} 低估值潜力行业: 无{Colors.ENDC}")
-        push_content += "\n  低估值潜力行业: 无\n"
-    
-    # 投资建议
-    print(f"\n{Colors.BOLD}2. 投资建议{Colors.ENDC}")
-    print(f"{Colors.HEADER}-" * 40)
-    push_content += "\n2. 投资建议\n"
-    push_content += "-" * 40 + ""
-    
-    # 短期策略
-    print(f"\n{Colors.UP_ARROW} 短期策略 (1-5天):")
-    push_content += f"\n<b>📈 短期策略 (1-5天):</b>\n"
-    if rising_trend:
-        top_rising = [industry for industry, _ in rising_trend[:3]]
-        print(f"  {Colors.INFO} - 关注上升趋势明显的行业: {Colors.BOLD}{', '.join(top_rising)}{Colors.ENDC}")
-        push_content += f"  ℹ️ - 关注上升趋势明显的行业: {', '.join(top_rising)}\n"
-        
-        # ETF推荐
-        print(f"  {Colors.INFO} - ETF推荐:")
-        push_content += f"  ℹ️ - ETF推荐:\n"
-        for industry in top_rising:
-            if industry in industry_etf_map:
-                etf_code, etf_name = industry_etf_map[industry]
-                print(f"    {Colors.STAR}  {industry}: {Colors.OKBLUE}{etf_name} ({etf_code}){Colors.ENDC}")
-                push_content += f"    ⭐  {industry}: {etf_name} ({etf_code})\n"
-            else:
-                print(f"    {Colors.STAR}  {industry}: {Colors.WARNING_TEXT}暂无合适的ETF推荐{Colors.ENDC}")
-                push_content += f"    ⭐  {industry}: 暂无合适的ETF推荐\n"
-    else:
-        print(f"  {Colors.WARNING_TEXT} - 目前没有明显的短期上升趋势行业{Colors.ENDC}")
-        push_content += f"  ⚠️ - 目前没有明显的短期上升趋势行业\n"
-    
-    # 中期策略
-    print(f"\n{Colors.UP_ARROW} 中期策略 (5-20天):")
-    push_content += f"\n<b>📈 中期策略 (5-20天):</b>\n"
-    if strong_trend:
-        top_strong = [industry for industry, _, _ in strong_trend[:3]]
-        print(f"  {Colors.INFO} - 持有强趋势行业: {Colors.BOLD}{', '.join(top_strong)}{Colors.ENDC}")
-        push_content += f"  ℹ️ - 持有强趋势行业: {', '.join(top_strong)}\n"
-        
-        # ETF推荐
-        print(f"  {Colors.INFO} - ETF推荐:")
-        push_content += f"  ℹ️ - ETF推荐:\n"
-        for industry in top_strong:
-            if industry in industry_etf_map:
-                etf_code, etf_name = industry_etf_map[industry]
-                print(f"    {Colors.STAR}  {industry}: {Colors.OKBLUE}{etf_name} ({etf_code}){Colors.ENDC}")
-                push_content += f"    ⭐  {industry}: {etf_name} ({etf_code})\n"
-            else:
-                print(f"    {Colors.STAR}  {industry}: {Colors.WARNING_TEXT}暂无合适的ETF推荐{Colors.ENDC}")
-                push_content += f"    ⭐  {industry}: 暂无合适的ETF推荐\n"
-    else:
-        print(f"  {Colors.WARNING_TEXT} - 目前没有明显的中期强趋势行业{Colors.ENDC}")
-        push_content += f"  ⚠️ - 目前没有明显的中期强趋势行业\n"
-    
-    # 低估值策略
-    if potential_value:
-        top_potential = [industry for industry, _, _ in potential_value[:3]]
-        print(f"\n{Colors.STAR} 关注低估值潜力行业: {Colors.BOLD}{', '.join(top_potential)}{Colors.ENDC}")
-        push_content += f"\n⭐ 关注低估值潜力行业: {', '.join(top_potential)}\n"
-        
-        # ETF推荐
-        print(f"  {Colors.INFO} - ETF推荐:")
-        push_content += f"  ℹ️ - ETF推荐:\n"
-        for industry in top_potential:
-            if industry in industry_etf_map:
-                etf_code, etf_name = industry_etf_map[industry]
-                print(f"    {Colors.STAR}  {industry}: {Colors.OKBLUE}{etf_name} ({etf_code}){Colors.ENDC}")
-                push_content += f"    ⭐  {industry}: {etf_name} ({etf_code})\n"
-            else:
-                print(f"    {Colors.STAR}  {industry}: {Colors.WARNING_TEXT}暂无合适的ETF推荐{Colors.ENDC}")
-                push_content += f"    ⭐  {industry}: 暂无合适的ETF推荐\n"
-    
-    # 风险提示
-    print(f"\n{Colors.WARNING_TEXT}3. 风险提示{Colors.ENDC}")
-    print(f"  {Colors.WARNING_TEXT} - 市场宽度指标仅反映短期趋势，需结合基本面分析{Colors.ENDC}")
-    print(f"  {Colors.WARNING_TEXT} - 避免追高下降趋势明显的行业{Colors.ENDC}")
-    print(f"  {Colors.WARNING_TEXT} - 建议分散投资，控制单一行业仓位{Colors.ENDC}")
-    push_content += "\n<b>3. 风险提示</b>\n"
-    push_content += "  - 市场宽度指标仅反映短期趋势，需结合基本面分析\n"
-    push_content += "  - 避免追高下降趋势明显的行业\n"
-    push_content += "  - 建议分散投资，控制单一行业仓位\n"
-    
-    print(f"\n{Colors.HEADER}=========================================")
-    print(f"{Colors.OKGREEN}✅ 分析完成！{Colors.ENDC}")
-    push_content += "\n=========================================\n"
-    push_content += "✅ 分析完成！\n"
-    
-    # 推送报告
-    print(f"\n{Colors.INFO} 正在推送分析报告...{Colors.ENDC}")
-    send_wxpush_message("市场宽度行业趋势分析报告", push_content)
+# ================= 主程序 =================
 
 def main():
-    """主函数"""
-    print(f"{Colors.OKGREEN}{Colors.BOLD}🚀 市场宽度快速报告生成工具{Colors.ENDC}")
-    print(f"{Colors.OKBLUE}正在获取最新的行业市场宽度数据...{Colors.ENDC}")
+    print(f"[{datetime.now().strftime('%H:%M:%S')}] 开始执行市场分析任务...")
     
-    # 获取和解析数据
-    pivot_df, raw_data = get_and_parse_data()
-    if pivot_df is None:
-        print(f"{Colors.FAIL}❌ 报告生成失败{Colors.ENDC}")
+    # 1. 获取数据
+    data = fetch_data()
+    if not data:
+        print("[Error] 数据获取失败，任务终止。")
         return
-        
-    # 分析数据并生成报告
-    analyze_market_breadth(pivot_df, raw_data)
+
+    # 2. 处理数据
+    pivot, dates = process_data(data)
+    
+    # 3. 生成数据上下文
+    context = prepare_context_for_ai(pivot, dates)
+    print("--- 生成的数据上下文 ---")
+    print(context)
+    
+    # 4. 调用 AI 分析
+    print(f"[{datetime.now().strftime('%H:%M:%S')}] 正在请求 DeepSeek 进行分析...")
+    ai_report = call_deepseek_analysis(context)
+    
+    # 5. 组合最终报告
+    final_report = f"""
+{ai_report}
+
+---
+*数据来源: 大盘云图 | 生成时间: {datetime.now().strftime('%H:%M')}*
+    """
+    
+    # 6. 保存与推送
+    # 保存
+    filename = f"ai_market_report_{datetime.now().strftime('%Y%m%d')}.md"
+    with open(filename, 'w', encoding='utf-8') as f:
+        f.write(final_report)
+    print(f"[Info] 报告已保存至 {filename}")
+    
+    # 推送
+    send_push("A股市场宽度日报", final_report)
 
 if __name__ == "__main__":
     main()
