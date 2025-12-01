@@ -238,6 +238,15 @@ def main():
 
     # 2. 处理数据
     pivot, dates = process_data(data)
+
+    # 检查最新数据日期是否为今天
+    latest_date = dates[-1]
+    today_date = beijing_time.strftime('%Y-%m-%d')
+    
+    if latest_date != today_date:
+        print(f"[Warning] 数据最新日期 ({latest_date}) 不等于今天 ({today_date})，跳过数据分析和推送。")
+        return
+    
     
     # 3. 生成数据上下文
     context = prepare_context_for_ai(pivot, dates)
