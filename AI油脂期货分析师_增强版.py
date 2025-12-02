@@ -457,6 +457,13 @@ def prepare_context_for_ai(df_dict):
     s_data_str = "\n".join(s_data_lines)
     
     # 美豆数据（如果有）
+    us_s_status = ""
+    if us_s_latest is not None:
+        us_s_status = f"""[美豆当前状态]
+- 最新价格: {us_s_latest['close']:.0f} 美元/吨
+- 日涨跌幅: {us_s_latest['pct_change']:+.2f}%
+- 成交量比: {us_s_latest['volume_ratio']:.2f}倍"""
+    
     us_s_data_str = ""
     if us_s_recent is not None:
         us_s_data_lines = ["日期,开盘价,最高价,最低价,收盘价,成交量,持仓量,涨跌幅(%)"]
@@ -511,7 +518,7 @@ def prepare_context_for_ai(df_dict):
     - 成交量比: {s_latest['volume_ratio']:.2f}倍
     - 持仓量: {s_latest['hold']:.0f}
     
-    {("[美豆当前状态]\n- 最新价格: " + f"{us_s_latest['close']:.0f}" + " 美元/吨\n- 日涨跌幅: " + f"{us_s_latest['pct_change']:+.2f}" + "%\n- 成交量比: " + f"{us_s_latest['volume_ratio']:.2f}" + "倍\n") if us_s_latest is not None else ""}
+    {us_s_status if us_s_latest is not None else ""}
     
     [价差分析]
     - 当前价差(豆油-棕榈油): {price_spread:+.0f} 元/吨
@@ -543,34 +550,38 @@ def call_deepseek_analysis(context):
     if not DEEPSEEK_API_KEY or "sk-" not in DEEPSEEK_API_KEY:
         print("[Warning] 未配置 DEEPSEEK_API_KEY，跳过 AI 分析。")
         return "未配置 API Key，无法生成 AI 报告。"
-
     system_prompt = """你是一位资深的期货分析师，专注于油脂油料品种和大豆压榨产业链分析。请基于提供的豆油(y0)、棕榈油(p0)、豆粕(m0)、大豆(B0)和美豆的历史数据，撰写一份深度分析报告。
 
     **分析逻辑与要求：**
 
-    1.  **趋势判断**:
+    1.  **基本面逻辑推演 (新增)**:
+        *   **季节性分析**: 结合当前月份，分析棕榈油产地（减产/增产季）、南美大豆（播种/收割期）等季节性因素。
+        *   **供需推演**: 基于价格走势和持仓变化，反推现货市场的供需矛盾（如近强远弱暗示现货紧张）。
+        *   **宏观与外盘**: 简述原油价格、汇率变动及美豆走势对国内油脂板块的传导影响。
+
+    2.  **趋势判断**:
         *   分析四个品种各自的趋势方向（上涨/下跌/震荡）。
         *   结合均线系统判断当前所处的技术位置（多头排列/空头排列）。
         *   识别关键支撑位和压力位。
         
-    2.  **榨利分析（核心）**:
+    3.  **榨利分析（核心）**:
         *   **榨利是压榨企业的盈利指标**，直接影响开工率和现货供应。
         *   计算公式：(豆粕价格×79% + 豆油价格×19% - 大豆价格 - 压榨成本)
         *   分析当前榨利水平：盈利/亏损，偏离历史均值的程度。
         *   榨利与现货供需关系：榨利高→开工率增加→豆粕豆油供应增加→价格下行
         *   榨利与外盘关系：美豆价格变化对榨利的影响。
         
-    3.  **产业链联动分析**:
+    4.  **产业链联动分析**:
         *   大豆→豆粕、豆油的传导机制。
         *   豆油与棕榈油的替代关系和价差分析。
         *   外盘（美豆）与内盘的联动关系。
         
-    4.  **成交量持仓量分析**:
+    5.  **成交量持仓量分析**:
         *   分析各品种的资金参与度。
         *   量价配合关系（放量上涨、缩量下跌等）。
         *   持仓量变化反映资金流向。
         
-    5.  **交易策略建议**:
+    6.  **交易策略建议**:
         *   给出各品种的操作方向建议(不要表格)
         *   榨利相关的套利策略（如买豆粕卖大豆等）。
         *   跨品种套利机会（豆油棕榈油、豆粕大豆等）。
@@ -580,10 +591,11 @@ def call_deepseek_analysis(context):
     *   使用 Markdown 格式。
     *   **必须引用数据**: 在分析时必须引用具体的价格、榨利、成交量、持仓量等数值。
     *   语气专业、客观、有洞察力。
-    *   字数控制在 800-1000 字之间。
+    *   字数控制在 1000-1500 字之间。
 
     **报告结构：**
     # 油脂期货深度分析（含榨利分析）
+    ## 🌾 基本面逻辑推演
     ## 📊 品种走势分析
     ## 🏭 榨利分析与供需传导
     ## 📈 量价仓配合解读
@@ -591,7 +603,7 @@ def call_deepseek_analysis(context):
     ## 💡 交易策略建议
     """
 
-    user_prompt = f"这是最新的油脂期货数据（包含豆油、棕榈油、豆粕、豆二号(B0)、美豆和榨利分析），请开始分析：\n{context}"
+    user_prompt = f"这是最新的油脂期货数据（包含豆油、棕榈油、豆粕、豆二号(B0)、美豆和榨利分析）。请充分发挥你的金融知识库，结合数据进行【基本面逻辑推演】，请开始分析：\\n{context}"
 
     payload = {
         "model": "deepseek-chat",
@@ -777,11 +789,11 @@ def main():
 *数据来源: AkShare | AI 分析: DeepSeek*
     """
     
-    # # 8. 保存分析报告
-    # filename = f"futures_oil_report_enhanced_{beijing_time.strftime('%Y%m%d')}.md"
-    # with open(filename, 'w', encoding='utf-8') as f:
-    #     f.write(final_report)
-    # print(f"[Info] 报告已保存至 {filename}")
+    # 8. 保存分析报告
+    filename = f"futures_oil_report_enhanced_{beijing_time.strftime('%Y%m%d')}.md"
+    with open(filename, 'w', encoding='utf-8') as f:
+        f.write(final_report)
+    print(f"[Info] 报告已保存至 {filename}")
     
     # 9. 推送分析报告
     push_title = f"油脂期货分析日报（含榨利）({beijing_time.strftime('%Y-%m-%d')})"
@@ -789,4 +801,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
