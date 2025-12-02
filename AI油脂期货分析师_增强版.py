@@ -456,25 +456,16 @@ def prepare_context_for_ai(df_dict):
         )
     s_data_str = "\n".join(s_data_lines)
     
-    # 美豆数据（如果有）
-    us_s_status = ""
-    if us_s_latest is not None:
-        us_s_status = f"""[美豆当前状态]
-- 最新价格: {us_s_latest['close']:.0f} 美元/吨
-- 日涨跌幅: {us_s_latest['pct_change']:+.2f}%
-- 成交量比: {us_s_latest['volume_ratio']:.2f}倍"""
-    
-    us_s_data_str = ""
-    if us_s_recent is not None:
-        us_s_data_lines = ["日期,开盘价,最高价,最低价,收盘价,成交量,持仓量,涨跌幅(%)"]
-        for _, row in us_s_recent.iterrows():
-            date_str = row['date'].strftime('%Y-%m-%d')
-            pct = row['pct_change'] if pd.notnull(row['pct_change']) else 0
-            us_s_data_lines.append(
-                f"{date_str},{row['open']:.0f},{row['high']:.0f},{row['low']:.0f},"
-                f"{row['close']:.0f},{row['volume']:.0f},{row['hold']:.0f},{pct:+.2f}"
-            )
-        us_s_data_str = "\n".join(us_s_data_lines)
+    # 构建美豆完整数据CSV
+    us_s_data_lines = ["日期,开盘价,最高价,最低价,收盘价,成交量,持仓量,涨跌幅(%)"]
+    for _, row in us_s_recent.iterrows():
+        date_str = row['date'].strftime('%Y-%m-%d')
+        pct = row['pct_change'] if pd.notnull(row['pct_change']) else 0
+        us_s_data_lines.append(
+            f"{date_str},{row['open']:.2f},{row['high']:.2f},{row['low']:.2f},"
+            f"{row['close']:.2f},{row['volume']:.0f},{row['hold']:.0f},{pct:+.2f}"
+        )
+    us_s_data_str = "\n".join(us_s_data_lines)
     
     # 构建上下文
     context = f"""
@@ -518,7 +509,16 @@ def prepare_context_for_ai(df_dict):
     - 成交量比: {s_latest['volume_ratio']:.2f}倍
     - 持仓量: {s_latest['hold']:.0f}
     
-    {us_s_status if us_s_latest is not None else ""}
+    {f"""
+    [美豆(S)当前状态] 
+    - 最新价格: {us_s_latest['close']:.2f} 美分/蒲式耳
+    - 日涨跌幅: {us_s_latest['pct_change']:+.2f}%
+    - MA5: {us_s_latest['MA5']:.2f}, MA20: {us_s_latest['MA20']:.2f}, MA60: {us_s_latest['MA60']:.2f}
+    - 价格位置: {'MA5之上' if us_s_latest['above_MA5'] else 'MA5之下'}, {'MA20之上' if us_s_latest['above_MA20'] else 'MA20之下'}
+    - 20日波动率: {us_s_latest['volatility']:.2f}%
+    - 成交量比: {us_s_latest['volume_ratio']:.2f}倍
+    - 持仓量: {us_s_latest['hold']:.0f}
+    """ if us_s_latest is not None else ""}
     
     [价差分析]
     - 当前价差(豆油-棕榈油): {price_spread:+.0f} 元/吨
@@ -789,11 +789,11 @@ def main():
 *数据来源: AkShare | AI 分析: DeepSeek*
     """
     
-    # 8. 保存分析报告
-    filename = f"futures_oil_report_enhanced_{beijing_time.strftime('%Y%m%d')}.md"
-    with open(filename, 'w', encoding='utf-8') as f:
-        f.write(final_report)
-    print(f"[Info] 报告已保存至 {filename}")
+    # # 8. 保存分析报告
+    # filename = f"futures_oil_report_enhanced_{beijing_time.strftime('%Y%m%d')}.md"
+    # with open(filename, 'w', encoding='utf-8') as f:
+    #     f.write(final_report)
+    # print(f"[Info] 报告已保存至 {filename}")
     
     # 9. 推送分析报告
     push_title = f"油脂期货分析日报（含榨利）({beijing_time.strftime('%Y-%m-%d')})"
