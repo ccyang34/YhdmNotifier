@@ -286,7 +286,6 @@ def analyze_market_structure(csv_content, days=DEFAULT_DAYS):
         'total_records': total_records,
         'zt_count': zt_count,
         'dt_count': dt_count,
-        'zt_ratio': zt_count / total_records if total_records > 0 else 0,
         'date_range': f"{df['日期'].min()} 至 {df['日期'].max()}" if not df['日期'].empty else "未知"
     }
     
@@ -341,8 +340,7 @@ def analyze_market_structure(csv_content, days=DEFAULT_DAYS):
             analysis_result['sector_analysis'][sector] = {
                 'total': len(sector_stocks),
                 'zt_count': zt_in_sector,
-                'dt_count': dt_in_sector,
-                'zt_ratio': zt_in_sector / len(sector_stocks) if len(sector_stocks) > 0 else 0
+                'dt_count': dt_in_sector
             }
     
     # 风险分析
@@ -389,7 +387,7 @@ def prepare_ai_context(csv_content, analysis_result):
 [市场数据概览]
 - 分析周期: {summary['date_range']}
 - 总记录数: {summary['total_records']} 条
-- 涨停股票: {summary['zt_count']} 只 ({summary['zt_ratio']:.1%})
+- 涨停股票: {summary['zt_count']} 只
 - 跌停股票: {summary['dt_count']} 只
 
 [每日市场温度计]"""
@@ -406,7 +404,7 @@ def prepare_ai_context(csv_content, analysis_result):
         for sector, data in sector_analysis.items():
             if data['total'] > 0:
                 context += f"""
-- {sector}: {data['zt_count']}涨停/{data['dt_count']}跌停 (涨停率{data['zt_ratio']:.1%})"""
+- {sector}: {data['zt_count']}涨停/{data['dt_count']}跌停"""
     
     # 添加风险提示
     if risk_analysis['high_risk_count'] > 0:
