@@ -1,13 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-11-21T10:42:04.566674+08:00",
-      "anime_unique_keys": [
-        "完美世界_有4K",
-        "神墓_有4K"
-      ]
-    },
-    {
       "timestamp": "2025-11-21T18:44:06.623347+08:00",
       "anime_unique_keys": [
         "斗罗大陆_有4K",
@@ -139,15 +132,21 @@
       "anime_unique_keys": [
         "吞噬星空_有4K"
       ]
+    },
+    {
+      "timestamp": "2025-12-02T18:45:48.549614+08:00",
+      "anime_unique_keys": [
+        "遮天_有4K"
+      ]
     }
   ],
   "anime_details": [
     {
-      "title": "吞噬星空",
-      "update_info": "动漫4k更新至200集",
-      "baidu_link": "https://pan.baidu.com/s/1EtuABeeCtLbpL8SrfR5eiQ?pwd=7nay",
+      "title": "遮天",
+      "update_info": "动漫4k更新至138集",
+      "baidu_link": "https://pan.baidu.com/s/1dN4AmZjrNJPsjcYK5Lbr5w?pwd=hw4g",
       "has_4k": true,
-      "unique_key": "吞噬星空_有4K"
+      "unique_key": "遮天_有4K"
     }
   ]
 }
