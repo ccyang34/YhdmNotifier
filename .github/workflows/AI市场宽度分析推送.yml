@@ -27,6 +27,9 @@ jobs:
           python -m pip install --upgrade pip
           # 新增 numpy 依赖，保留原有依赖
           pip install requests pandas numpy pytz
+          
+      - name: 设置系统时区为北京时间（避免时间计算错误）
+        run: sudo timedatectl set-timezone Asia/Shanghai
 
       - name: 执行脚本（验证模块导入）
         run: python "AI市场宽度快速报告.py"  # 确保脚本路径正确
