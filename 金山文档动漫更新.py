@@ -98,7 +98,7 @@ def extract_text_from_data(raw_data):
 def extract_anime_info(content):
     cleaned_content = re.sub(r'[\s\-]', '', content)
     anime_names = [
-        "斗破苍穹", "牧神记", "凡人修仙传", "完美世界", 
+      "神墓", "玄界之门", "天相", "斗破苍穹", "牧神记", "凡人修仙传", "完美世界", 
         "仙逆", "遮天", "斗罗大陆", "吞噬星空", "诛仙", "武动乾坤", "武碎星河", "神墓"
     ]
     updates = []
