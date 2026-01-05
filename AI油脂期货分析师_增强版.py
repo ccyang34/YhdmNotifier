@@ -7,7 +7,7 @@ import requests
 import os
 
 # ================= 配置区域 =================
-DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "sk-063857d175bd48038684520e7b6ec934")
+DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
 DEEPSEEK_BASE_URL = "https://api.deepseek.com/v1"
 
 # 推送配置 (WxPusher)
