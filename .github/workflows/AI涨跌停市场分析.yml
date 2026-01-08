@@ -1,0 +1,31 @@
+name: AI涨跌停市场分析
+
+on:
+  schedule:
+    # 北京时间 15:30（下午3点半）→ UTC 07:30，仅周一至周五触发
+    - cron: '30 7 * * 1-5'
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: 检出仓库代码
+        uses: actions/checkout@v4
+
+      - name: 配置Python环境
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: 安装Python依赖
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests pandas numpy pytz
+
+      - name: 执行脚本
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: python "AI涨停跌停市场分析师.py"

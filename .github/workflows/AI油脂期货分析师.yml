@@ -1,0 +1,43 @@
+name: AI油脂期货分析师
+
+on:
+  schedule:
+    # 北京时间 08:50（早上，期货开盘前预热）
+    - cron: '50 0 * * 1-5'
+    # 北京时间 15:30（下午，期货日盘收盘后分析）
+    - cron: '30 7 * * 1-5'
+    # 北京时间 21:00（晚上，期货夜盘开盘前）
+    - cron: '0 13 * * 1-5'
+    # 北京时间 23:05（深夜，期货夜盘中途复盘）
+    - cron: '5 15 * * 1-5'
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: 检出仓库代码
+        uses: actions/checkout@v4
+
+      - name: 配置Python环境
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: 安装系统依赖（akshare需要）
+        run: sudo apt-get update && sudo apt-get install -y libopenblas-dev
+
+      - name: 安装Python依赖
+        run: |
+          python -m pip install --upgrade pip
+          pip install akshare requests pandas numpy pytz
+
+      - name: 设置系统时区为北京时间
+        run: sudo timedatectl set-timezone Asia/Shanghai
+
+      - name: 执行脚本
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: python "AI油脂期货分析师_增强版.py"

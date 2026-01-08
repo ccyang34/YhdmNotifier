@@ -1,0 +1,36 @@
+name: AI市场宽度报告
+
+on:
+  schedule:
+    # 北京时间 16:30（下午4点半）→ UTC 08:30，仅周一至周五触发
+    - cron: '30 8 * * 1-5'
+    # 北京时间 17:30（下午5点半）→ UTC 09:30，仅周一至周五触发
+    - cron: '30 9 * * 1-5'
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: 检出仓库代码
+        uses: actions/checkout@v4
+
+      - name: 配置Python环境
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: 安装Python依赖
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests pandas numpy pytz
+
+      - name: 设置系统时区为北京时间
+        run: sudo timedatectl set-timezone Asia/Shanghai
+
+      - name: 执行脚本
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: python "AI市场宽度快速报告.py"
