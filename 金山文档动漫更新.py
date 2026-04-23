@@ -4,8 +4,8 @@ import json
 import unicodedata
 import os
 import datetime
-from bs4 import BeautifulSoup
 from urllib.parse import urljoin
+from playwright.sync_api import sync_playwright
 try:
     from zoneinfo import ZoneInfo
 except ImportError:
@@ -24,73 +24,74 @@ TARGET_TOPIC_ID = [32277]
 # 数据获取模块
 # ------------------------------
 def fetch_raw_data(url):
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-        "Accept-Language": "zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2",
-        "Referer": "https://www.kdocs.cn/",
-        "Connection": "keep-alive"
-    }
+    print("  启动浏览器拦截数据...")
+    otl_json = None
     
+    def handle_response(response):
+        nonlocal otl_json
+        if "open/otl" in response.url:
+            print("  [网络拦截] 截获到:", response.url, "状态码:", response.status)
+            if response.status == 200:
+                try:
+                    text = response.text()
+                    otl_json = json.loads(text)
+                    print("  [网络拦截] 成功解析 JSON")
+                except Exception as e:
+                    print("  [网络拦截] 解析 API 响应时出错:", e)
+                
     try:
-        response = requests.get(url, headers=headers, timeout=15)
-        response.raise_for_status()
-        response.encoding = response.apparent_encoding
-        
-        html = response.text
-        script_pattern = re.compile(r'window\.initialState\s*=\s*({.*?});', re.DOTALL)
-        json_match = script_pattern.search(html)
-        json_data = None
-        
-        if json_match:
-            try:
-                json_data = json.loads(json_match.group(1))
-            except Exception as e:
-                print(f"解析JSON数据时出错: {e}")
-        
-        return {'html': html, 'json_data': json_data, 'status': 'success'}
-        
-    except requests.exceptions.RequestException as e:
-        return {'status': 'error', 'error_type': 'request', 'message': str(e)}
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            context = browser.new_context(
+                user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+                viewport={"width": 1920, "height": 1080}
+            )
+            page = context.new_page()
+            page.on("response", handle_response)
+            page.goto(url)
+            
+            # 等待接口响应
+            for _ in range(30):
+                if otl_json:
+                    break
+                page.wait_for_timeout(500)
+            
+            browser.close()
+            
+            if otl_json:
+                return {'status': 'success', 'json_data': otl_json}
+            else:
+                return {'status': 'error', 'message': '未能截获到文档内容 API 响应 (open/otl)。'}
+                
     except Exception as e:
         return {'status': 'error', 'error_type': 'general', 'message': str(e)}
 
 def extract_text_from_data(raw_data):
-    extracted_text = []
-    
+    def extract_text_recursive(node):
+        if isinstance(node, dict):
+            text = ""
+            if "text" in node and isinstance(node["text"], str):
+                text += node["text"]
+            for k, v in node.items():
+                text += extract_text_recursive(v)
+            return text
+        elif isinstance(node, list):
+            text = ""
+            for item in node:
+                text += extract_text_recursive(item)
+            return text
+        else:
+            return ""
+
     if raw_data.get('json_data'):
         try:
-            doc_data = raw_data['json_data'].get('doc', {})
-            content_data = doc_data.get('content', {})
-            if 'blocks' in content_data:
-                for block in content_data['blocks']:
-                    if 'text' in block:
-                        extracted_text.append(block['text'].strip())
-                    elif 'paragraph' in block and 'content' in block['paragraph']:
-                        for item in block['paragraph']['content']:
-                            if 'text' in item:
-                                extracted_text.append(item['text'].strip())
+            full_text = extract_text_recursive(raw_data['json_data'])
+            print(f"\n【提取到的完整文本】\n{full_text[:500]}...\n【文本总长度】：{len(full_text)} 字符")
+            return full_text
         except Exception as e:
-            print(f"从JSON提取文本时出错: {e}")
+            print(f"从 JSON 提取文本时出错: {e}")
     
-    if not extracted_text and raw_data.get('html'):
-        try:
-            soup = BeautifulSoup(raw_data['html'], 'html.parser')
-            for script in soup(["script", "style"]):
-                script.decompose()
-            text = soup.get_text()
-            text = unicodedata.normalize("NFKC", text)
-            text = re.sub(r'\s+', ' ', text)
-            text = re.sub(r'[\u200b\u200c\u200d\u2060\uFEFF]', '', text)
-            text = re.sub(r'[\s\-]', '', text)
-            if text:
-                extracted_text.append(text)
-        except Exception as e:
-            print(f"从HTML提取文本时出错: {e}")
-    
-    full_text = ' '.join(extracted_text)
-    print(f"\n【提取到的完整文本】\n{full_text}\n【文本总长度】：{len(full_text)} 字符")
-    return full_text
+    return ""
 
 # ------------------------------
 # 信息提取模块
@@ -239,6 +240,10 @@ if __name__ == "__main__":
     document_text = extract_text_from_data(raw_data)
     if not document_text:
         print("❌ 未能从文档中提取到文本内容")
+        print("⚠️ 提示：金山文档可能已开启强制登录验证。")
+        print("   请在浏览器登录金山文档，获取 Cookie（尤其是 wps_sid 字段），")
+        print("   并将其设置为 KDOCS_COOKIE 环境变量后再试。")
+        print("   例如：export KDOCS_COOKIE=\"wps_sid=你的值; ...\"")
         print("=== 执行结束 ===")
         exit()
     print("✅ 文本提取完成")

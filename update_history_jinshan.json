@@ -1,19 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-11-21T18:44:06.623347+08:00",
-      "anime_unique_keys": [
-        "斗罗大陆_有4K",
-        "神墓_有4K"
-      ]
-    },
-    {
-      "timestamp": "2025-11-22T18:33:36.550364+08:00",
-      "anime_unique_keys": [
-        "凡人修仙传_有4K"
-      ]
-    },
-    {
       "timestamp": "2025-11-22T18:48:25.862482+08:00",
       "anime_unique_keys": [
         "凡人修仙传_有4K",
@@ -138,15 +125,42 @@
       "anime_unique_keys": [
         "遮天_有4K"
       ]
+    },
+    {
+      "timestamp": "2026-04-23T17:47:16.817893+08:00",
+      "anime_unique_keys": [
+        "神墓_有4K"
+      ]
+    },
+    {
+      "timestamp": "2026-04-23T22:45:35.810041+08:00",
+      "anime_unique_keys": [
+        "神墓_有4K",
+        "完美世界_有4K"
+      ]
     }
   ],
   "anime_details": [
     {
-      "title": "遮天",
-      "update_info": "动漫4k更新至138集",
-      "baidu_link": "https://pan.baidu.com/s/1dN4AmZjrNJPsjcYK5Lbr5w?pwd=hw4g",
+      "title": "神墓",
+      "update_info": "动漫4k更新至39集",
+      "baidu_link": "https://pan.baidu.com/s/1jO7RMC98iY6zifVfMOUJZQ?pwd=97vp",
       "has_4k": true,
-      "unique_key": "遮天_有4K"
+      "unique_key": "神墓_有4K"
+    },
+    {
+      "title": "完美世界",
+      "update_info": "动漫4k更新至265集",
+      "baidu_link": "https://pan.baidu.com/s/1Qy0VIeZgDkAy442xxyv5lA?pwd=aeay",
+      "has_4k": true,
+      "unique_key": "完美世界_有4K"
+    },
+    {
+      "title": "神墓",
+      "update_info": "动漫4k更新至39集",
+      "baidu_link": "https://pan.baidu.com/s/1jO7RMC98iY6zifVfMOUJZQ?pwd=97vp",
+      "has_4k": true,
+      "unique_key": "神墓_有4K"
     }
   ]
 }
