@@ -105,7 +105,7 @@ def extract_anime_info(content):
     updates = []
     
     for anime in anime_names:
-        pattern = rf'({anime})(动漫(?:第[一二三四五六七八九十\d]+季)?(?:4k)?[^，,。.]*?(?:更新至\d+集|已更新\d+集|开播\d+集|连载至\d+集|共\d+集|全\d+集|暂时完结全\d+集|完结|连载中|已完结))'
+        pattern = rf'({anime}[^动]*)(动漫(?:第[一二三四五六七八九十\d]+季)?(?:4k)?[^，,。.]*?(?:更新至\d+集|已更新\d+集|开播\d+集|连载至\d+集|共\d+集|全\d+集|暂时完结全\d+集|完结|连载中|已完结))'
         match = re.search(pattern, cleaned_content, re.IGNORECASE)
         
         if match:
@@ -119,7 +119,7 @@ def extract_anime_info(content):
             
             baidu_link = ""
             after_pos = match.end()
-            baidu_match = re.search(r'https://pan\.baidu\.com/.*?\?pwd=[a-zA-Z0-9]{4}', cleaned_content[after_pos:])
+            baidu_match = re.search(r'https://pan\.baidu\.com/.*?\?pwd=[a-zA-Z0-9]{4}', cleaned_content[after_pos:after_pos+300])
             if baidu_match:
                 baidu_link = baidu_match.group(0)
             
@@ -202,13 +202,16 @@ def format_message(new_updates, old_updates):
     
     return "\n".join(message)
 
-def send_wechat(content):
+def send_wechat(content, summary=None):
     data = {
         "appToken": APP_TOKEN,
         "content": content,
         "contentType": 3,
         "topicIds": TARGET_TOPIC_ID
     }
+    if summary:
+        data["summary"] = summary
+        
     try:
         response = requests.post(f"{BASE_URL}/send/message", json=data, timeout=10)
         result = response.json()
@@ -281,8 +284,13 @@ if __name__ == "__main__":
         print(f"\n4. 发现新增/4K状态更新: {', '.join(new_desc)}")
         print("5. 正在生成推送内容（新内容红色标题，旧内容橙色标题）...")
         message = format_message(new_updates, old_updates)
+        
+        # 提取新增动漫标题用于生成推送摘要
+        new_titles = [update['title'] for update in new_updates]
+        push_summary = f"🔥 动漫更新: {', '.join(new_titles)}"
+        
         print("6. 正在发送微信推送...")
-        if send_wechat(message):
+        if send_wechat(message, summary=push_summary):
             save_history(
                 new_push={
                     "timestamp": get_beijing_time().isoformat(),
