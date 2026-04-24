@@ -606,7 +606,7 @@ def call_deepseek_analysis(context):
     user_prompt = f"这是最新的油脂期货数据（包含豆油、棕榈油、豆粕、豆二号(B0)、美豆和榨利分析）。请充分发挥你的金融知识库，结合数据进行【基本面逻辑推演】，请开始分析：\\n{context}"
 
     payload = {
-        "model": "deepseek-chat",
+        "model": "deepseek-v4-flash",
         "messages": [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt}

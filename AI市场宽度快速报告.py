@@ -283,7 +283,7 @@ def call_deepseek_analysis(context):
     user_prompt = f"这是最新的全市场行业宽度数据，请开始分析：\n{context}"
 
     payload = {
-        "model": "deepseek-chat",
+        "model": "deepseek-v4-flash",
         "messages": [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt}
