@@ -1,13 +1,6 @@
 {
   "pushes": [
     {
-      "timestamp": "2025-11-23T10:58:02.219858+08:00",
-      "anime_unique_keys": [
-        "斗破苍穹_有4K",
-        "武碎星河_有4K"
-      ]
-    },
-    {
       "timestamp": "2025-11-23T11:27:40.160808+08:00",
       "anime_unique_keys": [
         "牧神记_有4K",
@@ -139,15 +132,22 @@
         "深空彼岸_有4K",
         "斗罗大陆2_有4K"
       ]
+    },
+    {
+      "timestamp": "2026-04-25T19:25:13.308459+08:00",
+      "anime_unique_keys": [
+        "斗破苍穹_有4K",
+        "永生_有4K"
+      ]
     }
   ],
   "anime_details": [
     {
-      "title": "斗罗大陆2",
-      "update_info": "动漫4k更新至150集",
-      "baidu_link": "https://pan.baidu.com/s/1Yq6M0ZBIdqwry8FmpR5CgQ?pwd=mm67",
+      "title": "斗破苍穹",
+      "update_info": "动漫4k更新至196集",
+      "baidu_link": "https://pan.baidu.com/s/1nkADw6UXxHg0PFY2pLAxw?pwd=pda6",
       "has_4k": true,
-      "unique_key": "斗罗大陆2_有4K"
+      "unique_key": "斗破苍穹_有4K"
     },
     {
       "title": "永生",
@@ -155,13 +155,6 @@
       "baidu_link": "https://pan.baidu.com/s/1TJkkWunVelJ5tdq038Lp9w?pwd=abqg",
       "has_4k": true,
       "unique_key": "永生_有4K"
-    },
-    {
-      "title": "深空彼岸",
-      "update_info": "动漫4k更新至17集",
-      "baidu_link": "https://pan.baidu.com/s/1uFWt2owkdMlCLSfXAqwMg?pwd=c61v",
-      "has_4k": true,
-      "unique_key": "深空彼岸_有4K"
     }
   ]
 }
