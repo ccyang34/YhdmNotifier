@@ -1,12 +1,9 @@
 name: 樱花动漫更新自动推送
-# 注释掉触发配置，关闭工作流运行
-# on:
-#   schedule:
-#     - cron: '33 03 * * *'  # 北京时间11:33
-#     - cron: '30 07 * * *'  # 北京时间15:30
-#     - cron: '33 11 * * *'  # 北京时间19:33
-#     - cron: '50 12 * * *'  # 北京时间20:50
-#   workflow_dispatch:
+注释掉触发配置，关闭工作流运行
+on:
+  schedule:
+    - cron: '0,20,40 2-12 * * *'  # 北京时间 10:00 ~ 20:00，每20分钟一次
+  workflow_dispatch:
 
 concurrency:
   group: anime-${{ github.ref }}
@@ -19,15 +16,15 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
           token: ${{ secrets.REPO_TOKEN }}
           persist-credentials: true
 
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v6
         with:
-          python-version: '3.9'
+          python-version: '3.11'
 
       - name: 安装依赖
         run: pip install requests beautifulsoup4
