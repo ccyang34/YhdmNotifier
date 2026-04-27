@@ -52,19 +52,10 @@ WXPUSHER_URL = "https://wxpusher.zjiecode.com/api/send/message"
 # ==================== 数据获取函数 ====================
 def get_etf_data(code, start_date, end_date):
     """
-    优先使用 akshare 获取数据，若失败则降级使用 tushare 获取。
+    优先使用 tushare 获取数据，若失败则降级使用 akshare 获取。
     返回标准化后的 DataFrame：包含 '日期', '开盘', '最高', '最低', '收盘' 列，按日期升序排列。
     """
-    # 尝试使用 akshare
-    try:
-        df = ak.fund_etf_hist_em(symbol=code, period="daily", start_date=start_date, end_date=end_date, adjust="qfq")
-        if df is not None and not df.empty:
-            print(f"[{code}] akshare 数据获取成功")
-            return df
-    except Exception as e:
-        print(f"[{code}] akshare 获取失败: {e}，尝试使用 tushare 备用数据源...")
-
-    # 尝试使用 tushare
+    # 尝试使用 tushare (优先)
     try:
         # tushare 的 ts_code 格式为 '510880.SH' 或 '159915.SZ'
         # 根据代码首位判断市场，5开头为上交所，1开头为深交所
@@ -75,46 +66,55 @@ def get_etf_data(code, start_date, end_date):
         df_ts = pro.fund_daily(ts_code=ts_code, start_date=start_date, end_date=end_date)
         
         if df_ts is None or df_ts.empty:
-            print(f"[{code}] tushare 行情数据为空")
-            return None
+            print(f"[{code}] tushare 行情数据为空，尝试使用 akshare 备用数据源...")
+        else:
+            # 获取复权因子
+            df_adj = pro.fund_adj(ts_code=ts_code, start_date=start_date, end_date=end_date)
             
-        # 获取复权因子
-        df_adj = pro.fund_adj(ts_code=ts_code, start_date=start_date, end_date=end_date)
-        
-        if df_adj is not None and not df_adj.empty:
-            # 合并复权因子并计算前复权 (简化版复权：以最新一天的复权因子为基准)
-            df_ts = pd.merge(df_ts, df_adj[['trade_date', 'adj_factor']], on='trade_date', how='left')
-            df_ts['adj_factor'] = df_ts['adj_factor'].fillna(method='bfill').fillna(method='ffill')
+            if df_adj is not None and not df_adj.empty:
+                # 合并复权因子并计算前复权 (简化版复权：以最新一天的复权因子为基准)
+                df_ts = pd.merge(df_ts, df_adj[['trade_date', 'adj_factor']], on='trade_date', how='left')
+                df_ts['adj_factor'] = df_ts['adj_factor'].fillna(method='bfill').fillna(method='ffill')
+                
+                # 最新复权因子
+                latest_factor = df_ts['adj_factor'].iloc[0] # tushare 默认按日期降序
+                
+                # 计算前复权价格 = 实际价格 * (当日复权因子 / 最新复权因子)
+                df_ts['open'] = df_ts['open'] * (df_ts['adj_factor'] / latest_factor)
+                df_ts['high'] = df_ts['high'] * (df_ts['adj_factor'] / latest_factor)
+                df_ts['low'] = df_ts['low'] * (df_ts['adj_factor'] / latest_factor)
+                df_ts['close'] = df_ts['close'] * (df_ts['adj_factor'] / latest_factor)
+                
+            # 转换并重命名列名以对齐 akshare 格式
+            df_ts = df_ts.rename(columns={
+                'trade_date': '日期',
+                'open': '开盘',
+                'high': '最高',
+                'low': '最低',
+                'close': '收盘'
+            })
             
-            # 最新复权因子
-            latest_factor = df_ts['adj_factor'].iloc[0] # tushare 默认按日期降序
+            # 将日期转换为 'YYYY-MM-DD' 格式字符串
+            df_ts['日期'] = pd.to_datetime(df_ts['日期']).dt.strftime('%Y-%m-%d')
             
-            # 计算前复权价格 = 实际价格 * (当日复权因子 / 最新复权因子)
-            df_ts['open'] = df_ts['open'] * (df_ts['adj_factor'] / latest_factor)
-            df_ts['high'] = df_ts['high'] * (df_ts['adj_factor'] / latest_factor)
-            df_ts['low'] = df_ts['low'] * (df_ts['adj_factor'] / latest_factor)
-            df_ts['close'] = df_ts['close'] * (df_ts['adj_factor'] / latest_factor)
+            # tushare 默认返回的是日期降序（从新到旧），需要反转为升序（从旧到新）
+            df_ts = df_ts.sort_values('日期').reset_index(drop=True)
             
-        # 转换并重命名列名以对齐 akshare 格式
-        df_ts = df_ts.rename(columns={
-            'trade_date': '日期',
-            'open': '开盘',
-            'high': '最高',
-            'low': '最低',
-            'close': '收盘'
-        })
-        
-        # 将日期转换为 'YYYY-MM-DD' 格式字符串
-        df_ts['日期'] = pd.to_datetime(df_ts['日期']).dt.strftime('%Y-%m-%d')
-        
-        # tushare 默认返回的是日期降序（从新到旧），需要反转为升序（从旧到新）
-        df_ts = df_ts.sort_values('日期').reset_index(drop=True)
-        
-        print(f"[{code}] tushare 数据获取并前复权处理成功")
-        return df_ts
+            print(f"[{code}] tushare 数据获取并前复权处理成功")
+            return df_ts
     except Exception as e:
-        print(f"[{code}] tushare 获取也失败: {e}")
-        return None
+        print(f"[{code}] tushare 获取失败: {e}，尝试使用 akshare 备用数据源...")
+
+    # 尝试使用 akshare (备用)
+    try:
+        df = ak.fund_etf_hist_em(symbol=code, period="daily", start_date=start_date, end_date=end_date, adjust="qfq")
+        if df is not None and not df.empty:
+            print(f"[{code}] akshare 数据获取成功")
+            return df
+    except Exception as e:
+        print(f"[{code}] akshare 获取也失败: {e}")
+        
+    return None
 
 # ==================== 因子计算函数 ====================
 def bias_momentum(series, window=BIAS_N):
