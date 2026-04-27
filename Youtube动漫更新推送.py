@@ -17,6 +17,12 @@ BASE_URL = "https://wxpusher.zjiecode.com/api"
 TARGET_TOPIC_ID = [32277]
 YOUTUBE_URL = "https://www.youtube.com/@VitaAnimationGroups/videos"
 
+# 监控的动漫列表
+ANIME_NAMES = [
+    "神墓", "玄界之门", "天相", "斗破苍穹", "牧神记", "凡人修仙传", "完美世界", 
+    "仙逆", "遮天", "斗罗大陆", "吞噬星空", "诛仙", "武动乾坤", "武碎星河", "神墓", "剑来", "永生", "深空彼岸", "将夜"
+]
+
 def get_beijing_time():
     """获取当前北京时间"""
     return datetime.datetime.now(BEIJING_TZ)
@@ -105,10 +111,17 @@ def get_youtube_updates():
                                         continue
                                         
                                     name = original_title[start_pos:end_pos]
+                                    
+                                    # 检查是否在监控列表中
+                                    is_monitored = any(anime in name for anime in ANIME_NAMES)
+                                    if not is_monitored:
+                                        continue
 
-                                    # 如果标题包含4K（不区分大小写），则添加到name后面
-                                    if "4k" in original_title.lower():
-                                        name += " 4k"
+                                    # 检查标题是否包含4K（不区分大小写）
+                                    if "4k" not in original_title.lower():
+                                        continue
+                                        
+                                    name += " 4k"
 
                                     # 检查是否为预告片
                                     if "Preview" in original_title:
