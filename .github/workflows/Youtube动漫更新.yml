@@ -1,0 +1,56 @@
+name: Youtube动漫更新自动推送
+on:
+  schedule:
+    - cron: '0,20,40 2-12 * * *'  # 北京时间 10:00 ~ 20:00，每20分钟一次
+  workflow_dispatch:
+
+concurrency:
+  group: youtube-anime-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  youtube-anime-notify:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.REPO_TOKEN || github.token }}
+          persist-credentials: true
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.9'
+
+      - name: 安装依赖
+        run: |
+          pip install requests beautifulsoup4
+
+      - name: 执行推送
+        env:
+          APP_TOKEN: ${{ secrets.APP_TOKEN }}
+        run: python Youtube动漫更新推送.py
+
+      - name: 提交历史记录
+        env:
+          REPO_TOKEN: ${{ secrets.REPO_TOKEN || github.token }}
+          GIT_EMAIL: ${{ secrets.GIT_EMAIL || 'actions@github.com' }}
+        run: |
+          git config --local user.name "AutoUpdater"
+          git config --local user.email "$GIT_EMAIL"
+          git remote set-url origin "https://x-access-token:$REPO_TOKEN@github.com/$GITHUB_REPOSITORY.git"
+          
+          # 同步最新代码
+          git pull origin main --rebase --autostash
+          
+          git add update_history_youtube.json
+          if ! git diff --staged --quiet; then
+            git commit -m "自动更新: $(date +'%Y-%m-%d %H:%M')"
+            git push origin HEAD:main || exit 1
+          fi
