@@ -23,14 +23,14 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
           # 如果没有配置 REPO_TOKEN，默认使用 github.token
           token: ${{ secrets.REPO_TOKEN || github.token }}
           persist-credentials: true
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.9'
 
