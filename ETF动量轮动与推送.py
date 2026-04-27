@@ -8,6 +8,10 @@ import json
 import os
 
 # ==================== 配置 ====================
+# DeepSeek API 配置
+DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
+DEEPSEEK_BASE_URL = "https://api.deepseek.com/v1"
+
 # ETF池
 ETF_POOL = {
     '510880': '红利ETF',
@@ -98,6 +102,61 @@ def save_portfolio(portfolio):
     except Exception as e:
         print(f"保存虚拟持仓文件失败: {e}")
         raise
+
+# ==================== AI 分析模块 (DeepSeek) ====================
+def call_deepseek_analysis(context):
+    if not DEEPSEEK_API_KEY or "sk-" not in DEEPSEEK_API_KEY:
+        print("[Warning] 未配置 DEEPSEEK_API_KEY，跳过 AI 分析。")
+        return "未配置 API Key，无法生成 AI 解读。"
+
+    system_prompt = """你是一位拥有20年经验的量化策略分析师。请基于提供的ETF动量轮动数据、最新调仓决策以及近期涨跌幅，撰写一段简明扼要的AI策略解读。
+
+    **分析逻辑与要求：**
+
+    1. **当前局势点评**:
+       - 结合当前排名第一的ETF及其综合评分，点评当前市场哪类资产表现最强。
+       - 分析各ETF近期（1日、3日、5日、10日）涨跌幅，判断其上涨是短期脉冲还是趋势延续。
+    
+    2. **调仓逻辑分析**:
+       - 如果发生调仓（卖出A，买入B），请解释为什么模型做出了这个决策（结合动量衰减与新主线崛起）。
+       - 如果继续持有，说明持仓标的的动量健康度。
+       
+    3. **风险提示**:
+       - 观察排名靠后的ETF是否出现极端下跌（可能蕴含反弹机会或持续崩盘风险）。
+       - 提醒当前持仓的潜在风险（如高位回调、波动率放大的风险）。
+
+    **输出格式要求：**
+    * 使用 Markdown 格式。
+    * 字数控制在 200-300 字左右，语言精炼，直击要害。
+    * 语气专业、客观。不要使用模棱两可的废话。
+    * 不需要输出大标题，直接输出解读内容。
+    """
+
+    user_prompt = f"这是最新的ETF动量轮动数据与决策，请开始解读：\n{context}"
+
+    payload = {
+        "model": "deepseek-chat",  # 文本任务使用普通模型即可
+        "messages": [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt}
+        ],
+        "temperature": 0.5,
+        "max_tokens": 1000
+    }
+
+    try:
+        response = requests.post(
+            f"{DEEPSEEK_BASE_URL}/chat/completions",
+            headers={"Authorization": f"Bearer {DEEPSEEK_API_KEY}", "Content-Type": "application/json"},
+            json=payload,
+            timeout=30
+        )
+        if response.status_code == 200:
+            return response.json()['choices'][0]['message']['content']
+        else:
+            return f"AI 请求失败: {response.text}"
+    except Exception as e:
+        return f"AI 请求异常: {e}"
 
 # ==================== 推送功能 ====================
 def send_wx_msg(content: str, summary: str = "ETF综合评分与监控", contentType: int = 1):
@@ -261,9 +320,16 @@ def main():
         "--- 📊 综合动量评分排名 ---"
     ]
     
+    context_data = {
+        "decision": decision_msg,
+        "scores": {},
+        "returns": {}
+    }
+    
     for code, score in sorted_scores.items():
         name = ETF_POOL.get(code, "")
         msg_lines.append(f"🎯 {name}({code}): {score:.4f}")
+        context_data["scores"][name] = round(score, 4)
         
     def format_return(val, is_1d=False):
         """格式化收益率，Markdown 模式下内嵌 HTML 标签"""
@@ -288,11 +354,19 @@ def main():
         if code in returns_data:
             name = ETF_POOL.get(code, "")
             rets = returns_data[code]
+            context_data["returns"][name] = {k: round(v, 2) for k, v in rets.items() if k != "latest_price"}
             msg_lines.append(
                 f"📈 {name}:\n"
                 f"   1日: {format_return(rets['1日'], is_1d=True)}\n"
                 f"   3日: {format_return(rets['3日'])} | 5日: {format_return(rets['5日'])} | 10日: {format_return(rets['10日'])}"
             )
+            
+    # 获取 AI 解读
+    print("正在请求 DeepSeek 进行策略解读...")
+    ai_interpretation = call_deepseek_analysis(json.dumps(context_data, ensure_ascii=False, indent=2))
+    
+    msg_lines.append("\n--- 🤖 AI 策略解读 ---")
+    msg_lines.append(ai_interpretation)
             
     # WxPusher 中 contentType = 3 为 Markdown，这样 HTML font 标签和 ** 才会生效
     content = "\n".join(msg_lines)
