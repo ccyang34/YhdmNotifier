@@ -1,0 +1,43 @@
+name: ETF动量轮动与推送
+
+on:
+  schedule:
+    # 采用 UTC 时间配置定时任务
+    # UTC 时间比北京时间 (UTC+8) 晚 8 小时
+    # 1. 北京时间 09:25 -> UTC 时间 01:25
+    # 2. 北京时间 15:30 -> UTC 时间 07:30
+    # 仅在工作日 (周一至周五, 1-5) 运行
+    - cron: '25 1 * * 1-5'
+    - cron: '30 7 * * 1-5'
+  workflow_dispatch: # 允许手动触发
+
+jobs:
+  run-etf-strategy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v5
+        
+      - name: 设置 Python 环境
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.10'
+          
+      - name: 安装依赖
+        run: |
+          python -m pip install --upgrade pip
+          pip install akshare pandas numpy scikit-learn requests
+          
+      - name: 执行 ETF 动量轮动脚本
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: python ETF动量轮动与推送.py
+        
+      - name: 提交并推送虚拟持仓更新
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add virtual_portfolio.json
+          git commit -m "chore: 更新虚拟持仓数据 [skip ci]" || echo "持仓文件无变化，无需提交"
+          git push
