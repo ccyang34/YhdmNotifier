@@ -99,7 +99,12 @@ def get_youtube_updates():
                                     # 提取作品名称
                                     start_pos = original_title.find('【') + 1
                                     end_pos = original_title.find('】')
-                                    name = original_title[start_pos:end_pos] if start_pos != 0 and end_pos != -1 else original_title
+                                    
+                                    # 如果没有【】，通常是剧情解说合集，直接跳过
+                                    if start_pos == 0 or end_pos == -1:
+                                        continue
+                                        
+                                    name = original_title[start_pos:end_pos]
 
                                     # 如果标题包含4K（不区分大小写），则添加到name后面
                                     if "4k" in original_title.lower():
@@ -113,6 +118,10 @@ def get_youtube_updates():
                                     pattern = r'(?:Episode|EP|第|Season\s+\d+\s+Episode|集数)\s*(\d+|[0-9]+(?:\s*-\s*[0-9]+)?)(?:集|Collection|#\d+|Full)?'
                                     episode_match = re.search(pattern, original_title)
                                     episode_info = episode_match.group(1) if episode_match else ''
+                                    
+                                    # 如果提取不到集数，也跳过
+                                    if not episode_info:
+                                        continue
 
                                     # 提取播放链接
                                     navigation_endpoint = video_renderer.get('navigationEndpoint', {})
@@ -131,6 +140,10 @@ def get_youtube_updates():
 
         # 只保留最新的10条视频信息
         valid_title_link_time_pairs = valid_title_link_time_pairs[:10]
+        
+        # 打印提取到的信息用于日志排查
+        for p in valid_title_link_time_pairs:
+            print(f"提取到更新: {p}")
 
         return valid_title_link_time_pairs
 
