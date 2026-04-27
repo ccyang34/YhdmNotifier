@@ -109,7 +109,7 @@ def call_deepseek_analysis(context):
         print("[Warning] 未配置 DEEPSEEK_API_KEY，跳过 AI 分析。")
         return "未配置 API Key，无法生成 AI 解读。"
 
-    system_prompt = """你是一位拥有20年经验的量化策略分析师。请基于提供的ETF动量轮动数据、最新调仓决策以及近期涨跌幅，撰写一段简明扼要的AI策略解读。
+    system_prompt = """你是一位拥有20年经验的量化策略分析师。请基于提供的ETF动量轮动数据、最新调仓决策、近期涨跌幅，以及各标的过去200个交易日的历史收盘价数据，撰写一段简明扼要的AI策略解读。
 
     **分析逻辑与要求：**
 
@@ -117,17 +117,21 @@ def call_deepseek_analysis(context):
        - 结合当前排名第一的ETF及其综合评分，点评当前市场哪类资产表现最强。
        - 分析各ETF近期（1日、3日、5日、10日）涨跌幅，判断其上涨是短期脉冲还是趋势延续。
     
-    2. **调仓逻辑分析**:
-       - 如果发生调仓（卖出A，买入B），请解释为什么模型做出了这个决策（结合动量衰减与新主线崛起）。
+    2. **中长期趋势分析 (基于200日数据)**:
+       - 简要评估各核心标的在近200日长周期中的位置（如：处于历史高位震荡、长期均线之上突破、或是长期下跌后的底部反转）。
+       - 结合中长期趋势与当前短期动量，判断轮动信号的可靠性。
+    
+    3. **调仓逻辑分析**:
+       - 如果发生调仓（卖出A，买入B），请解释为什么模型做出了这个决策（结合长短期动量衰减与新主线崛起）。
        - 如果继续持有，说明持仓标的的动量健康度。
        
-    3. **风险提示**:
+    4. **风险提示**:
        - 观察排名靠后的ETF是否出现极端下跌（可能蕴含反弹机会或持续崩盘风险）。
        - 提醒当前持仓的潜在风险（如高位回调、波动率放大的风险）。
 
     **输出格式要求：**
     * 使用 Markdown 格式。
-    * 字数控制在 200-300 字左右，语言精炼，直击要害。
+    * 字数控制在 300-400 字左右，语言精炼，直击要害。
     * 语气专业、客观。不要使用模棱两可的废话。
     * 不需要输出大标题，直接输出解读内容。
     """
@@ -189,12 +193,13 @@ def send_wx_msg(content: str, summary: str = "ETF综合评分与监控", content
 def main():
     print(f"开始执行任务: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     
-    # 获取过去150天的数据以保证有足够的交易日
-    start_date = (datetime.now() - timedelta(days=150)).strftime("%Y%m%d")
+    # 获取过去300天的数据以保证至少有200个交易日
+    start_date = (datetime.now() - timedelta(days=300)).strftime("%Y%m%d")
     end_date = datetime.now().strftime("%Y%m%d")
     
     factor_df = pd.DataFrame(index=ETF_POOL.keys(), columns=['bias', 'slope', 'efficiency'], dtype='float64')
     returns_data = {}
+    historical_prices = {}  # 存储近200日收盘价用于AI分析
     
     for code, name in ETF_POOL.items():
         try:
@@ -228,6 +233,20 @@ def main():
                 "5日": ret_5d,
                 "10日": ret_10d
             }
+            
+            # 提取近200个交易日的收盘价，用于交给AI综合分析
+            # 只取日期(转换为字符串)和对应的收盘价(保留3位小数)
+            hist_200 = df.tail(200)
+            if '日期' in hist_200.columns:
+                date_col = '日期'
+            else:
+                date_col = hist_200.index
+                
+            dates_str = [str(d)[:10] for d in hist_200[date_col] if pd.notnull(d)]
+            prices = [round(float(p), 3) for p in hist_200['收盘']]
+            
+            # 以日期为键，收盘价为值，确保有序
+            historical_prices[name] = dict(zip(dates_str, prices))
             
             # 截取历史数据计算动量（与原策略保持一致：84根K线）
             history_bars = max(BIAS_N, MOMENTUM_DAY, SLOPE_N, EFFICIENCY_N) + 60 - 1 # 84
@@ -323,7 +342,8 @@ def main():
     context_data = {
         "decision": decision_msg,
         "scores": {},
-        "returns": {}
+        "returns": {},
+        "historical_prices": historical_prices  # 加入近200日历史收盘价数据
     }
     
     for code, score in sorted_scores.items():
