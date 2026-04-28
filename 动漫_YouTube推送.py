@@ -210,25 +210,28 @@ if __name__ == "__main__":
     content_fingerprint = {f"{u[0]}||{u[1]}" for u in new_updates}
 
     if content_fingerprint:
-        # 获取最近一次推送指纹（无条件获取最后一次）
-        last_push = history['pushes'][-1].get('fingerprint', []) if history['pushes'] else []
+        # 获取历史推送过的所有指纹，构建一个近期已知视频库
+        # 这样即使某个旧视频掉出前10又重新进榜，也不会被当成新视频重复推送
+        known_fingerprints = set()
+        for push in history.get('pushes', []):
+            known_fingerprints.update(push.get('fingerprint', []))
 
-        # 转换为集合进行比对
+        # 获取最近一次推送的指纹（用于判断是否完全一致）
+        last_push = history['pushes'][-1].get('fingerprint', []) if history['pushes'] else []
         last_fingerprint = set(last_push)
 
-        # 这里修改一下逻辑：只要新的内容集合不是完全被上次的内容集合包含，就说明有真正的“新”更新
-        # 避免因为某些旧内容掉出列表导致 content_fingerprint != last_fingerprint 从而误报
-        new_items = content_fingerprint - last_fingerprint
+        # 只要新的内容集合中有不在历史已知库中的，就是真正的“新”更新
+        new_items = content_fingerprint - known_fingerprints
 
         if not new_items:
-            print("⏭️ 内容与最近推送完全一致或无新更新，跳过发送")
+            print("⏭️ 内容已在历史推送记录中存在，无新更新，跳过发送")
         elif content_fingerprint == last_fingerprint:
             print("⏭️ 内容与最近推送完全一致，跳过发送")
         else:
             # 过滤出真正新的更新内容，只推送新增的
             actual_new_updates = [u for u in new_updates if f"{u[0]}||{u[1]}" in new_items]
             
-            # 如果筛选后发现没有真正的新内容（比如只是顺序变了），也跳过
+            # 如果筛选后发现没有真正的新内容
             if not actual_new_updates:
                 print("⏭️ 重新排序或剔除无关内容后无实质更新，跳过发送")
             else:

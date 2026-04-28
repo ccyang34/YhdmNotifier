@@ -156,7 +156,14 @@ def save_history(new_push, current_anime_details):
         current_history = load_history()
         current_history['pushes'].append(new_push)
         current_history['pushes'] = current_history['pushes'][-20:]
-        current_history['anime_details'] = current_anime_details
+        
+        # 维护一个所有动漫的最新状态数据库，而不是直接覆盖
+        existing_details = {item['unique_key']: item for item in current_history.get('anime_details', [])}
+        for item in current_anime_details:
+            existing_details[item['unique_key']] = item
+            
+        current_history['anime_details'] = list(existing_details.values())
+        
         with open(HISTORY_FILE, 'w', encoding='utf-8') as f:
             json.dump(current_history, f, ensure_ascii=False, indent=2)
     except Exception as e:
@@ -264,33 +271,39 @@ if __name__ == "__main__":
         print(f"- {update['title']} {k4_label} | 原始更新信息：{update['update_info']}")
     
     # 历史比对与排序逻辑
-    # 获取历史上最后一次推送的所有指纹，避免由于保存整个 anime_details 导致的逻辑复杂
-    # 我们应该直接对比最后一次推送保存的 current_unique_keys
     history = load_history()
-    history_unique_keys = set()
+    
+    # 建立历史所有动漫的最新状态数据库 (unique_key -> update_info)
+    # 这将记录我们已知的每部动漫的最新集数
+    known_states = {item['unique_key']: item['update_info'] for item in history.get('anime_details', [])}
+    
+    # 为了兼容之前的逻辑并防止刚刚推送过的再次推送，我们也获取最后一次推送的指纹
+    last_push_keys = set()
     if history['pushes']:
-        history_unique_keys = set(history['pushes'][-1].get('anime_unique_keys', []))
+        last_push_keys = set(history['pushes'][-1].get('anime_unique_keys', []))
+        
+    # 生成当前所有动漫的组合指纹
+    current_unique_keys_set = {f"{update['unique_key']}_{update['update_info']}" for update in current_anime_details}
 
-    # 生成当前所有动漫的唯一指纹 (名称 + 更新信息，确保集数变化能被识别)
-    current_unique_keys = {f"{update['unique_key']}_{update['update_info']}" for update in current_anime_details}
-
-    # 找出真正新增的内容（在当前抓取到的，但不在最后一次推送记录里的）
-    new_items_keys = current_unique_keys - history_unique_keys
-
-    # 筛选新增动漫（置顶，红色标题）和旧动漫（置底，橙色标题）
-    new_updates = [
-        update for update in current_anime_details 
-        if f"{update['unique_key']}_{update['update_info']}" in new_items_keys
-    ]
-    old_updates = [
-        update for update in current_anime_details 
-        if f"{update['unique_key']}_{update['update_info']}" not in new_items_keys
-    ]
+    new_updates = []
+    old_updates = []
+    
+    for update in current_anime_details:
+        ukey = update['unique_key']
+        uinfo = update['update_info']
+        
+        # 判断是不是真正的新更新：
+        # 1. 数据库里没有这部动漫 -> 全新
+        # 2. 数据库里有，但是集数更新了 -> 新集数
+        if ukey not in known_states or known_states[ukey] != uinfo:
+            new_updates.append(update)
+        else:
+            old_updates.append(update)
     
     # 推送判断与执行
     if new_updates:
-        # 如果准备推送的动漫指纹，与历史记录最新一条完全一致，则说明是重复推送，直接跳过
-        if current_unique_keys == history_unique_keys:
+        # 最后一道防线：如果准备推送的整体内容指纹，与历史记录最新一条完全一致，则说明是重复推送，直接跳过
+        if current_unique_keys_set == last_push_keys:
             print("⏭️ 内容与最近推送完全一致，跳过发送")
         else:
             new_desc = [update['title'] for update in new_updates]
@@ -306,7 +319,7 @@ if __name__ == "__main__":
                 save_history(
                     new_push={
                         "timestamp": get_beijing_time().isoformat(),
-                        "anime_unique_keys": list(current_unique_keys)
+                        "anime_unique_keys": list(current_unique_keys_set)
                     },
                     current_anime_details=current_anime_details
                 )
