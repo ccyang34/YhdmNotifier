@@ -264,47 +264,52 @@ if __name__ == "__main__":
         print(f"- {update['title']} {k4_label} | 原始更新信息：{update['update_info']}")
     
     # 历史比对与排序逻辑
-    # 之前仅根据 unique_key (例如"遮天_有4K") 进行比对，这导致：如果遮天集数更新，unique_key 仍相同，
-    # 就不会被视为新更新。为了解决重复推送以及不能正确识别集数更新的问题，我们将 update_info 纳入唯一键。
-    current_unique_keys = {f"{update['unique_key']}_{update['update_info']}" for update in current_anime_details}
-    history = load_history()
-    
     # 获取历史上最后一次推送的所有指纹，避免由于保存整个 anime_details 导致的逻辑复杂
     # 我们应该直接对比最后一次推送保存的 current_unique_keys
+    history = load_history()
     history_unique_keys = set()
     if history['pushes']:
         history_unique_keys = set(history['pushes'][-1].get('anime_unique_keys', []))
 
+    # 生成当前所有动漫的唯一指纹 (名称 + 更新信息，确保集数变化能被识别)
+    current_unique_keys = {f"{update['unique_key']}_{update['update_info']}" for update in current_anime_details}
+
+    # 找出真正新增的内容（在当前抓取到的，但不在最后一次推送记录里的）
+    new_items_keys = current_unique_keys - history_unique_keys
+
     # 筛选新增动漫（置顶，红色标题）和旧动漫（置底，橙色标题）
     new_updates = [
         update for update in current_anime_details 
-        if f"{update['unique_key']}_{update['update_info']}" not in history_unique_keys
+        if f"{update['unique_key']}_{update['update_info']}" in new_items_keys
     ]
     old_updates = [
         update for update in current_anime_details 
-        if f"{update['unique_key']}_{update['update_info']}" in history_unique_keys
+        if f"{update['unique_key']}_{update['update_info']}" not in new_items_keys
     ]
     
     # 推送判断与执行
     if new_updates:
-        new_desc = [f"{k.split('_')[0]} {k.split('_')[1]}" for k in (current_unique_keys - history_unique_keys)]
-        print(f"\n4. 发现新增/4K状态更新: {', '.join(new_desc)}")
-        print("5. 正在生成推送内容（新内容红色标题，旧内容橙色标题）...")
-        message = format_message(new_updates, old_updates)
-        
-        # 提取新增动漫标题用于生成推送摘要
-        new_titles = [update['title'] for update in new_updates]
-        push_summary = f"🔥 动漫更新: {', '.join(new_titles)}"
-        
-        print("6. 正在发送微信推送...")
-        if send_wechat(message, summary=push_summary):
-            save_history(
-                new_push={
-                    "timestamp": get_beijing_time().isoformat(),
-                    "anime_unique_keys": list(current_unique_keys)
-                },
-                current_anime_details=current_anime_details
-            )
+        # 如果准备推送的动漫指纹，与历史记录最新一条完全一致，则说明是重复推送，直接跳过
+        if current_unique_keys == history_unique_keys:
+            print("⏭️ 内容与最近推送完全一致，跳过发送")
+        else:
+            new_desc = [update['title'] for update in new_updates]
+            print(f"\n4. 发现新增/4K状态更新: {', '.join(new_desc)}")
+            print("5. 正在生成推送内容（新内容红色标题，旧内容橙色标题）...")
+            message = format_message(new_updates, old_updates)
+            
+            # 提取新增动漫标题用于生成推送摘要
+            push_summary = f"🔥 动漫更新: {', '.join(new_desc)}"
+            
+            print("6. 正在发送微信推送...")
+            if send_wechat(message, summary=push_summary):
+                save_history(
+                    new_push={
+                        "timestamp": get_beijing_time().isoformat(),
+                        "anime_unique_keys": list(current_unique_keys)
+                    },
+                    current_anime_details=current_anime_details
+                )
     else:
         print("⏭️ 无新增内容（4K状态和集数均无变化），不推送")
     
