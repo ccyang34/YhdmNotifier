@@ -33,20 +33,20 @@ jobs:
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           TUSHARE_TOKEN: "3664fe220cb675ae1661e7ad96c51e2592a0ef72c93d29da3d65b692"
-        run: python ETF动量轮动与推送.py
+        run: python "ETF_动量轮动策略.py"
 
-      - name: 执行 ETF动量轮动与推送_v295 脚本
+      - name: 执行 ETF_动量轮动_v295 脚本
         env:
           WXPUSHER_APP_TOKEN: ${{ secrets.WXPUSHER_APP_TOKEN }}
           WXPUSHER_UID: ${{ secrets.WXPUSHER_UID }}
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           TUSHARE_TOKEN: "3664fe220cb675ae1661e7ad96c51e2592a0ef72c93d29da3d65b692"
-        run: python ETF动量轮动与推送_v295.py
+        run: python "ETF_动量轮动_v295.py"
         
       - name: 提交并推送虚拟持仓更新
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add virtual_portfolio.json
+          git add "记录_ETF_虚拟持仓.json"
           git commit -m "chore: 更新虚拟持仓数据 [skip ci]" || echo "持仓文件无变化，无需提交"
           git push

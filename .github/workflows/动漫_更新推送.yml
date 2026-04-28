@@ -37,13 +37,13 @@ jobs:
         env:
           APP_TOKEN: ${{ secrets.APP_TOKEN }}
         continue-on-error: true
-        run: python 金山文档动漫更新.py
+        run: python "动漫_金山文档推送.py"
 
       - name: 执行Youtube推送
         env:
           APP_TOKEN: ${{ secrets.APP_TOKEN }}
         continue-on-error: true
-        run: python Youtube动漫更新推送.py
+        run: python "动漫_YouTube推送.py"
 
       - name: 提交历史记录
         env:
@@ -58,7 +58,7 @@ jobs:
           git pull origin main --rebase --autostash
           
           # 将可能变更的两个历史记录文件都加进去
-          git add update_history_jinshan.json update_history_youtube.json
+          git add "记录_动漫_金山文档.json" "记录_动漫_YouTube.json"
           if ! git diff --staged --quiet; then
             git commit -m "自动更新历史记录: $(date +'%Y-%m-%d %H:%M')"
             git push origin HEAD:main || exit 1

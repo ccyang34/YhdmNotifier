@@ -1,9 +1,9 @@
-name: AI涨跌停市场分析
+name: AI行业分析师
 
 on:
   schedule:
-    # 北京时间 15:30（下午3点半）→ UTC 07:30，仅周一至周五触发
-    - cron: '30 7 * * 1-5'
+    # 北京时间 15:40（下午3点40分）→ UTC 07:40，仅周一至周五触发
+    - cron: '40 7 * * 1-5'
   workflow_dispatch:
 
 env:
@@ -31,4 +31,4 @@ jobs:
       - name: 执行脚本
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
-        run: python "AI涨停跌停市场分析师.py"
+        run: python "A股_行业轮动分析.py"
