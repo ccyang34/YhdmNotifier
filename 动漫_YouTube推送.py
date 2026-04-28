@@ -211,15 +211,21 @@ if __name__ == "__main__":
 
     if content_fingerprint:
         # 获取最近一次推送指纹（无条件获取最后一次）
-        last_push = history['pushes'][-1]['fingerprint'] if history['pushes'] else set()
+        last_push = history['pushes'][-1].get('fingerprint', []) if history['pushes'] else []
 
         # 转换为集合进行比对
         last_fingerprint = set(last_push)
 
-        if content_fingerprint == last_fingerprint:
-            print("⏭️ 内容与最近推送一致，跳过发送")
+        # 这里修改一下逻辑：只要新的内容集合不是完全被上次的内容集合包含，就说明有真正的“新”更新
+        # 避免因为某些旧内容掉出列表导致 content_fingerprint != last_fingerprint 从而误报
+        new_items = content_fingerprint - last_fingerprint
+
+        if not new_items:
+            print("⏭️ 内容与最近推送一致或无新更新，跳过发送")
         else:
-            message = format_message(new_updates)
+            # 过滤出真正新的更新内容，只推送新增的
+            actual_new_updates = [u for u in new_updates if f"{u[0]}||{u[1]}" in new_items]
+            message = format_message(actual_new_updates)
             if send_wechat(message):
                 # 记录推送信息
                 save_history({

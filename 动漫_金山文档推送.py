@@ -264,18 +264,25 @@ if __name__ == "__main__":
         print(f"- {update['title']} {k4_label} | 原始更新信息：{update['update_info']}")
     
     # 历史比对与排序逻辑
-    current_unique_keys = {update['unique_key'] for update in current_anime_details}
+    # 之前仅根据 unique_key (例如"遮天_有4K") 进行比对，这导致：如果遮天集数更新，unique_key 仍相同，
+    # 就不会被视为新更新。为了解决重复推送以及不能正确识别集数更新的问题，我们将 update_info 纳入唯一键。
+    current_unique_keys = {f"{update['unique_key']}_{update['update_info']}" for update in current_anime_details}
     history = load_history()
-    history_unique_keys = {update['unique_key'] for update in history['anime_details']}
     
+    # 获取历史上最后一次推送的所有指纹，避免由于保存整个 anime_details 导致的逻辑复杂
+    # 我们应该直接对比最后一次推送保存的 current_unique_keys
+    history_unique_keys = set()
+    if history['pushes']:
+        history_unique_keys = set(history['pushes'][-1].get('anime_unique_keys', []))
+
     # 筛选新增动漫（置顶，红色标题）和旧动漫（置底，橙色标题）
     new_updates = [
         update for update in current_anime_details 
-        if update['unique_key'] not in history_unique_keys
+        if f"{update['unique_key']}_{update['update_info']}" not in history_unique_keys
     ]
     old_updates = [
         update for update in current_anime_details 
-        if update['unique_key'] in history_unique_keys
+        if f"{update['unique_key']}_{update['update_info']}" in history_unique_keys
     ]
     
     # 推送判断与执行
@@ -299,7 +306,7 @@ if __name__ == "__main__":
                 current_anime_details=current_anime_details
             )
     else:
-        print("⏭️ 无新增内容（4K状态无变化），不推送")
+        print("⏭️ 无新增内容（4K状态和集数均无变化），不推送")
     
     print("=== 执行结束 ===")
     
