@@ -801,7 +801,7 @@ def main():
     # print(f"[Info] 报告已保存至 {filename}")
     
     # 9. 推送分析报告
-    push_title = f"油脂期货分析日报（含榨利）({beijing_time.strftime('%Y-%m-%d')})"
+    push_title = f"🌾 油脂期货分析日报（含榨利）({beijing_time.strftime('%Y-%m-%d')})"
     send_push(push_title, final_report)
 
 if __name__ == "__main__":

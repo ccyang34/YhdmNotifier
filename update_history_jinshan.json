@@ -5,6 +5,13 @@
       "anime_unique_keys": [
         "遮天_有4K_动漫4k更新至160集"
       ]
+    },
+    {
+      "timestamp": "2026-04-29T20:30:29.152832+08:00",
+      "anime_unique_keys": [
+        "玄界之门_有4K_动漫4k更新至25集",
+        "完美世界_有4K_动漫4k更新至266集"
+      ]
     }
   ],
   "anime_details": [
@@ -14,6 +21,20 @@
       "baidu_link": "https://pan.baidu.com/s/1ltLmOPweonKbwacQOxgxuQ?pwd=7ikc",
       "has_4k": true,
       "unique_key": "遮天_有4K"
+    },
+    {
+      "title": "玄界之门",
+      "update_info": "动漫4k更新至25集",
+      "baidu_link": "https://pan.baidu.com/s/1N43z_2UgDvy0inB2pdcw9w?pwd=7g35",
+      "has_4k": true,
+      "unique_key": "玄界之门_有4K"
+    },
+    {
+      "title": "完美世界",
+      "update_info": "动漫4k更新至266集",
+      "baidu_link": "https://pan.baidu.com/s/1e3qkagN_yag9yIIsLRxLA?pwd=dmta",
+      "has_4k": true,
+      "unique_key": "完美世界_有4K"
     }
   ]
 }
