@@ -612,7 +612,7 @@ def call_deepseek_analysis(context):
             {"role": "user", "content": user_prompt}
         ],
         "temperature": 0.5,
-        "max_tokens": 2500
+        "max_tokens": 8000
     }
 
     try:
@@ -695,6 +695,11 @@ def send_push(title, content):
     print("正在发送 WxPusher 推送...")
     print("="*50 + "\n")
     
+    # 确保内容不超过 WxPusher 的最大限制 (40000字符)
+    # 留一点余量，取 39000
+    if len(content) > 39000:
+        content = content[:39000] + "\n\n...[内容过长，已被截断]..."
+
     payload = {
         "appToken": WXPUSHER_APP_TOKEN,
         "content": content,
