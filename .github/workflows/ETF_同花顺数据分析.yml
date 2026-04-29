@@ -1,0 +1,32 @@
+name: ETF同花顺数据分析与推送
+
+on:
+  schedule:
+    # 每天收盘后运行，例如北京时间 15:45
+    # 北京时间 15:45 -> UTC 时间 07:45
+    - cron: '45 7 * * 1-5'
+  workflow_dispatch: # 允许手动触发
+
+jobs:
+  analyze-and-push:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+        
+      - name: 设置 Python 环境
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          
+      - name: 安装依赖
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4 pandas pytz
+          
+      - name: 运行分析脚本并推送
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          WXPUSHER_APP_TOKEN: ${{ secrets.WXPUSHER_APP_TOKEN }}
+        run: python "ETF_同花顺数据分析.py"
