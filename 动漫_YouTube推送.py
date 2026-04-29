@@ -33,15 +33,15 @@ def load_history():
         if os.path.exists(HISTORY_FILE):
             with open(HISTORY_FILE, 'r', encoding='utf-8') as f:
                 history = json.load(f)
-                # 只保留最新的10条记录
-                history['pushes'] = history['pushes'][-10:]
+                # 只保留最新的20条记录，同步金山文档的配置
+                history['pushes'] = history['pushes'][-20:]
                 return history
-        return {"week_number": get_beijing_time().isocalendar()[1], "pushes": []}
+        return {"week_number": get_beijing_time().isocalendar()[1], "pushes": [], "known_fingerprints": []}
     except Exception as e:
         print(f"历史记录加载失败: {str(e)}")
-        return {"week_number": get_beijing_time().isocalendar()[1], "pushes": []}
+        return {"week_number": get_beijing_time().isocalendar()[1], "pushes": [], "known_fingerprints": []}
 
-def save_history(new_push):
+def save_history(new_push, new_fingerprints):
     """原子化保存历史记录"""
     try:
         # 重新加载最新记录
@@ -49,7 +49,12 @@ def save_history(new_push):
 
         # 合并新记录
         current_history['pushes'].append(new_push)
-        current_history['pushes'] = current_history['pushes'][-10:]  # 保持10条限制
+        current_history['pushes'] = current_history['pushes'][-20:]  # 保持20条限制
+
+        # 维护一个所有视频指纹的持久化数据库，防止因掉出记录而导致的重复推送
+        existing_fingerprints = set(current_history.get('known_fingerprints', []))
+        existing_fingerprints.update(new_fingerprints)
+        current_history['known_fingerprints'] = list(existing_fingerprints)
 
         # 原子化写入
         with open(HISTORY_FILE, 'w', encoding='utf-8') as f:
@@ -211,8 +216,10 @@ if __name__ == "__main__":
 
     if content_fingerprint:
         # 获取历史推送过的所有指纹，构建一个近期已知视频库
-        # 这样即使某个旧视频掉出前10又重新进榜，也不会被当成新视频重复推送
-        known_fingerprints = set()
+        # 优先使用持久化的 known_fingerprints 库
+        known_fingerprints = set(history.get('known_fingerprints', []))
+        
+        # 兼容旧数据：把 pushes 里的历史指纹也加进来
         for push in history.get('pushes', []):
             known_fingerprints.update(push.get('fingerprint', []))
 
@@ -241,7 +248,7 @@ if __name__ == "__main__":
                     save_history({
                         "timestamp": get_beijing_time().isoformat(),
                         "fingerprint": list(content_fingerprint)
-                    })
+                    }, list(content_fingerprint))
     else:
         print("⏭️ 本次未检测到更新内容")
 
