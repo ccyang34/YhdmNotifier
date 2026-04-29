@@ -127,7 +127,7 @@ def call_deepseek_analysis(context):
         return f"AI 请求异常: {e}"
 
 # ==================== 推送功能 ====================
-def send_wx_msg(content: str, summary: str = "v29.5 策略调仓推送", contentType: int = 3):
+def send_wx_msg(content: str, summary: str = "🚀 v29.5 策略调仓推送", contentType: int = 3):
     if not WXPUSHER_APP_TOKEN:
         print("未配置 WXPUSHER_APP_TOKEN")
         return

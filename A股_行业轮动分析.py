@@ -942,7 +942,7 @@ class PushNotifier:
         
         try:
             # 生成推送内容
-            title = f"AI行业资金流向分析 - {get_beijing_time().strftime('%m月%d日')}"
+            title = f"💰 行业资金流向分析 - {get_beijing_time().strftime('%m月%d日')}"
             content = PushNotifier.generate_push_content(summary, csv_file, ai_report, full_report)
             
             # 设置URL (如果没有CSV文件则不设置URL)

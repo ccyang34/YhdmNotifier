@@ -601,7 +601,7 @@ def main(days=DEFAULT_DAYS, enable_push=ENABLE_PUSH):
     
     # 7. 推送消息（可选）
     if enable_push:
-        push_title = f"A股涨跌停分析 ({beijing_time.strftime('%Y-%m-%d')})"
+        push_title = f"💹 A股涨跌停分析 ({beijing_time.strftime('%Y-%m-%d')})"
         send_push(push_title, final_report)
 
 # 程序直接运行主函数

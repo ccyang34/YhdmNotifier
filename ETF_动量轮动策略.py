@@ -236,7 +236,7 @@ def call_deepseek_analysis(context):
         return f"AI 请求异常: {e}"
 
 # ==================== 推送功能 ====================
-def send_wx_msg(content: str, summary: str = "ETF综合评分与监控", contentType: int = 1):
+def send_wx_msg(content: str, summary: str = "🚀 ETF综合评分与监控", contentType: int = 1):
     """发送微信推送
     contentType: 1表示文字，2表示HTML，3表示Markdown
     """
