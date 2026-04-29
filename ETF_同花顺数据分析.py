@@ -20,72 +20,104 @@ def get_beijing_time():
     return datetime.datetime.now(BEIJING_TZ)
 
 def fetch_10jqka_etf_data():
-    """抓取同花顺ETF数据中心的全量数据"""
-    base_url = "http://fund.10jqka.com.cn/datacenter/sy/kfs/etf/p/{}/"
+    """使用原生 JSON API 抓取同花顺ETF数据中心的全量数据"""
+    url = "https://fund.10jqka.com.cn/data/Net/info/ETF_F009_desc_0_0_1_9999_0_0_0_jsonp_g.html"
     headers = {
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0",
+        "Referer": "https://fund.10jqka.com.cn/datacenter/sy/kfs/etf/",
+        "X-Requested-With": "XMLHttpRequest",
+        "Accept": "text/javascript, application/javascript, application/ecmascript, application/x-ecmascript, */*; q=0.01"
     }
     
     all_data = []
     
-    print("开始抓取同花顺ETF数据...")
-    for page in range(1, 30): # ETF约有20多页，假设最多30页
-        url = base_url.format(page)
-        try:
-            res = requests.get(url, headers=headers, timeout=10)
-            res.encoding = 'gbk'
-            soup = BeautifulSoup(res.text, 'html.parser')
+    print("开始抓取同花顺ETF全量数据...")
+    try:
+        import re
+        import json
+        res = requests.get(url, headers=headers, timeout=15)
+        res.encoding = 'gbk'
+        
+        # 提取 JSONP 中的 JSON 字符串
+        text = res.text
+        json_str = ""
+        match = re.search(r'g\((.*)\)', text, re.S)
+        if match:
+            json_str = match.group(1)
+        else:
+            json_str = text
             
-            tbody = soup.find('tbody')
-            if not tbody:
-                break
-                
-            rows = tbody.find_all('tr')
-            if not rows:
-                break
-                
-            for row in rows:
-                cols = row.find_all('td')
-                if len(cols) >= 12:
-                    code = cols[2].text.strip()
-                    name = cols[3].text.strip()
-                    date = cols[5].text.strip()
-                    w_ret = cols[6].text.strip()
-                    m1_ret = cols[7].text.strip()
-                    m3_ret = cols[8].text.strip()
-                    m6_ret = cols[9].text.strip()
-                    y1_ret = cols[10].text.strip()
-                    total_ret = cols[11].text.strip()
-                    nav = cols[12].text.strip()
-                    
-                    all_data.append({
-                        "代码": code,
-                        "名称": name,
-                        "日期": date,
-                        "周收益(%)": w_ret,
-                        "近一月(%)": m1_ret,
-                        "近三月(%)": m3_ret,
-                        "近半年(%)": m6_ret,
-                        "近一年(%)": y1_ret,
-                        "总收益(%)": total_ret,
-                        "净值": nav
-                    })
-            print(f"✅ 第 {page} 页抓取完成, 当前累计 {len(all_data)} 条记录")
+        data = json.loads(json_str)
+        if 'data' in data and 'data' in data['data']:
+            items = data['data']['data'] # 这是一个字典，key 为如 'f159981'，value 为 ETF 信息对象
             
-            # 判断是否是最后一页
-            page_info = soup.find('div', class_='page_info')
-            if page_info:
-                info_text = page_info.text.strip()
-                if '/' in info_text:
-                    curr, total = info_text.split('/')
-                    if curr == total:
-                        break
-        except Exception as e:
-            print(f"❌ 抓取第 {page} 页时发生错误: {e}")
-            break
+            for key, item in items.items():
+                # 按照前端展示字段进行映射
+                code = item.get('code', '--')
+                name = item.get('name', '--')
+                date = item.get('newdate', '--')
+                nav = item.get('net', '--')
+                
+                # 同花顺的字段映射：
+                # F003N_FUND33: 近1周收益率
+                # F005: 近1月收益率
+                # F008: 近3月收益率
+                # F009: 近6月收益率
+                # F010: 近1年收益率
+                # F012: 成立以来收益率
+                
+                w_ret = item.get('F003N_FUND33', '--')
+                m1_ret = item.get('F005', '--')
+                m3_ret = item.get('F008', '--')
+                m6_ret = item.get('F009', '--')
+                y1_ret = item.get('F010', '--')
+                total_ret = item.get('F012', '--')
+                
+                all_data.append({
+                    "代码": code,
+                    "名称": name,
+                    "日期": date,
+                    "周收益(%)": w_ret,
+                    "近一月(%)": m1_ret,
+                    "近三月(%)": m3_ret,
+                    "近半年(%)": m6_ret,
+                    "近一年(%)": y1_ret,
+                    "总收益(%)": total_ret,
+                    "净值": nav
+                })
+        print(f"✅ 抓取完成，共获取 {len(all_data)} 只ETF原始数据。")
+    except Exception as e:
+        print(f"❌ 抓取时发生错误: {e}")
             
     df = pd.DataFrame(all_data)
-    print(f"抓取完成，共获取 {len(df)} 只ETF数据。")
+    
+    # 清洗数据
+    if not df.empty:
+        # 将空值 '--' 或空字符串替换为 NaN
+        df.replace({'--': pd.NA, '': pd.NA}, inplace=True)
+        
+        # 将收益率和净值转换为浮点数，便于排序和清洗
+        numeric_cols = ["周收益(%)", "近一月(%)", "近三月(%)", "近半年(%)", "近一年(%)", "总收益(%)", "净值"]
+        for col in numeric_cols:
+            df[col] = pd.to_numeric(df[col], errors='coerce')
+            
+        # 过滤掉没有任何收益率数据的ETF（可能是刚上市或者退市）
+        df.dropna(subset=["近一月(%)", "近三月(%)", "近半年(%)", "近一年(%)"], how='all', inplace=True)
+        
+        # 按照近一月收益率降序排序，方便后续查看
+        df.sort_values(by="近一月(%)", ascending=False, inplace=True)
+        
+        # 重新格式化回字符串，保留两位小数，处理NaN
+        for col in numeric_cols:
+            df[col] = df[col].apply(lambda x: f"{x:.2f}" if pd.notnull(x) else "--")
+            
+        print(f"✅ 数据清洗完成，保留 {len(df)} 只有效ETF数据。")
+        
+        # 保存为本地CSV文件供查看
+        csv_filename = "同花顺ETF全量清洗数据.csv"
+        df.to_csv(csv_filename, index=False, encoding='utf-8-sig')
+        print(f"✅ 数据已保存至本地: {csv_filename}")
+        
     return df
 
 def call_deepseek_analysis(df):
