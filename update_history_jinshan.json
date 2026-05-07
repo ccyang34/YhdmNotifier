@@ -29,6 +29,25 @@
         "吞噬星空剧场版_有4K_4k版本以更新",
         "玄界之门动漫_有4K_4k全26集"
       ]
+    },
+    {
+      "timestamp": "2026-05-07T16:48:03.705448+08:00",
+      "anime_unique_keys": [
+        "将夜动漫_有4K_4k更新至04集",
+        "吞噬星空剧场版_有4K_4k版本以更新",
+        "神墓动漫_有4K_4k更新至41集",
+        "玄界之门动漫_有4K_4k全26集"
+      ]
+    },
+    {
+      "timestamp": "2026-05-07T19:48:02.696689+08:00",
+      "anime_unique_keys": [
+        "吞噬星空剧场版_有4K_4k版本以更新",
+        "将夜动漫_有4K_4k更新至04集",
+        "玄界之门动漫_有4K_4k全26集",
+        "神墓动漫_有4K_4k更新至41集",
+        "完美世界动漫_有4K_4k更新至268集"
+      ]
     }
   ],
   "anime_details": [
@@ -80,6 +99,27 @@
       "baidu_link": "https://pan.baidu.com/s/1qq0xzk2y4KN0FuIHS2lh7Q?pwd=qcqi",
       "has_4k": true,
       "unique_key": "吞噬星空剧场版_有4K"
+    },
+    {
+      "title": "神墓动漫",
+      "update_info": "4k更新至41集",
+      "baidu_link": "https://pan.baidu.com/s/1cysAZand6XOJBLCGajm1FA?pwd=76v2",
+      "has_4k": true,
+      "unique_key": "神墓动漫_有4K"
+    },
+    {
+      "title": "将夜动漫",
+      "update_info": "4k更新至04集",
+      "baidu_link": "https://pan.baidu.com/s/1sS42CE3_DJyJ1j1Ftr_hsg?pwd=n6y2",
+      "has_4k": true,
+      "unique_key": "将夜动漫_有4K"
+    },
+    {
+      "title": "完美世界动漫",
+      "update_info": "4k更新至268集",
+      "baidu_link": "https://pan.baidu.com/s/1nYyVHIcNR5vNOPbCgd6jRw?pwd=ragw",
+      "has_4k": true,
+      "unique_key": "完美世界动漫_有4K"
     }
   ]
 }
