@@ -186,7 +186,7 @@ def format_message(updates):
 
     return "".join(formatted_messages)
 
-def send_wechat(content):
+def send_wechat(content, summary=None):
     """发送微信推送"""
     data = {
         "appToken": APP_TOKEN,
@@ -194,6 +194,8 @@ def send_wechat(content):
         "contentType": 3,
         "topicIds": TARGET_TOPIC_ID
     }
+    if summary:
+        data["summary"] = summary
     try:
         response = requests.post(f"{BASE_URL}/send/message", json=data, timeout=10)
         result = response.json()
@@ -243,7 +245,10 @@ if __name__ == "__main__":
                 print("⏭️ 重新排序或剔除无关内容后无实质更新，跳过发送")
             else:
                 message = format_message(actual_new_updates)
-                if send_wechat(message):
+                push_summary = f"🔥 YouTube更新: {', '.join([u[0] for u in actual_new_updates])}"
+                if len(push_summary) > 100:
+                    push_summary = push_summary[:97] + "..."
+                if send_wechat(message, summary=push_summary):
                     # 记录推送信息
                     save_history({
                         "timestamp": get_beijing_time().isoformat(),

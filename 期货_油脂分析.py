@@ -120,7 +120,12 @@ def fetch_futures_data(symbol, days=180):
                     
                     # 如果实时数据的日期与历史数据最后日期相同，更新最后一条记录
                     if last_date.date() == today.date():
-                        print(f"🔄 更新今日数据 (最新价: {realtime_record['close']:.2f}, 涨跌幅: {((realtime_record['close'] - realtime_row['last_close']) / realtime_row['last_close'] * 100):.2f}%)")
+                        last_close = realtime_row['last_close']
+                        if last_close != 0:
+                            change_pct = (realtime_record['close'] - last_close) / last_close * 100
+                        else:
+                            change_pct = 0.0
+                        print(f"🔄 更新今日数据 (最新价: {realtime_record['close']:.2f}, 涨跌幅: {change_pct:.2f}%)")
                         # 更新最后一行数据，确保数据类型兼容
                         for key, value in realtime_record.items():
                             if key in df.columns:
@@ -128,6 +133,9 @@ def fetch_futures_data(symbol, days=180):
                                 if key in ['volume', 'hold']:
                                     df.loc[df.index[-1], key] = int(value) if pd.notnull(value) else 0
                                 elif key in ['open', 'high', 'low', 'close', 'settle']:
+                                    # 确保列是 float 类型，避免 int→float 不兼容
+                                    if not pd.api.types.is_float_dtype(df[key]):
+                                        df[key] = df[key].astype('float64')
                                     df.loc[df.index[-1], key] = float(value) if pd.notnull(value) else 0.0
                                 else:
                                     df.loc[df.index[-1], key] = value
@@ -261,11 +269,24 @@ def fetch_us_data():
                                                     us_data.at[us_data.index[-1], key] = 0
                                             elif key in ['open', 'high', 'low', 'close', 'settlement', 'pct_change']:
                                                 try:
+                                                    # 确保列是 float 类型，避免 int→float 不兼容
+                                                    if not pd.api.types.is_float_dtype(us_data[key]):
+                                                        us_data[key] = us_data[key].astype('float64')
                                                     us_data.at[us_data.index[-1], key] = float(value) if pd.notnull(value) else 0.0
                                                 except (ValueError, TypeError):
                                                     us_data.at[us_data.index[-1], key] = 0.0
                                             else:
-                                                us_data.at[us_data.index[-1], key] = value
+                                                # 根据列的数据类型进行转换
+                                                try:
+                                                    col_dtype = us_data[key].dtype
+                                                    if pd.api.types.is_integer_dtype(col_dtype):
+                                                        us_data.at[us_data.index[-1], key] = int(value) if pd.notnull(value) else 0
+                                                    elif pd.api.types.is_float_dtype(col_dtype):
+                                                        us_data.at[us_data.index[-1], key] = float(value) if pd.notnull(value) else 0.0
+                                                    else:
+                                                        us_data.at[us_data.index[-1], key] = value
+                                                except (ValueError, TypeError):
+                                                    us_data.at[us_data.index[-1], key] = value
                                 else:
                                     # 如果实时数据日期更新，追加新记录
                                     print(f"➕ 添加新记录 (日期: {today.strftime('%Y-%m-%d')}, 最新价: {realtime_record['close']:.2f})")

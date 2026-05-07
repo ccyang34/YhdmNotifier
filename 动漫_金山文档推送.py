@@ -105,24 +105,26 @@ def extract_anime_info(content):
     updates = []
     
     for anime in anime_names:
-        pattern = rf'({anime}[^动]*)(动漫(?:第[一二三四五六七八九十\d]+季)?(?:4k)?[^，,。.]*?(?:更新至\d+集|已更新\d+集|开播\d+集|连载至\d+集|共\d+集|全\d+集|暂时完结全\d+集|完结|连载中|已完结))'
+        escaped_anime = re.escape(anime)
+        pattern = rf'({escaped_anime}[^，,。\n]*?)(?:4k)?(?:版本以更新|更新至\d+集|已更新\d+集|开播\d+集|连载至\d+集|共\d+集|全\d+集|暂时完结|完结|连载中|已完结)'
         match = re.search(pattern, cleaned_content, re.IGNORECASE)
-        
+
         if match:
-            cleaned_name = match.group(1)
-            raw_update_info = match.group(2)
-            has_4k = '4k' in raw_update_info.lower()
-            # 仅当包含4K时才记录
+            cleaned_name = match.group(1).strip()
+            full_match = match.group(0)
+            has_4k = '4k' in full_match.lower()
             if not has_4k:
                 continue
             anime_unique_key = f"{cleaned_name}_有4K"
-            
+
             baidu_link = ""
             after_pos = match.end()
             baidu_match = re.search(r'https://pan\.baidu\.com/.*?\?pwd=[a-zA-Z0-9]{4}', cleaned_content[after_pos:after_pos+300])
             if baidu_match:
                 baidu_link = baidu_match.group(0)
-            
+
+            raw_update_info = full_match[len(cleaned_name):]
+
             updates.append({
                 "title": cleaned_name,
                 "update_info": raw_update_info,
@@ -311,8 +313,18 @@ if __name__ == "__main__":
             print("5. 正在生成推送内容（新内容红色标题，旧内容橙色标题）...")
             message = format_message(new_updates, old_updates)
             
-            # 提取新增动漫标题用于生成推送摘要
-            push_summary = f"🔥 动漫更新: {', '.join(new_desc)}"
+            # 提取新增动漫标题用于生成推送摘要（只保留中文）
+            import re
+            clean_titles = []
+            for title in new_desc:
+                chinese_only = re.sub(r'[^\u4e00-\u9fff]', '', title)
+                if chinese_only:
+                    clean_titles.append(chinese_only)
+            push_summary = f"🔥 动漫更新: {', '.join(clean_titles[:2])}"
+            if len(clean_titles) > 2:
+                push_summary += f"等{len(clean_titles)}部"
+            if len(push_summary) > 100:
+                push_summary = push_summary[:97] + "..."
             
             print("6. 正在发送微信推送...")
             if send_wechat(message, summary=push_summary):
