@@ -5,7 +5,7 @@ import sys
 import platform
 import time
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 # 日志配置
@@ -29,8 +29,16 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-DEEPSEEK_API_KEY = "sk-10e7990a0c9f47518846439e8e0dc67b"
-TUSHARE_TOKEN = "3664fe220cb675ae1661e7ad96c51e2592a0ef72c93d29da3d65b692"
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
+from model_config import get_api_config, get_headers, get_payload, get_api_url, MODEL_NAME, MODEL_MAX_TOKENS, MODEL_TEMPERATURE, MODEL_NAME_BACKUP
+
+DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "")
+TUSHARE_TOKEN = os.getenv("TUSHARE_TOKEN", "")
 
 TASKS = {
     "anime_js": {"name": "动漫_金山文档推送", "scripts": ["动漫_金山文档推送.py"], "schedule": "每20分钟 (10:08-20:48)"},
@@ -39,10 +47,12 @@ TASKS = {
     "a_stock_breadth": {"name": "A股_市场宽度报告", "scripts": ["A股_市场宽度报告.py"], "schedule": "17:36 (北京时间)"},
     "a_stock_rotation": {"name": "A股_行业轮动分析", "scripts": ["A股_行业轮动分析.py"], "schedule": "15:41 (北京时间)"},
     "a_stock_limit": {"name": "A股_涨跌停分析", "scripts": ["A股_涨跌停分析.py"], "schedule": "15:41 (北京时间)"},
-    "etf_momentum": {"name": "ETF_动量轮动策略", "scripts": ["ETF_动量轮动策略.py"], "schedule": "09:18, 15:23 (北京时间)"},
-    "etf_momentum_v2": {"name": "ETF_动量轮动_v295", "scripts": ["ETF_动量轮动_v295.py"], "schedule": "09:18, 15:23 (北京时间)"},
+    # "etf_momentum": {"name": "ETF_动量轮动策略", "scripts": ["ETF_动量轮动策略.py"], "schedule": "09:18, 15:23 (北京时间)"},
+    # "etf_momentum_v2": {"name": "ETF_动量轮动_v295", "scripts": ["ETF_动量轮动_v295.py"], "schedule": "09:18, 15:23 (北京时间)"},
+    "etf_momentum_combined": {"name": "ETF_动量轮动整合", "scripts": ["ETF_动量轮动_整合推送.py"], "schedule": "09:18, 15:23 (北京时间)"},
     "etf_ths": {"name": "ETF_同花顺数据分析", "scripts": ["ETF_同花顺数据分析.py"], "schedule": "15:45 (北京时间)"},
     "positions": {"name": "持仓汇总推送", "scripts": ["持仓汇总推送.py"], "schedule": "16:30 (北京时间, 工作日)"},
+    "hk_us_positions": {"name": "港美股持仓汇总", "scripts": ["港美股_持仓汇总推送.py"], "schedule": "16:10 (北京时间, 工作日)"},
 }
 
 MODE_1_SCRIPTS = list(TASKS.keys())
@@ -52,15 +62,57 @@ MODE_2_SCHEDULES = {
     "a_stock_breadth": ["17:35"],
     "a_stock_rotation": ["15:05"],
     "a_stock_limit": ["15:05"],
-    "etf_momentum": ["09:28", "15:05"],
-    "etf_momentum_v2": ["09:28", "15:05"],
+    # "etf_momentum": ["09:28", "15:05"],
+    # "etf_momentum_v2": ["09:28", "15:05"],
+    "etf_momentum_combined": ["09:28", "15:05"],
     "etf_ths": ["15:05"],
-    "positions": ["16:30"],
+    "positions": ["15:30"],
+    "hk_us_positions": ["16:10"],
     "anime_js": ["10:08", "10:28", "10:48", "11:08", "11:28", "11:48", "12:08", "12:28", "12:48",
                  "13:08", "13:28", "13:48", "14:08", "14:28", "14:48", "15:08", "15:28", "15:48",
                  "16:08", "16:28", "16:48", "17:08", "17:28", "17:48", "18:08", "18:28", "18:48",
                  "19:08", "19:28", "19:48", "20:08", "20:28", "20:48"],
 }
+
+# ============ Git 上传控制 ============
+# 以下为脚本运行生成的本地数据/报告/持仓文件，不上传 git
+# 注意: 记录_动漫_金山文档.json / 记录_动漫_YouTube.json / 记录_ETF_虚拟持仓.json
+#       由 GitHub Actions 工作流主动提交同步，需保留跟踪，故用 ! 取反
+GIT_IGNORE_PATTERNS = [
+    "记录_*.json",
+    "!记录_动漫_金山文档.json",
+    "!记录_动漫_YouTube.json",
+    "!记录_ETF_虚拟持仓.json",
+    "ai_market_report*.md",
+    "zt_dt_analysis_report.md",
+    "virtual_portfolio.json",
+    "v295_portfolio_ak.json",
+    "update_history_jinshan.json",
+    "同花顺ETF全量清洗数据.csv",
+    "平安+兴证持仓/",
+]
+
+def ensure_gitignore():
+    """确保 .gitignore 包含不上传 git 的文件规则 (自动维护)"""
+    gitignore_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".gitignore")
+    try:
+        with open(gitignore_path, "r", encoding="utf-8") as f:
+            content = f.read()
+    except FileNotFoundError:
+        content = ""
+    added = []
+    for pattern in GIT_IGNORE_PATTERNS:
+        if pattern not in content:
+            content += ("" if content.endswith("\n") else "\n") + pattern + "\n"
+            added.append(pattern)
+    if added:
+        with open(gitignore_path, "w", encoding="utf-8") as f:
+            f.write(content)
+        print(f"🛡️ 已更新 .gitignore，新增忽略规则: {', '.join(added)}")
+        logger.info(f"已更新 .gitignore，新增忽略规则: {', '.join(added)}")
+    else:
+        print("🛡️ .gitignore 已包含所有不上传规则，无需更新")
+        logger.info(".gitignore 已包含所有不上传规则，无需更新")
 
 def set_beijing_time():
     os.environ["TZ"] = "Asia/Shanghai"
@@ -186,11 +238,13 @@ def mode2_schedule(env_vars):
         if not pending_times:
             print("\n⚠️  今天没有可执行的任务 (周末或已过最后时间)")
             logger.warning("今天没有可执行的任务 (周末或已过最后时间)")
-            print("按回车返回主菜单, q退出程序")
-            user_input = input().strip()
-            if user_input.lower() == "q":
-                break
-            return True
+            target_time = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1)
+            print(f"⏳ 等待至明天 {unique_times[0]}...")
+            logger.info(f"等待至明天 {unique_times[0]}...")
+            while datetime.now() < target_time:
+                time.sleep(30)
+            executed_today.clear()
+            continue
 
         next_time = get_next_run_time(pending_times)
 
@@ -201,14 +255,15 @@ def mode2_schedule(env_vars):
             logger.info("="*60)
             logger.info("今天所有任务已执行完毕!")
             logger.info(f"下一轮任务: 明天 {unique_times[0]}")
-            print("按回车返回主菜单, q退出程序")
-            user_input = input().strip()
-            if user_input.lower() == "q":
-                break
-            return True
+            target_time = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1)
+            print(f"⏳ 等待至明天 {unique_times[0]}...")
+            logger.info(f"等待至明天 {unique_times[0]}...")
+            while datetime.now() < target_time:
+                time.sleep(30)
+            executed_today.clear()
+            continue
 
         tasks_to_run = get_all_tasks_at_time(next_time)
-        executed_today.add(next_time)
 
         print(f"\n{'='*60}")
         print(f"📅 今天是: {weekday_names[weekday]} {now.strftime('%Y-%m-%d')}")
@@ -230,24 +285,25 @@ def mode2_schedule(env_vars):
             logger.warning("今天是周末，A股/期货任务不运行")
 
         target_hour, target_minute = map(int, next_time.split(":"))
-        print(f"\n⏳ 距离下次任务还有...")
-        logger.info("距离下次任务还有...")
+        now = datetime.now()
+        target_time = now.replace(hour=target_hour, minute=target_minute, second=0, microsecond=0)
+        if target_time <= now:
+            target_time += timedelta(days=1)
+
+        print(f"\n⏳ 距离下次任务 {next_time} 还有...")
+        logger.info(f"距离下次任务 {next_time} 还有...")
 
         while True:
             now = datetime.now()
-            current_str = now.strftime("%H:%M")
-            if current_str >= next_time:
+            if now >= target_time:
                 print(f"\n⏰ 已到达任务时间 {next_time}，开始执行!")
                 break
-            target = now.replace(hour=target_hour, minute=target_minute, second=0, microsecond=0)
-            if target < now:
-                target = target.replace(day=target.day + 1)
-            diff = target - now
-            hours, remainder = divmod(int(diff.total_seconds()), 3600)
+            remaining = (target_time - now).total_seconds()
+            hours, remainder = divmod(int(remaining), 3600)
             minutes, seconds = divmod(remainder, 60)
-            countdown_str = f"\r   倒计时: {hours:02d}:{minutes:02d}:{seconds:02d}  (回车立即执行, q退出程序)  "
+            countdown_str = f"\r   距 {next_time} 还有 {hours:02d}:{minutes:02d}:{seconds:02d}  (回车立即执行, q退出)  "
             print(countdown_str, end="", flush=True)
-            logger.debug(f"倒计时: {hours:02d}:{minutes:02d}:{seconds:02d}")
+            logger.debug(f"距 {next_time} 还有 {hours:02d}:{minutes:02d}:{seconds:02d}")
             try:
                 if sys.stdin.isatty():
                     import select
@@ -262,7 +318,8 @@ def mode2_schedule(env_vars):
                             logger.info("用户选择立即执行任务")
                             break
                 else:
-                    time.sleep(1)
+                    sleep_sec = min(30, int(remaining) + 1)
+                    time.sleep(sleep_sec)
             except:
                 time.sleep(1)
 
@@ -276,6 +333,13 @@ def mode2_schedule(env_vars):
                     success_count += 1
         print(f"\n📊 执行结果: {success_count}/{len(tasks_to_run)} 成功")
         logger.info(f"本轮执行结果: {success_count}/{len(tasks_to_run)} 成功")
+        executed_today.add(next_time)
+
+        if weekday < 5:
+            missed_times = [t for t in unique_times if t > current_time_str and t < next_time and t not in executed_today]
+            for mt in missed_times:
+                executed_today.add(mt)
+                logger.warning(f"跳过已过时的任务时间: {mt}")
 
         print("\n" + "="*60)
         print("✅ 本轮任务执行完毕，继续等待下一轮...")
@@ -325,37 +389,63 @@ def show_task_menu():
 
 def main():
     set_beijing_time()
+    ensure_gitignore()
+    config = get_api_config()
     env_vars = {
         "DEEPSEEK_API_KEY": DEEPSEEK_API_KEY,
+        "DEEPSEEK_API_KEY_NEW": os.getenv("DEEPSEEK_API_KEY_NEW", ""),
+        "DEEPSEEK_BASE_URL": os.getenv("DEEPSEEK_BASE_URL", ""),
+        "API_PROVIDER": os.getenv("API_PROVIDER", "deepseek"),
+        "NVIDIA_API_KEY": os.getenv("NVIDIA_API_KEY", ""),
+        "NVIDIA_BASE_URL": os.getenv("NVIDIA_BASE_URL", ""),
+        "MODEL_NAME": MODEL_NAME,
         "TUSHARE_TOKEN": TUSHARE_TOKEN
     }
-    while True:
-        show_menu()
-        choice = input("请输入选项: ").strip()
-        if choice == "1":
-            mode1_immediate(env_vars)
-        elif choice == "2":
-            mode2_schedule(env_vars)
-        elif choice == "3":
-            while True:
-                show_task_menu()
-                task_choice = input("请输入选项: ").strip()
-                if task_choice == "0":
+    cancelled = False
+    for i in range(5, 0, -1):
+        print(f"\r⏳ {i} 秒后进入定时执行模式... (按回车取消)  ", end="", flush=True)
+        for _ in range(10):
+            if sys.stdin.isatty():
+                import select
+                if select.select([sys.stdin], [], [], 0.1)[0]:
+                    sys.stdin.readline()
+                    cancelled = True
                     break
-                try:
-                    idx = int(task_choice) - 1
-                    task_ids = list(TASKS.keys())
-                    if 0 <= idx < len(task_ids):
-                        mode3_specific(task_ids[idx], env_vars)
-                    else:
-                        print("无效的选项")
-                except ValueError:
-                    print("请输入有效的数字")
-        elif choice == "0":
-            print("退出程序")
+            else:
+                time.sleep(0.1)
+        if cancelled:
             break
-        else:
-            print("无效的选项，请重新选择")
+    print("\n")
+    if not cancelled:
+        mode2_schedule(env_vars)
+    else:
+        while True:
+            show_menu()
+            choice = input("请输入选项: ").strip()
+            if choice == "1":
+                mode1_immediate(env_vars)
+            elif choice == "2":
+                mode2_schedule(env_vars)
+            elif choice == "3":
+                while True:
+                    show_task_menu()
+                    task_choice = input("请输入选项: ").strip()
+                    if task_choice == "0":
+                        break
+                    try:
+                        idx = int(task_choice) - 1
+                        task_ids = list(TASKS.keys())
+                        if 0 <= idx < len(task_ids):
+                            mode3_specific(task_ids[idx], env_vars)
+                        else:
+                            print("无效的选项")
+                    except ValueError:
+                        print("请输入有效的数字")
+            elif choice == "0":
+                print("退出程序")
+                break
+            else:
+                print("无效的选项，请重新选择")
 
 if __name__ == "__main__":
     main()

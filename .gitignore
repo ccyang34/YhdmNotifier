@@ -3,3 +3,16 @@ __pycache__/
 *.pyc
 .DS_Store
 logs/
+
+# ===== 脚本生成的本地数据/报告/持仓文件（不上传 git）=====
+记录_*.json
+!记录_动漫_金山文档.json
+!记录_动漫_YouTube.json
+!记录_ETF_虚拟持仓.json
+ai_market_report*.md
+zt_dt_analysis_report.md
+virtual_portfolio.json
+v295_portfolio_ak.json
+update_history_jinshan.json
+同花顺ETF全量清洗数据.csv
+平安+兴证持仓/
